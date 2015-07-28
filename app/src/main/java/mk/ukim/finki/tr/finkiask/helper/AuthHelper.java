@@ -16,17 +16,20 @@ public class AuthHelper {
 
     public static boolean isLoggedIn(Activity activity) {
 
-        SharedPreferences settings = activity.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        long currentTime = System.currentTimeMillis();
+        // Login screen is not ready
+        return true;
 
-        String user = settings.getString(SESSION_USER, null);
-        long sessionValidUntil = settings.getLong(SESSION_VALID_UNTIL, -1);
-
-        if (user != null) {
-            return currentTime < sessionValidUntil;
-        } else {
-            return false;
-        }
+//        SharedPreferences settings = activity.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+//        long currentTime = System.currentTimeMillis();
+//
+//        String user = settings.getString(SESSION_USER, null);
+//        long sessionValidUntil = settings.getLong(SESSION_VALID_UNTIL, -1);
+//
+//        if (user != null) {
+//            return currentTime < sessionValidUntil;
+//        } else {
+//            return false;
+//        }
 
     }
 

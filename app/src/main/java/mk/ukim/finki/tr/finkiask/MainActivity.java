@@ -1,16 +1,31 @@
 package mk.ukim.finki.tr.finkiask;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
+
+    @Bind(R.id.toolbar) Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+
+        final ActionBar ab = getSupportActionBar();
+        assert ab != null;
+        ab.setHomeAsUpIndicator(R.drawable.ic_action_school);
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
