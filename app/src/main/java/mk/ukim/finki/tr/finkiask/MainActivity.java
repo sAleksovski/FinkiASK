@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import mk.ukim.finki.tr.finkiask.helper.AuthHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,6 +45,12 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (id == R.id.action_logout) {
+            AuthHelper.logout(this);
+            finish();
             return true;
         }
 
