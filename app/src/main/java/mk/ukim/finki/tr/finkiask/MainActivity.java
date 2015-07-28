@@ -1,5 +1,6 @@
 package mk.ukim.finki.tr.finkiask;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_logout) {
             AuthHelper.logout(this);
-            finish();
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
             return true;
         }
 
