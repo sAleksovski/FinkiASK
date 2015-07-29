@@ -11,9 +11,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-/**
- * Created by Beti on 7/29/2015.
- */
+
 public class  MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements
         View.OnClickListener{
 

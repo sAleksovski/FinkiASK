@@ -1,8 +1,6 @@
 package mk.ukim.finki.tr.finkiask;
 
-/**
- * Created by Beti on 7/29/2015.
- */
+
 public class Answer {
     private String text;
     private boolean isCorrect;

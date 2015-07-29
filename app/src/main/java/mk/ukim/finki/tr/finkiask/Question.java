@@ -2,9 +2,6 @@ package mk.ukim.finki.tr.finkiask;
 
 import java.util.ArrayList;
 
-/**
- * Created by Beti on 7/29/2015.
- */
 public class Question {
     private String text;
     private String type;
