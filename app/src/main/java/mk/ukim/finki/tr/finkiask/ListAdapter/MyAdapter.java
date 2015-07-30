@@ -1,7 +1,6 @@
-package mk.ukim.finki.tr.finkiask;
+package mk.ukim.finki.tr.finkiask.ListAdapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import mk.ukim.finki.tr.finkiask.R;
+import mk.ukim.finki.tr.finkiask.TempData.Test;
 
 
 public class  MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements
@@ -23,7 +25,6 @@ public class  MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> imple
         sContext = context;
     }
 
-    // Create new views. This is invoked by the layout manager.
     @Override
     public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row, parent, false);
@@ -35,12 +36,10 @@ public class  MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> imple
         return holder;
     }
 
-    // Replace the contents of a view. This is invoked by the layout manager.
     @Override
     public void onBindViewHolder(MyAdapter.ViewHolder holder, int position) {
         holder.mNumberRowTextView.setText(String.valueOf(position)+ ". ");
         holder.mNameTextView.setText(mDataset.get(position).getName());
-        holder.mNumberRowTextView.setTextColor(Color.BLUE);
     }
 
     @Override
@@ -56,8 +55,6 @@ public class  MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> imple
         }
     }
 
-
-    // Create the ViewHolder class to keep references to your views
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView mNumberRowTextView;

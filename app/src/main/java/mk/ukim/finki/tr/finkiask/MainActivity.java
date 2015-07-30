@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import mk.ukim.finki.tr.finkiask.ListAdapter.MyAdapter;
+import mk.ukim.finki.tr.finkiask.TempData.Test;
 import mk.ukim.finki.tr.finkiask.helper.AuthHelper;
 
 public class MainActivity extends AppCompatActivity {
