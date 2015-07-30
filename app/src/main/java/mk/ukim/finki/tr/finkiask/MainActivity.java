@@ -1,21 +1,23 @@
 package mk.ukim.finki.tr.finkiask;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.ListAdapter.MyAdapter;
-import mk.ukim.finki.tr.finkiask.TempData.TestMock;
+import mk.ukim.finki.tr.finkiask.TempData.Answer;
+import mk.ukim.finki.tr.finkiask.TempData.Question;
+import mk.ukim.finki.tr.finkiask.TempData.Test;
 import mk.ukim.finki.tr.finkiask.helper.AuthHelper;
 
 public class MainActivity extends AppCompatActivity {
@@ -56,36 +58,46 @@ public class MainActivity extends AppCompatActivity {
         mTestRecyclerView.setHasFixedSize(true);
         mTestLayoutManager = new LinearLayoutManager(this);
         mTestRecyclerView.setLayoutManager(mTestLayoutManager);
-        ArrayList<TestMock> testMockDataset = new ArrayList<TestMock>();
-        for (int i= 0; i < 70; i++){
-            TestMock t = new TestMock("TestMock Name "+i,"type","subject");
-            testMockDataset.add(t);
+        ArrayList<Test> testDataset = new ArrayList<Test>();
+        for (int i= 0; i < 10; i++){
+            Test t = new Test("Test Name "+i,"type","subject");
+            ArrayList<Answer> tmp = new ArrayList<Answer>();
+            tmp.add(new Answer("Answer 1",true));
+            tmp.add(new Answer("Answer 2", false));
+            tmp.add(new Answer("Answer 3", false));
+            ArrayList<Answer> textAnswer = new ArrayList<>();
+            textAnswer.add(new Answer("Answer ", true));
+            ArrayList<Question> questions = new ArrayList<>();
+            questions.add(new Question("1", "Question Text 1", "1", tmp));
+            questions.add(new Question("2", "Question Text 2", "2", tmp));
+            questions.add(new Question("3", "Question Text 3", "3", textAnswer));
+            questions.add(new Question("4", "Question Text 4","4", textAnswer));
+            t.setQuestions(questions);
+            testDataset.add(t);
         }
-        mTestAdapter = new MyAdapter(MainActivity.this, testMockDataset);
+        mTestAdapter = new MyAdapter(MainActivity.this, testDataset);
         mTestRecyclerView.setAdapter(mTestAdapter);
-
-        /*//Testing DBFlow 1-n relation
-        Test test = new Test();
-        test.setName("test5");
-        test.setDuration(30);
-        test.setStartTime(new Date());
-        test.setTestingType("test");
-        test.setTestInstanceID(6);
-        test.setUserID(1);
-        test.save();
-
-        Question question = new Question("question3", "radio");
-        question.associateTest(test);
-        question.save();*/
     }
     public void initialiseSurvey(){
         mSurveyRecyclerView = (RecyclerView) findViewById(R.id.survey_recycler_view);
         mSurveyRecyclerView.setHasFixedSize(true);
         mSurveyLayoutManager = new LinearLayoutManager(this);
         mSurveyRecyclerView.setLayoutManager(mSurveyLayoutManager);
-        ArrayList<TestMock> surveyDataset = new ArrayList<TestMock>();
-        for (int i= 0; i < 70; i++){
-            TestMock t = new TestMock("Survey Name "+i,"type","subject");
+        ArrayList<Test> surveyDataset = new ArrayList<Test>();
+        for (int i= 0; i < 10; i++){
+            Test t = new Test("Survey Name "+i,"type","subject");
+            ArrayList<Answer> tmp = new ArrayList<Answer>();
+            tmp.add(new Answer("Answer 1",true));
+            tmp.add(new Answer("Answer 2", false));
+            tmp.add(new Answer("Answer 3", false));
+            ArrayList<Answer> textAnswer = new ArrayList<>();
+            textAnswer.add(new Answer("Answer ", true));
+            ArrayList<Question> questions = new ArrayList<>();
+            questions.add(new Question("1", "Question Text 1", "1", tmp));
+            questions.add(new Question("2", "Question Text 2", "2", tmp));
+            questions.add(new Question("3", "Question Text 3", "3", textAnswer));
+            questions.add(new Question("4", "Question Text 4","4", textAnswer));
+            t.setQuestions(questions);
             surveyDataset.add(t);
         }
         mSurveyAdapter = new MyAdapter(MainActivity.this, surveyDataset);
@@ -96,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         mPreviousRecyclerView.setHasFixedSize(true);
         mPreviousLayoutManager = new LinearLayoutManager(this);
         mPreviousRecyclerView.setLayoutManager(mPreviousLayoutManager);
-        ArrayList<TestMock> previousDataset = new ArrayList<TestMock>();
+        ArrayList<Test> previousDataset = new ArrayList<Test>();
         mPreviousAdapter = new MyAdapter(MainActivity.this, previousDataset);
         mPreviousRecyclerView.setAdapter(mPreviousAdapter);
     }

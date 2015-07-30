@@ -1,26 +1,26 @@
 package mk.ukim.finki.tr.finkiask.TempData;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-
-public class TestMock {
-    private ArrayList<QuestionMock> questionMocks;
+public class Test implements Serializable{
+    private ArrayList<Question> questions;
     private String name;
     private String subject;
     private String type;
 
-    public TestMock(String name, String type, String subject){
+    public Test(String name, String type, String subject){
         this.name = name;
         this.type = type;
         this.subject = subject;
     }
-    public void setQuestionMocks(ArrayList<QuestionMock> questionMocks){
-        this.questionMocks = questionMocks;
+    public void setQuestions(ArrayList<Question> questions){
+        this.questions = questions;
     }
     public String getName(){return name;}
     public String getType(){return type;}
     public String getSubject(){return subject;}
-    public ArrayList<QuestionMock> getQuestionMocks(){return questionMocks;}
+    public ArrayList<Question> getQuestions(){return questions;}
 
     @Override
     public String toString() {
