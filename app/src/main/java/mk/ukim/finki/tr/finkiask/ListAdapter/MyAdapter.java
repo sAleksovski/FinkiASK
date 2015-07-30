@@ -11,16 +11,16 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import mk.ukim.finki.tr.finkiask.R;
-import mk.ukim.finki.tr.finkiask.TempData.Test;
+import mk.ukim.finki.tr.finkiask.TempData.TestMock;
 
 
 public class  MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements
         View.OnClickListener{
 
-    private ArrayList<Test> mDataset;
+    private ArrayList<TestMock> mDataset;
     private static Context sContext;
 
-    public MyAdapter(Context context, ArrayList<Test> myDataset){
+    public MyAdapter(Context context, ArrayList<TestMock> myDataset){
         mDataset = myDataset;
         sContext = context;
     }

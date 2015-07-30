@@ -3,24 +3,24 @@ package mk.ukim.finki.tr.finkiask.TempData;
 import java.util.ArrayList;
 
 
-public class Test {
-    private ArrayList<Question> questions;
+public class TestMock {
+    private ArrayList<QuestionMock> questionMocks;
     private String name;
     private String subject;
     private String type;
 
-    public Test(String name, String type, String subject){
+    public TestMock(String name, String type, String subject){
         this.name = name;
         this.type = type;
         this.subject = subject;
     }
-    public void setQuestions(ArrayList<Question> questions){
-        this.questions = questions;
+    public void setQuestionMocks(ArrayList<QuestionMock> questionMocks){
+        this.questionMocks = questionMocks;
     }
     public String getName(){return name;}
     public String getType(){return type;}
     public String getSubject(){return subject;}
-    public ArrayList<Question> getQuestions(){return questions;}
+    public ArrayList<QuestionMock> getQuestionMocks(){return questionMocks;}
 
     @Override
     public String toString() {

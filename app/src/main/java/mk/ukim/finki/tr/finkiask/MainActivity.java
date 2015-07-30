@@ -1,21 +1,21 @@
 package mk.ukim.finki.tr.finkiask;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.ListAdapter.MyAdapter;
-import mk.ukim.finki.tr.finkiask.TempData.Test;
+import mk.ukim.finki.tr.finkiask.TempData.TestMock;
 import mk.ukim.finki.tr.finkiask.helper.AuthHelper;
 
 public class MainActivity extends AppCompatActivity {
@@ -56,22 +56,36 @@ public class MainActivity extends AppCompatActivity {
         mTestRecyclerView.setHasFixedSize(true);
         mTestLayoutManager = new LinearLayoutManager(this);
         mTestRecyclerView.setLayoutManager(mTestLayoutManager);
-        ArrayList<Test> testDataset = new ArrayList<Test>();
+        ArrayList<TestMock> testMockDataset = new ArrayList<TestMock>();
         for (int i= 0; i < 70; i++){
-            Test t = new Test("Test Name "+i,"type","subject");
-            testDataset.add(t);
+            TestMock t = new TestMock("TestMock Name "+i,"type","subject");
+            testMockDataset.add(t);
         }
-        mTestAdapter = new MyAdapter(MainActivity.this, testDataset);
+        mTestAdapter = new MyAdapter(MainActivity.this, testMockDataset);
         mTestRecyclerView.setAdapter(mTestAdapter);
+
+        /*//Testing DBFlow 1-n relation
+        Test test = new Test();
+        test.setName("test5");
+        test.setDuration(30);
+        test.setStartTime(new Date());
+        test.setTestingType("test");
+        test.setTestInstanceID(6);
+        test.setUserID(1);
+        test.save();
+
+        Question question = new Question("question3", "radio");
+        question.associateTest(test);
+        question.save();*/
     }
     public void initialiseSurvey(){
         mSurveyRecyclerView = (RecyclerView) findViewById(R.id.survey_recycler_view);
         mSurveyRecyclerView.setHasFixedSize(true);
         mSurveyLayoutManager = new LinearLayoutManager(this);
         mSurveyRecyclerView.setLayoutManager(mSurveyLayoutManager);
-        ArrayList<Test> surveyDataset = new ArrayList<Test>();
+        ArrayList<TestMock> surveyDataset = new ArrayList<TestMock>();
         for (int i= 0; i < 70; i++){
-            Test t = new Test("Survey Name "+i,"type","subject");
+            TestMock t = new TestMock("Survey Name "+i,"type","subject");
             surveyDataset.add(t);
         }
         mSurveyAdapter = new MyAdapter(MainActivity.this, surveyDataset);
@@ -82,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         mPreviousRecyclerView.setHasFixedSize(true);
         mPreviousLayoutManager = new LinearLayoutManager(this);
         mPreviousRecyclerView.setLayoutManager(mPreviousLayoutManager);
-        ArrayList<Test> previousDataset = new ArrayList<Test>();
+        ArrayList<TestMock> previousDataset = new ArrayList<TestMock>();
         mPreviousAdapter = new MyAdapter(MainActivity.this, previousDataset);
         mPreviousRecyclerView.setAdapter(mPreviousAdapter);
     }
