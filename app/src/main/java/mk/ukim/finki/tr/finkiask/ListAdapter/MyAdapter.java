@@ -1,6 +1,8 @@
 package mk.ukim.finki.tr.finkiask.ListAdapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.TempData.Test;
+import mk.ukim.finki.tr.finkiask.masterdetail.TestListActivity;
 
 
 public class  MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements
@@ -52,6 +55,11 @@ public class  MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> imple
         ViewHolder holder = (ViewHolder) v.getTag();
         if(v.getId() == holder.mNameTextView.getId()){
             Toast.makeText(sContext, holder.mNameTextView.getText(), Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(sContext, TestListActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("test",mDataset.get(holder.getPosition()) );
+            i.putExtra("test", b);
+            sContext.startActivity(i);
         }
     }
 

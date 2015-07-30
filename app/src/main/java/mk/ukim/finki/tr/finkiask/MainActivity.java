@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.ListAdapter.MyAdapter;
+import mk.ukim.finki.tr.finkiask.TempData.Answer;
+import mk.ukim.finki.tr.finkiask.TempData.Question;
 import mk.ukim.finki.tr.finkiask.TempData.Test;
 import mk.ukim.finki.tr.finkiask.helper.AuthHelper;
 
@@ -57,8 +59,20 @@ public class MainActivity extends AppCompatActivity {
         mTestLayoutManager = new LinearLayoutManager(this);
         mTestRecyclerView.setLayoutManager(mTestLayoutManager);
         ArrayList<Test> testDataset = new ArrayList<Test>();
-        for (int i= 0; i < 70; i++){
+        for (int i= 0; i < 10; i++){
             Test t = new Test("Test Name "+i,"type","subject");
+            ArrayList<Answer> tmp = new ArrayList<Answer>();
+            tmp.add(new Answer("Answer 1",true));
+            tmp.add(new Answer("Answer 2", false));
+            tmp.add(new Answer("Answer 3", false));
+            ArrayList<Answer> textAnswer = new ArrayList<>();
+            textAnswer.add(new Answer("Answer ", true));
+            ArrayList<Question> questions = new ArrayList<>();
+            questions.add(new Question("1", "Question Text 1", "1", tmp));
+            questions.add(new Question("2", "Question Text 2", "2", tmp));
+            questions.add(new Question("3", "Question Text 3", "3", textAnswer));
+            questions.add(new Question("4", "Question Text 4","4", textAnswer));
+            t.setQuestions(questions);
             testDataset.add(t);
         }
         mTestAdapter = new MyAdapter(MainActivity.this, testDataset);
@@ -70,8 +84,20 @@ public class MainActivity extends AppCompatActivity {
         mSurveyLayoutManager = new LinearLayoutManager(this);
         mSurveyRecyclerView.setLayoutManager(mSurveyLayoutManager);
         ArrayList<Test> surveyDataset = new ArrayList<Test>();
-        for (int i= 0; i < 70; i++){
+        for (int i= 0; i < 10; i++){
             Test t = new Test("Survey Name "+i,"type","subject");
+            ArrayList<Answer> tmp = new ArrayList<Answer>();
+            tmp.add(new Answer("Answer 1",true));
+            tmp.add(new Answer("Answer 2", false));
+            tmp.add(new Answer("Answer 3", false));
+            ArrayList<Answer> textAnswer = new ArrayList<>();
+            textAnswer.add(new Answer("Answer ", true));
+            ArrayList<Question> questions = new ArrayList<>();
+            questions.add(new Question("1", "Question Text 1", "1", tmp));
+            questions.add(new Question("2", "Question Text 2", "2", tmp));
+            questions.add(new Question("3", "Question Text 3", "3", textAnswer));
+            questions.add(new Question("4", "Question Text 4","4", textAnswer));
+            t.setQuestions(questions);
             surveyDataset.add(t);
         }
         mSurveyAdapter = new MyAdapter(MainActivity.this, surveyDataset);

@@ -1,7 +1,9 @@
 package mk.ukim.finki.tr.finkiask.TempData;
 
 
-public class Answer {
+import java.io.Serializable;
+
+public class Answer implements Serializable{
     private String text;
     private boolean isCorrect;
 
@@ -10,5 +12,5 @@ public class Answer {
         this.isCorrect = isCorrect;
     }
     public String getText(){return text;}
-    public boolean getCorrect(){return isCorrect;}
+    public boolean isCorrect(){return isCorrect;}
 }

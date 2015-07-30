@@ -1,9 +1,9 @@
 package mk.ukim.finki.tr.finkiask.TempData;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-
-public class Test {
+public class Test implements Serializable{
     private ArrayList<Question> questions;
     private String name;
     private String subject;
