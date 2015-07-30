@@ -3,7 +3,12 @@ package mk.ukim.finki.tr.finkiask.masterdetail;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.TempData.Test;
 import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
@@ -25,7 +30,7 @@ import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
  * {@link TestListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class TestListActivity extends FragmentActivity
+public class TestListActivity extends AppCompatActivity
         implements TestListFragment.Callbacks {
 
     /**
@@ -34,10 +39,22 @@ public class TestListActivity extends FragmentActivity
      */
     private boolean mTwoPane;
 
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_list);
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+
+        final ActionBar ab = getSupportActionBar();
+        assert ab != null;
+        ab.setHomeAsUpIndicator(R.drawable.ic_action_school);
+        ab.setDisplayHomeAsUpEnabled(true);
+
+
         Bundle b = getIntent().getBundleExtra("test");
         if(b != null) {
             Test t = (Test) b.getSerializable("test");
@@ -57,7 +74,7 @@ public class TestListActivity extends FragmentActivity
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
             ((TestListFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.test_list))
+                    .findFragmentById(R.id.item_list))
                     .setActivateOnItemClick(true);
         }
 
