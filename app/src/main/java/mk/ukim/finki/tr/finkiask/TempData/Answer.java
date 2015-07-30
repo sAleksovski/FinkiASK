@@ -1,11 +1,13 @@
 package mk.ukim.finki.tr.finkiask.TempData;
 
 
-public class AnswerMock {
+import java.io.Serializable;
+
+public class Answer  implements Serializable {
     private String text;
     private boolean isCorrect;
 
-    public AnswerMock(String text, boolean isCorrect){
+    public Answer(String text, boolean isCorrect){
         this.text = text;
         this.isCorrect = isCorrect;
     }
