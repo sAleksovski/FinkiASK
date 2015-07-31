@@ -68,7 +68,8 @@ public class TestDetailFragment extends Fragment {
                     break;
                 default: rootView = inflater.inflate(R.layout.fragment_test_detail_radio, container, false);
             }
-            ((TextView) rootView.findViewById(R.id.test_text)).setText(mItem.getText());
+            TextView tv = (TextView) rootView.findViewById(R.id.test_text);
+            tv.setText(mItem.getText());
             if(mItem.getAnswers().size()>1) {
                 ((TextView) rootView.findViewById(R.id.test_option1)).setText(mItem.getAnswers().get(0).getText());
                 ((TextView) rootView.findViewById(R.id.test_option2)).setText(mItem.getAnswers().get(1).getText());
