@@ -59,9 +59,7 @@ public class TestListActivity extends AppCompatActivity
         if(b != null) {
             Test t = (Test) b.getSerializable("test");
             if (t != null) {
-                // for (int i = 0; i < t.getQuestions().size(); i++) {
                 TestContent.addAll(t.getQuestions());
-                // }
             }
         }
         if (findViewById(R.id.test_detail_container) != null) {
@@ -74,7 +72,7 @@ public class TestListActivity extends AppCompatActivity
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
             ((TestListFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.item_list))
+                    .findFragmentById(R.id.test_list))
                     .setActivateOnItemClick(true);
         }
 

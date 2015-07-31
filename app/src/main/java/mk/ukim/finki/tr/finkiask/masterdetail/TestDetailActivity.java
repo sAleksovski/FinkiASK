@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import mk.ukim.finki.tr.finkiask.R;
@@ -18,7 +19,7 @@ import mk.ukim.finki.tr.finkiask.R;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link TestDetailFragment}.
  */
-public class TestDetailActivity extends ActionBarActivity {
+public class TestDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
