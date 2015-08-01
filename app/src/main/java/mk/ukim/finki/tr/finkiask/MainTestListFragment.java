@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,29 +40,36 @@ public class MainTestListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RecyclerView rv = (RecyclerView) inflater.inflate(
+        RelativeLayout rl = (RelativeLayout) inflater.inflate(
                 R.layout.fragment_main_test_list, container, false);
-        setupRecyclerView(rv);
-        return rv;
-    }
 
-    private void setupRecyclerView(RecyclerView recyclerView) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+        RecyclerView rv = (RecyclerView) rl.findViewById(R.id.recyclerview);
+        TextView tv = (TextView) rl.findViewById(R.id.noTestsMessage);
+
+        List<Test> tests = new ArrayList<>();
 
         if (getType().equals("test")) {
-            recyclerView.setAdapter(new TestRecyclerViewAdapter(getTests()));
+            tests = getTests();
         } else if (getType().equals("survey")) {
-            recyclerView.setAdapter(new TestRecyclerViewAdapter(getSurveys()));
+            tests = getSurveys();
         } else if (getType().equals("anonsurvey")) {
-            recyclerView.setAdapter(new TestRecyclerViewAdapter(getAnonSurveys()));
+            tests = getAnonSurveys();
         }
 
+        if (tests.size() > 0) {
+            rv.setLayoutManager(new LinearLayoutManager(rv.getContext()));
+            rv.setAdapter(new TestRecyclerViewAdapter(tests));
+        } else {
+            tv.setVisibility(View.VISIBLE);
+        }
+
+        return rl;
     }
 
     private List<Test> getTests() {
         ArrayList<Test> testDataset = new ArrayList<>();
         for (int i= 0; i < 10; i++){
-            Test t = new Test("Test Name "+i,"type "+i,"subject "+i);
+            Test t = new Test("Test Name "+i,"type "+i,"Duration: "+i+"m");
             ArrayList<Answer> tmp = new ArrayList<>();
             tmp.add(new Answer("Answer 1",true));
             tmp.add(new Answer("Answer 2", false));
@@ -100,24 +109,25 @@ public class MainTestListFragment extends Fragment {
     }
 
     public List<Test> getAnonSurveys(){
-        ArrayList<Test> surveyDataset = new ArrayList<>();
-        for (int i= 0; i < 10; i++){
-            Test t = new Test("Anon Survey Name "+i,"type","subject");
-            ArrayList<Answer> tmp = new ArrayList<>();
-            tmp.add(new Answer("Answer 1",true));
-            tmp.add(new Answer("Answer 2", false));
-            tmp.add(new Answer("Answer 3", false));
-            ArrayList<Answer> textAnswer = new ArrayList<>();
-            textAnswer.add(new Answer("Answer ", true));
-            ArrayList<Question> questions = new ArrayList<>();
-            questions.add(new Question("1", "Question Text 1", "1", tmp));
-            questions.add(new Question("2", "Question Text 2", "2", tmp));
-            questions.add(new Question("3", "Question Text 3", "3", textAnswer));
-            questions.add(new Question("4", "Question Text 4","4", textAnswer));
-            t.setQuestions(questions);
-            surveyDataset.add(t);
-        }
-        return surveyDataset;
+//        ArrayList<Test> surveyDataset = new ArrayList<>();
+        return new ArrayList<>();
+//        for (int i= 0; i < 10; i++){
+//            Test t = new Test("Anon Survey Name "+i,"type","subject");
+//            ArrayList<Answer> tmp = new ArrayList<>();
+//            tmp.add(new Answer("Answer 1",true));
+//            tmp.add(new Answer("Answer 2", false));
+//            tmp.add(new Answer("Answer 3", false));
+//            ArrayList<Answer> textAnswer = new ArrayList<>();
+//            textAnswer.add(new Answer("Answer ", true));
+//            ArrayList<Question> questions = new ArrayList<>();
+//            questions.add(new Question("1", "Question Text 1", "1", tmp));
+//            questions.add(new Question("2", "Question Text 2", "2", tmp));
+//            questions.add(new Question("3", "Question Text 3", "3", textAnswer));
+//            questions.add(new Question("4", "Question Text 4","4", textAnswer));
+//            t.setQuestions(questions);
+//            surveyDataset.add(t);
+//        }
+//        return surveyDataset;
     }
 
 }

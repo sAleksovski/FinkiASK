@@ -6,6 +6,8 @@
     <color name="primary_darker">#0D47A1</color>
     <color name="accent">#E91E63</color>
 
+    <color name="recyclerBackground">#E9EAED</color>
+
     <color name="iron">#CCCCCC</color>
     <color name="white">#FFFFFF</color>
 </resources>

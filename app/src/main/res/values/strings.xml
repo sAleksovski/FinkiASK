@@ -10,4 +10,5 @@
     <string name="login">Login</string>
     <string name="or_continue_anonymously">Or continue anonymously</string>
     <string name="logout">Logout</string>
+    <string name="no_tests_in_this_category">No tests in this category</string>
 </resources>
