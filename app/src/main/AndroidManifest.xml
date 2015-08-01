@@ -22,8 +22,7 @@
         <activity
             android:name=".masterdetail.TestDetailActivity"
             android:label="@string/title_test_detail"
-            android:parentActivityName="masterdetail.TestListActivity"
-            android:theme="@style/AppTheme" >
+            android:parentActivityName="masterdetail.TestListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="masterdetail.TestListActivity" />

@@ -2,11 +2,16 @@ package mk.ukim.finki.tr.finkiask.masterdetail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 
 
@@ -21,13 +26,19 @@ import mk.ukim.finki.tr.finkiask.R;
  */
 public class TestDetailActivity extends AppCompatActivity {
 
+    @Bind(R.id.toolbar) Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_detail);
+        ButterKnife.bind(this);
 
         // Show the Up button in the action bar.
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setSupportActionBar(toolbar);
+        final ActionBar ab = getSupportActionBar();
+        assert ab != null;
+        ab.setDisplayHomeAsUpEnabled(true);
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
@@ -62,7 +73,7 @@ public class TestDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, TestListActivity.class));
+            NavUtils.navigateUpTo(this, new Intent(this, TestListActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
