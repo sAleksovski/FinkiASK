@@ -1,10 +1,16 @@
 package mk.ukim.finki.tr.finkiask.database.models;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import java.util.List;
 
 import mk.ukim.finki.tr.finkiask.database.AppDatabase;
 
@@ -12,7 +18,7 @@ import mk.ukim.finki.tr.finkiask.database.AppDatabase;
 public class Question extends BaseModel{
     @Column
     @PrimaryKey(autoincrement = true)
-    private long id;
+    protected long id;
 
     @Column
     private String text;
@@ -21,10 +27,15 @@ public class Question extends BaseModel{
     private String type;
 
     @Column
+    private long questionID;
+
+    @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "test_id",
                                     columnType = Long.class,
                                     foreignColumnName = "id")})
-    protected Test test;
+    protected TestInstance testInstance;
+
+    protected List<Answer> answers;
 
     public Question() {}
 
@@ -57,12 +68,31 @@ public class Question extends BaseModel{
         this.type = type;
     }
 
-    public void associateTest(Test test) {
-        this.test = test;
+    public void setTestInstance(TestInstance testInstance) {
+        this.testInstance = testInstance;
     }
 
-    public Test getTest() {
-        return test;
+    public TestInstance getTestInstance() {
+        return testInstance;
+    }
+
+    public long getQuestionID() {
+        return questionID;
+    }
+
+    public void setQuestionID(long questionID) {
+        this.questionID = questionID;
+    }
+
+    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "answers")
+    public List<Answer> getAnswers() {
+        if(answers == null) {
+            answers = new Select()
+                    .from(Answer.class)
+                    .where(Condition.column(Answer$Table.QUESTION_QUESTION_ID).eq(getId()))
+                    .queryList();
+        }
+        return answers;
     }
 
 }

@@ -41,7 +41,7 @@ public class TestInstance extends BaseModel {
 
     protected List<Question> questions;
 
-    public TestInstance() {}
+    public TestInstance() { }
 
     public TestInstance(String name, String testingType, int duration, long testInstanceID, long userID, Date startTime) {
         this.name = name;
