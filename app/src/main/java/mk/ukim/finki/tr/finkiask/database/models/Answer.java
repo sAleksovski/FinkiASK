@@ -7,10 +7,12 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.io.Serializable;
+
 import mk.ukim.finki.tr.finkiask.database.AppDatabase;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Answer extends BaseModel {
+public class Answer extends BaseModel implements Serializable {
     @Column
     @PrimaryKey(autoincrement = true)
     protected long id;

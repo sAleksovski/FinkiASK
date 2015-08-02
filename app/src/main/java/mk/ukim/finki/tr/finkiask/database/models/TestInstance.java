@@ -9,6 +9,7 @@ import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import mk.ukim.finki.tr.finkiask.database.AppDatabase;
 
 @ModelContainer
 @Table(databaseName = AppDatabase.NAME)
-public class TestInstance extends BaseModel {
+public class TestInstance extends BaseModel implements Serializable {
     @Column
     @PrimaryKey(autoincrement = true)
     protected long id;

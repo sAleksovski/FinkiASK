@@ -10,12 +10,13 @@ import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.io.Serializable;
 import java.util.List;
 
 import mk.ukim.finki.tr.finkiask.database.AppDatabase;
 
 @Table(databaseName = AppDatabase.NAME)
-public class Question extends BaseModel{
+public class Question extends BaseModel implements Serializable {
     @Column
     @PrimaryKey(autoincrement = true)
     protected long id;
@@ -95,4 +96,8 @@ public class Question extends BaseModel{
         return answers;
     }
 
+    @Override
+    public String toString() {
+        return "Question " + getId();
+    }
 }

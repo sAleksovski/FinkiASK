@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import mk.ukim.finki.tr.finkiask.TempData.Question;
-
 public class Test implements Serializable {
+    private long id;
+
     private String name;
 
     private String type;
@@ -15,14 +15,25 @@ public class Test implements Serializable {
 
     private Date endTime;
 
-    private List<mk.ukim.finki.tr.finkiask.TempData.Question> questions;
+    private List<Question> questions;
 
     public Test() {}
 
-    public Test(String name, String testingType, int duration) {
+    public Test(long id, String name, String type, int duration, Date endTime, List<Question> questions) {
+        this.id = id;
         this.name = name;
-        this.type = testingType;
+        this.type = type;
         this.duration = duration;
+        this.endTime = endTime;
+        this.questions = questions;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -57,7 +68,7 @@ public class Test implements Serializable {
         this.endTime = endTime;
     }
 
-    public List<mk.ukim.finki.tr.finkiask.TempData.Question> getQuestions() {
+    public List<Question> getQuestions() {
         return questions;
     }
 

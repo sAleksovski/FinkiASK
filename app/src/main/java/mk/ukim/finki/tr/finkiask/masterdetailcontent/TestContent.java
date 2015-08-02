@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mk.ukim.finki.tr.finkiask.TempData.Question;
+import mk.ukim.finki.tr.finkiask.database.models.Question;
 
 
 public class TestContent {
@@ -13,27 +13,27 @@ public class TestContent {
     /**
      * An array of sample items.
      */
-    public static List<Question> ITEMS = new ArrayList<Question>();
+    public static List<Question> ITEMS = new ArrayList<>();
 
     /**
      * A map of sample items, by ID.
      */
-    public static Map<String, Question> ITEM_MAP = new HashMap<String, Question>();
+    public static Map<String, Question> ITEM_MAP = new HashMap<>();
 
     static {
         // Add 3 sample items.
 
     }
-    public static void addAll(ArrayList<Question> questions) {
+    public static void addAll(List<Question> questions) {
         if(ITEMS.size() > 0)
-            ITEMS = new ArrayList<Question>();
+            ITEMS = new ArrayList<>();
         for (int i = 0; i < questions.size(); i++)
             addItem(questions.get(i));
     }
 
     private static void addItem(Question item) {
         ITEMS.add(item);
-        ITEM_MAP.put(item.getID(), item);
+        ITEM_MAP.put(item.getId() + "", item);
     }
 
 }

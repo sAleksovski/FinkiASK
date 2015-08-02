@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,16 @@ import android.widget.TextView;
 import java.util.List;
 
 import mk.ukim.finki.tr.finkiask.R;
+import mk.ukim.finki.tr.finkiask.database.models.Test;
+import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.masterdetail.TestListActivity;
+import mk.ukim.finki.tr.finkiask.rest.TestsRestAdapter;
+import mk.ukim.finki.tr.finkiask.rest.TestsRestInterface;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
+import mk.ukim.finki.tr.finkiask.rest.RestError;
 
 /**
  * Created by stefan on 7/31/15.
@@ -20,9 +30,9 @@ import mk.ukim.finki.tr.finkiask.masterdetail.TestListActivity;
 public class TestRecyclerViewAdapter
         extends RecyclerView.Adapter<TestRecyclerViewAdapter.ViewHolder> {
 
-    private List<mk.ukim.finki.tr.finkiask.database.models.Test> mValues;
+    private List<Test> mValues;
 
-    public TestRecyclerViewAdapter(List<mk.ukim.finki.tr.finkiask.database.models.Test> items) {
+    public TestRecyclerViewAdapter(List<Test> items) {
         mValues = items;
     }
 
@@ -41,13 +51,34 @@ public class TestRecyclerViewAdapter
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Context context = v.getContext();
+//                startTest(v.getContext(), mValues.get(position).getId());
+                startTest(v.getContext(), 1);
+            }
+        });
+
+    }
+
+    private void startTest(final Context context, long id) {
+        TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
+        testsRestAdapter.getTest(id, new Callback<TestInstance>() {
+
+            @Override
+            public void success(TestInstance testInstance, Response response) {
                 Intent intent = new Intent(context, TestListActivity.class);
                 Bundle b = new Bundle();
-                b.putSerializable("test", mValues.get(position));
-                intent.putExtra("test", b);
+                b.putSerializable("testInstance", testInstance);
+                intent.putExtra("testInstance", b);
 
                 context.startActivity(intent);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("REST", "Not loaded correctly");
+                if (error.getResponse() != null) {
+                    RestError body = (RestError) error.getBodyAs(RestError.class);
+                    Log.e("RESTError", body.errorDetails);
+                }
             }
         });
     }

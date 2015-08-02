@@ -9,7 +9,8 @@ import android.support.v7.widget.Toolbar;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
-import mk.ukim.finki.tr.finkiask.TempData.Test;
+import mk.ukim.finki.tr.finkiask.database.models.Test;
+import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 
 
@@ -53,9 +54,9 @@ public class TestListActivity extends AppCompatActivity
         ab.setDisplayHomeAsUpEnabled(true);
 
 
-        Bundle b = getIntent().getBundleExtra("test");
+        Bundle b = getIntent().getBundleExtra("testInstance");
         if(b != null) {
-            Test t = (Test) b.getSerializable("test");
+            TestInstance t = (TestInstance) b.getSerializable("testInstance");
             if (t != null) {
                 TestContent.addAll(t.getQuestions());
             }

@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         MainTestListFragment surveys = MainTestListFragment.newInstance("survey");
         adapter.addFragment(surveys, "Surveys");
 
-        MainTestListFragment anonsurvey = MainTestListFragment.newInstance("anonsurvey");
-        adapter.addFragment(anonsurvey, "Anonymous surveys");
+        MainTestListFragment anonSurvey = MainTestListFragment.newInstance("anonSurvey");
+        adapter.addFragment(anonSurvey, "Anonymous surveys");
 
         viewPager.setAdapter(adapter);
     }

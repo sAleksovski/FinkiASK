@@ -2,14 +2,13 @@ package mk.ukim.finki.tr.finkiask.masterdetail;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import mk.ukim.finki.tr.finkiask.R;
-import mk.ukim.finki.tr.finkiask.TempData.Question;
+import mk.ukim.finki.tr.finkiask.database.models.Question;
 import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 
 
@@ -58,13 +57,13 @@ public class TestDetailFragment extends Fragment {
         if (mItem != null) {
             switch (mItem.getType())
             {
-                case "1": rootView = inflater.inflate(R.layout.fragment_test_detail_radio, container, false);
+                case "single_choice": rootView = inflater.inflate(R.layout.fragment_test_detail_radio, container, false);
                     break;
-                case "2": rootView = inflater.inflate(R.layout.fragment_test_detail_checkbox, container, false);
+                case "multiple_choice": rootView = inflater.inflate(R.layout.fragment_test_detail_checkbox, container, false);
                     break;
-                case "3": rootView = inflater.inflate(R.layout.fragment_test_detail_text, container, false);
+                case "text": rootView = inflater.inflate(R.layout.fragment_test_detail_text, container, false);
                     break;
-                case "4": rootView = inflater.inflate(R.layout.fragment_test_detail_range, container, false);
+                case "range": rootView = inflater.inflate(R.layout.fragment_test_detail_range, container, false);
                     break;
                 default: rootView = inflater.inflate(R.layout.fragment_test_detail_radio, container, false);
             }

@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import mk.ukim.finki.tr.finkiask.TempData.Question;
+import mk.ukim.finki.tr.finkiask.database.models.Question;
 import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 
 
@@ -47,7 +47,7 @@ public class TestListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(String id);
+        void onItemSelected(String id);
     }
 
     /**
@@ -72,7 +72,7 @@ public class TestListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<Question>(
+        setListAdapter(new ArrayAdapter<>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
@@ -116,7 +116,7 @@ public class TestListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(TestContent.ITEMS.get(position).getID());
+        mCallbacks.onItemSelected(TestContent.ITEMS.get(position).getId()+"");
     }
 
     @Override
