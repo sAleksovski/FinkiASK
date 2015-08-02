@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.database.pojo.TestPOJO;
 import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
@@ -45,8 +47,8 @@ public class TestRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mNumberRowTextView.setText(mValues.get(position).getName());
-        holder.mNameTextView.setText(mValues.get(position).getEndTime() + "");
+        holder.mTestName.setText(mValues.get(position).getName());
+        holder.mDuration.setText("Allowed time: " + mValues.get(position).getDuration() + " minutes");
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,15 +95,14 @@ public class TestRecyclerViewAdapter
 
         public View mView;
 
-        public TextView mNumberRowTextView;
-        public TextView mNameTextView;
+        @Bind(R.id.testName) TextView mTestName;
+        @Bind(R.id.testDuration) TextView mDuration;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
 
-            mNumberRowTextView = (TextView) mView.findViewById(R.id.rowNumberTextView);
-            mNameTextView = (TextView) mView.findViewById(R.id.nameTextView);
+            ButterKnife.bind(this, mView);
         }
     }
 }

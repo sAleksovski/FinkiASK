@@ -26,30 +26,30 @@
     "surveys": [
       {
         "id": 4,
-        "name": "survey 1",
+        "name": "Survey 1",
         "duration": 5,
         "type": "survey",
         "endTime": "02/07/15 01:59"
       },
       {
         "id": 5,
-        "name": "survey 2",
+        "name": "Survey 2",
         "duration": 15,
         "type": "survey",
         "endTime": "02/08/15 01:59"
       },
       {
         "id": 6,
-        "name": "survey 3",
+        "name": "Survey 3",
         "duration": 50,
         "type": "survey",
         "endTime": "01/08/15 11:59"
       }
     ],
-    "anonymoussurveys": [
+    "anonymousSurveys": [
       {
         "id": 5,
-        "name": "Anon syrvey",
+        "name": "Anon survey",
         "duration": 8,
         "type": "anonymousSurveys",
         "endTime": "02/07/15 01:59"

@@ -5,7 +5,7 @@
     android:layout_marginTop="?android:attr/actionBarSize"
     >
     <TextView
-        android:id="@+id/test_text"
+        android:id="@+id/question_text"
         style="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -10,7 +10,7 @@ import android.widget.ListView;
 import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 
 
-/**друг иска
+/**
  * A list fragment representing a list of Tests. This fragment
  * also supports tablet devices by allowing list items to be given an
  * 'activated' state upon selection. This helps indicate which item is

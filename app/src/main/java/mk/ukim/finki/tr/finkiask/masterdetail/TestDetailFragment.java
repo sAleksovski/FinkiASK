@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import mk.ukim.finki.tr.finkiask.R;
@@ -45,6 +46,7 @@ public class TestDetailFragment extends Fragment {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
+            // TODO read from db
             mItem = TestContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
         }
     }
@@ -55,21 +57,12 @@ public class TestDetailFragment extends Fragment {
 
         View rootView = null;
         if (mItem != null) {
-            switch (mItem.getType())
-            {
-                case "single_choice": rootView = inflater.inflate(R.layout.fragment_test_detail_radio, container, false);
-                    break;
-                case "multiple_choice": rootView = inflater.inflate(R.layout.fragment_test_detail_checkbox, container, false);
-                    break;
-                case "text": rootView = inflater.inflate(R.layout.fragment_test_detail_text, container, false);
-                    break;
-                case "range": rootView = inflater.inflate(R.layout.fragment_test_detail_range, container, false);
-                    break;
-                default: rootView = inflater.inflate(R.layout.fragment_test_detail_radio, container, false);
-            }
-            TextView tv = (TextView) rootView.findViewById(R.id.test_text);
+            rootView = inflater.inflate(mItem.getTemplateFile(), container, false);
+
+            TextView tv = (TextView) rootView.findViewById(R.id.question_text);
             tv.setText(mItem.getText());
-            if(mItem.getAnswers().size()>1) {
+
+            if(mItem.getAnswers().size() > 1) {
                 ((TextView) rootView.findViewById(R.id.test_option1)).setText(mItem.getAnswers().get(0).getText());
                 ((TextView) rootView.findViewById(R.id.test_option2)).setText(mItem.getAnswers().get(1).getText());
                 ((TextView) rootView.findViewById(R.id.test_option3)).setText(mItem.getAnswers().get(2).getText());

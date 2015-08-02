@@ -6,26 +6,17 @@
     >
 
     <TextView
-        android:id="@+id/test_text"
+        android:id="@+id/question_text"
         style="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
         />
-    <CheckBox
-        android:id="@+id/test_option1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    <CheckBox
-        android:id="@+id/test_option2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    <CheckBox
-        android:id="@+id/test_option3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 
 </LinearLayout>

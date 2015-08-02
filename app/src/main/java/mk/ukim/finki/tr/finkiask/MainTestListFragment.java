@@ -15,6 +15,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.adapters.TestRecyclerViewAdapter;
 import mk.ukim.finki.tr.finkiask.database.pojo.AllActivePOJO;
 import mk.ukim.finki.tr.finkiask.database.pojo.TestPOJO;
@@ -29,8 +31,8 @@ import retrofit.client.Response;
  */
 public class MainTestListFragment extends Fragment {
 
-    RecyclerView mRecyclerView;
-    TextView mNoTestsMessage;
+    @Bind(R.id.recyclerview) RecyclerView mRecyclerView;
+    @Bind(R.id.noTestsMessage)TextView mNoTestsMessage;
     TestRecyclerViewAdapter adapter;
 
     List<TestPOJO> testDataSet;
@@ -54,8 +56,7 @@ public class MainTestListFragment extends Fragment {
         RelativeLayout rl = (RelativeLayout) inflater.inflate(
                 R.layout.fragment_main_test_list, container, false);
 
-        mRecyclerView = (RecyclerView) rl.findViewById(R.id.recyclerview);
-        mNoTestsMessage = (TextView) rl.findViewById(R.id.noTestsMessage);
+        ButterKnife.bind(this, rl);
 
         testDataSet = new ArrayList<>();
         getTests();

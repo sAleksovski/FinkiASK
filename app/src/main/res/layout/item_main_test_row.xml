@@ -19,17 +19,17 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/rowNumberTextView"
+                android:id="@+id/testName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/nameTextView"
+                android:id="@+id/testDuration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rowNumberTextView" />
+                android:layout_below="@+id/testName" />
 
         </RelativeLayout>
 

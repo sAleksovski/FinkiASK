@@ -13,10 +13,18 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import java.io.Serializable;
 import java.util.List;
 
+import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.database.AppDatabase;
 
 @Table(databaseName = AppDatabase.NAME)
 public class Question extends BaseModel implements Serializable {
+
+    // Question types
+    public static String SINGLE_CHOICE = "single_choice";
+    public static String MULTIPLE_CHOICE = "multiple_choice";
+    public static String TEXT = "text";
+    public static String RANGE = "range";
+
     @Column
     @PrimaryKey(autoincrement = true)
     protected long id;
@@ -100,4 +108,19 @@ public class Question extends BaseModel implements Serializable {
     public String toString() {
         return "Question " + getId();
     }
+
+    public int getTemplateFile() {
+        if (type.equals(SINGLE_CHOICE)) {
+            return R.layout.fragment_question_single_choice;
+        } else if (type.equals(MULTIPLE_CHOICE)) {
+            return R.layout.fragment_question_multiple_choice;
+        } else if (type.equals(TEXT)) {
+            return R.layout.fragment_question_text;
+        } else if (type.equals(RANGE)) {
+            return R.layout.fragment_question_range;
+        }
+        // TODO handle exception
+        return R.layout.fragment_question_text;
+    }
+
 }
