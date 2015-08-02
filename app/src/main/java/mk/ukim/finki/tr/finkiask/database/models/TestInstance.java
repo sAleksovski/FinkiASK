@@ -25,7 +25,7 @@ public class TestInstance extends BaseModel {
     private String name;
 
     @Column
-    private String testingType;
+    private String type;
 
     @Column
     private int duration;
@@ -43,9 +43,9 @@ public class TestInstance extends BaseModel {
 
     public TestInstance() { }
 
-    public TestInstance(String name, String testingType, int duration, long testInstanceID, long userID, Date startTime) {
+    public TestInstance(String name, String type, int duration, long testInstanceID, long userID, Date startTime) {
         this.name = name;
-        this.testingType = testingType;
+        this.type = type;
         this.duration = duration;
         this.testInstanceID = testInstanceID;
         this.userID = userID;
@@ -68,12 +68,12 @@ public class TestInstance extends BaseModel {
         this.name = name;
     }
 
-    public String getTestingType() {
-        return testingType;
+    public String getType() {
+        return type;
     }
 
-    public void setTestingType(String testingType) {
-        this.testingType = testingType;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public int getDuration() {

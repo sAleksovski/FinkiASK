@@ -1,0 +1,53 @@
+{
+  "tests": [
+    {
+      "id": 1,
+      "name": "Test 1",
+      "duration": 5,
+      "type": "test",
+      "endTime": "30/08/15 07:03"
+    },
+    {
+      "id": 2,
+      "name": "Test 2",
+      "duration": 15,
+      "type": "test",
+      "endTime": "30/07/15 07:22"
+    },
+    {
+      "id": 3,
+      "name": "Test 3",
+      "duration": 52,
+      "type": "test",
+      "endTime": "25/06/15 15:03"
+    },
+    {
+      "id": 4,
+      "name": "survey 1",
+      "duration": 5,
+      "type": "survey",
+      "endTime": "02/07/15 01:59"
+    },
+    {
+      "id": 5,
+      "name": "survey 2",
+      "duration": 15,
+      "type": "survey",
+      "endTime": "02/08/15 01:59"
+    },
+    {
+      "id": 6,
+      "name": "survey 3",
+      "duration": 50,
+      "type": "survey",
+      "endTime": "01/08/15 11:59"
+    },
+    {
+      "id": 7,
+      "name": "survey 4",
+      "duration": 52,
+      "type": "survey",
+      "endTime": "02/07/15 01:51"
+    }
+  ]
+}

@@ -1,17 +1,21 @@
 package mk.ukim.finki.tr.finkiask.database.models;
 
+import java.util.Date;
+
 public class Test {
     private String name;
 
-    private String testingType;
+    private String type;
 
     private int duration;
+
+    private Date endTime;
 
     public Test() {}
 
     public Test(String name, String testingType, int duration) {
         this.name = name;
-        this.testingType = testingType;
+        this.type = testingType;
         this.duration = duration;
     }
 
@@ -23,12 +27,12 @@ public class Test {
         this.name = name;
     }
 
-    public String getTestingType() {
-        return testingType;
+    public String getType() {
+        return type;
     }
 
-    public void setTestingType(String testingType) {
-        this.testingType = testingType;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public int getDuration() {
@@ -37,5 +41,13 @@ public class Test {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 }
