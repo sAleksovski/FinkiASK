@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mk.ukim.finki.tr.finkiask.adapters.TestRecyclerViewAdapter;
-import mk.ukim.finki.tr.finkiask.database.models.Test;
+import mk.ukim.finki.tr.finkiask.database.pojo.AllActivePOJO;
+import mk.ukim.finki.tr.finkiask.database.pojo.TestPOJO;
 import mk.ukim.finki.tr.finkiask.rest.TestsRestAdapter;
 import mk.ukim.finki.tr.finkiask.rest.TestsRestInterface;
 import retrofit.Callback;
@@ -32,7 +33,7 @@ public class MainTestListFragment extends Fragment {
     TextView mNoTestsMessage;
     TestRecyclerViewAdapter adapter;
 
-    List<Test> testDataSet;
+    List<TestPOJO> testDataSet;
 
     public static MainTestListFragment newInstance(String type) {
         MainTestListFragment f = new MainTestListFragment();
@@ -57,14 +58,7 @@ public class MainTestListFragment extends Fragment {
         mNoTestsMessage = (TextView) rl.findViewById(R.id.noTestsMessage);
 
         testDataSet = new ArrayList<>();
-
-        if (getType().equals("test")) {
-            testDataSet = getTests();
-        } else if (getType().equals("survey")) {
-            testDataSet = getTests();
-        } else if (getType().equals("anonSurvey")) {
-            testDataSet = new ArrayList<>();
-        }
+        getTests();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
         adapter = new TestRecyclerViewAdapter(testDataSet);
@@ -77,13 +71,11 @@ public class MainTestListFragment extends Fragment {
         return rl;
     }
 
-    private List<Test> getTests() {
-        testDataSet = new ArrayList<>();
-
+    private void getTests() {
         TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
-        testsRestAdapter.listAllActive(new Callback<List<Test>>() {
+        testsRestAdapter.listAllActive(new Callback<AllActivePOJO>() {
             @Override
-            public void success(List<Test> tests, Response response) {
+            public void success(AllActivePOJO tests, Response response) {
                 processTests(tests);
             }
 
@@ -92,17 +84,18 @@ public class MainTestListFragment extends Fragment {
                 Log.d("REST", "Not loaded correctly");
             }
         });
-
-        return testDataSet;
     }
 
-    private void processTests(List<Test> tests) {
-        if (tests.size() == 0) {
+    private void processTests(AllActivePOJO tests) {
+
+        String type = getType();
+        testDataSet.addAll(tests.get(type));
+
+        if (testDataSet.size() == 0) {
             mNoTestsMessage.setVisibility(View.VISIBLE);
             return;
         }
         mNoTestsMessage.setVisibility(View.GONE);
-        testDataSet.addAll(tests);
         adapter.notifyDataSetChanged();
     }
 

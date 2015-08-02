@@ -13,7 +13,7 @@ import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 
 
 /**
- * A fragment representing a single Test detail screen.
+ * A fragment representing a single TestPOJO detail screen.
  * This fragment is either contained in a {@link TestListActivity}
  * in two-pane mode (on tablets) or a {@link TestDetailActivity}
  * on handsets.

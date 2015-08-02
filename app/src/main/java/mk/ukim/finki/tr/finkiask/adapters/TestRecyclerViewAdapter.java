@@ -13,7 +13,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import mk.ukim.finki.tr.finkiask.R;
-import mk.ukim.finki.tr.finkiask.database.models.Test;
+import mk.ukim.finki.tr.finkiask.database.pojo.TestPOJO;
 import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.masterdetail.TestListActivity;
 import mk.ukim.finki.tr.finkiask.rest.TestsRestAdapter;
@@ -30,9 +30,9 @@ import mk.ukim.finki.tr.finkiask.rest.RestError;
 public class TestRecyclerViewAdapter
         extends RecyclerView.Adapter<TestRecyclerViewAdapter.ViewHolder> {
 
-    private List<Test> mValues;
+    private List<TestPOJO> mValues;
 
-    public TestRecyclerViewAdapter(List<Test> items) {
+    public TestRecyclerViewAdapter(List<TestPOJO> items) {
         mValues = items;
     }
 
@@ -51,6 +51,7 @@ public class TestRecyclerViewAdapter
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO
 //                startTest(v.getContext(), mValues.get(position).getId());
                 startTest(v.getContext(), 1);
             }

@@ -1,32 +1,21 @@
-package mk.ukim.finki.tr.finkiask.database.models;
+package mk.ukim.finki.tr.finkiask.database.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-public class Test implements Serializable {
+public class TestPOJO implements Serializable {
+
+    public static String TEST = "test";
+    public static String SURVEY = "survey";
+    public static String ANONYMOUS_SURVEY = "anonymousSurvey";
+
     private long id;
-
     private String name;
-
     private String type;
-
     private int duration;
-
     private Date endTime;
 
-    private List<Question> questions;
-
-    public Test() {}
-
-    public Test(long id, String name, String type, int duration, Date endTime, List<Question> questions) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.duration = duration;
-        this.endTime = endTime;
-        this.questions = questions;
-    }
+    public TestPOJO() {}
 
     public long getId() {
         return id;
@@ -68,11 +57,4 @@ public class Test implements Serializable {
         this.endTime = endTime;
     }
 
-    public List<Question> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
-    }
 }

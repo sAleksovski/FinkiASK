@@ -1,4 +1,5 @@
 package mk.ukim.finki.tr.finkiask.masterdetail;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -6,11 +7,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import mk.ukim.finki.tr.finkiask.database.models.Question;
 import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 
 
-/**
+/**друг иска
  * A list fragment representing a list of Tests. This fragment
  * also supports tablet devices by allowing list items to be given an
  * 'activated' state upon selection. This helps indicate which item is

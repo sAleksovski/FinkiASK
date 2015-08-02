@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
-import mk.ukim.finki.tr.finkiask.database.models.Test;
 import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 

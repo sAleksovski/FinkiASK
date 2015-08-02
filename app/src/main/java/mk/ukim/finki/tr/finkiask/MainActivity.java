@@ -18,6 +18,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import mk.ukim.finki.tr.finkiask.database.pojo.TestPOJO;
 import mk.ukim.finki.tr.finkiask.helper.AuthHelper;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,13 +48,13 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
 
-        MainTestListFragment tests = MainTestListFragment.newInstance("test");
+        MainTestListFragment tests = MainTestListFragment.newInstance(TestPOJO.TEST);
         adapter.addFragment(tests, "Tests");
 
-        MainTestListFragment surveys = MainTestListFragment.newInstance("survey");
+        MainTestListFragment surveys = MainTestListFragment.newInstance(TestPOJO.SURVEY);
         adapter.addFragment(surveys, "Surveys");
 
-        MainTestListFragment anonSurvey = MainTestListFragment.newInstance("anonSurvey");
+        MainTestListFragment anonSurvey = MainTestListFragment.newInstance(TestPOJO.ANONYMOUS_SURVEY);
         adapter.addFragment(anonSurvey, "Anonymous surveys");
 
         viewPager.setAdapter(adapter);
