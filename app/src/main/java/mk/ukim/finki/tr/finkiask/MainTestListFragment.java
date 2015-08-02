@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +19,17 @@ import mk.ukim.finki.tr.finkiask.TempData.Answer;
 import mk.ukim.finki.tr.finkiask.TempData.Question;
 import mk.ukim.finki.tr.finkiask.TempData.Test;
 import mk.ukim.finki.tr.finkiask.adapters.TestRecyclerViewAdapter;
+import mk.ukim.finki.tr.finkiask.rest.TestsRestAdapter;
+import mk.ukim.finki.tr.finkiask.rest.TestsRestInterface;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by stefan on 7/31/15.
  */
 public class MainTestListFragment extends Fragment {
+    List<mk.ukim.finki.tr.finkiask.database.models.Test> testDataset;
 
     public static MainTestListFragment newInstance(String type) {
         MainTestListFragment f = new MainTestListFragment();
@@ -46,14 +53,14 @@ public class MainTestListFragment extends Fragment {
         RecyclerView rv = (RecyclerView) rl.findViewById(R.id.recyclerview);
         TextView tv = (TextView) rl.findViewById(R.id.noTestsMessage);
 
-        List<Test> tests = new ArrayList<>();
+        List<mk.ukim.finki.tr.finkiask.database.models.Test> tests = new ArrayList<>();
 
         if (getType().equals("test")) {
             tests = getTests();
         } else if (getType().equals("survey")) {
-            tests = getSurveys();
+            tests = getTests();
         } else if (getType().equals("anonsurvey")) {
-            tests = getAnonSurveys();
+            tests = new ArrayList<>();
         }
 
         if (tests.size() > 0) {
@@ -66,10 +73,32 @@ public class MainTestListFragment extends Fragment {
         return rl;
     }
 
-    private List<Test> getTests() {
-        ArrayList<Test> testDataset = new ArrayList<>();
-        for (int i= 0; i < 10; i++){
-            Test t = new Test("Test Name "+i,"type "+i,"Duration: "+i+"m");
+    private List<mk.ukim.finki.tr.finkiask.database.models.Test> getTests() {
+        testDataset = new ArrayList<>();
+
+
+        TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
+        testsRestAdapter.listTests(new Callback<List<mk.ukim.finki.tr.finkiask.database.models.Test>>() {
+            @Override
+            public void success(List<mk.ukim.finki.tr.finkiask.database.models.Test> tests, Response response) {
+                /*for (mk.ukim.finki.tr.finkiask.database.models.Test test : tests) {
+                    Log.d("REST", test.getEndTime() + "");
+                }*/
+                processTests(tests);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("REST", "Not loaded correctly");
+            }
+        });
+
+        return testDataset;
+    }
+
+    private void processTests(List<mk.ukim.finki.tr.finkiask.database.models.Test> tests) {
+        testDataset.addAll(tests);
+        for (mk.ukim.finki.tr.finkiask.database.models.Test t : testDataset){
             ArrayList<Answer> tmp = new ArrayList<>();
             tmp.add(new Answer("Answer 1",true));
             tmp.add(new Answer("Answer 2", false));
@@ -82,9 +111,7 @@ public class MainTestListFragment extends Fragment {
             questions.add(new Question("3", "Question Text 3", "3", textAnswer));
             questions.add(new Question("4", "Question Text 4","4", textAnswer));
             t.setQuestions(questions);
-            testDataset.add(t);
         }
-        return testDataset;
     }
 
     public List<Test> getSurveys(){

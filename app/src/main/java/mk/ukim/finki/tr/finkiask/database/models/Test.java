@@ -1,8 +1,12 @@
 package mk.ukim.finki.tr.finkiask.database.models;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-public class Test {
+import mk.ukim.finki.tr.finkiask.TempData.Question;
+
+public class Test implements Serializable {
     private String name;
 
     private String type;
@@ -10,6 +14,8 @@ public class Test {
     private int duration;
 
     private Date endTime;
+
+    private List<mk.ukim.finki.tr.finkiask.TempData.Question> questions;
 
     public Test() {}
 
@@ -49,5 +55,13 @@ public class Test {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public List<mk.ukim.finki.tr.finkiask.TempData.Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 }

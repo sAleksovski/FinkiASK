@@ -12,7 +12,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import mk.ukim.finki.tr.finkiask.R;
-import mk.ukim.finki.tr.finkiask.TempData.Test;
 import mk.ukim.finki.tr.finkiask.masterdetail.TestListActivity;
 
 /**
@@ -21,9 +20,9 @@ import mk.ukim.finki.tr.finkiask.masterdetail.TestListActivity;
 public class TestRecyclerViewAdapter
         extends RecyclerView.Adapter<TestRecyclerViewAdapter.ViewHolder> {
 
-    private List<Test> mValues;
+    private List<mk.ukim.finki.tr.finkiask.database.models.Test> mValues;
 
-    public TestRecyclerViewAdapter(List<Test> items) {
+    public TestRecyclerViewAdapter(List<mk.ukim.finki.tr.finkiask.database.models.Test> items) {
         mValues = items;
     }
 
@@ -37,7 +36,7 @@ public class TestRecyclerViewAdapter
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mNumberRowTextView.setText(mValues.get(position).getName());
-        holder.mNameTextView.setText(mValues.get(position).getSubject());
+        holder.mNameTextView.setText(mValues.get(position).getEndTime() + "");
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
