@@ -2,6 +2,7 @@ package mk.ukim.finki.tr.finkiask.database.models;
 
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -14,7 +15,7 @@ import mk.ukim.finki.tr.finkiask.database.AppDatabase;
 @Table(databaseName = AppDatabase.NAME)
 public class Answer extends BaseModel implements Serializable {
     @Column
-    @PrimaryKey(autoincrement = true)
+    @PrimaryKey(autoincrement = false)
     protected long id;
 
     @Column
@@ -27,13 +28,17 @@ public class Answer extends BaseModel implements Serializable {
     private boolean isAnswered;
 
     @Column
-    private long questionID;
-
-    @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "question_id",
             columnType = Long.class,
-            foreignColumnName = "id")})
+            foreignColumnName = "id")}, onDelete = ForeignKeyAction.CASCADE)
     protected Question question;
+
+    public Answer() {}
+
+    public Answer(long id, String text) {
+        this.id = id;
+        this.text = text;
+    }
 
     public long getId() {
         return id;
@@ -67,11 +72,11 @@ public class Answer extends BaseModel implements Serializable {
         this.isAnswered = isAnswered;
     }
 
-    public long getQuestionID() {
-        return questionID;
+    public Question getQuestion() {
+        return question;
     }
 
-    public void setQuestionID(long questionID) {
-        this.questionID = questionID;
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 }

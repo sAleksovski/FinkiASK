@@ -5,15 +5,22 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.raizlabs.android.dbflow.sql.language.Select;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
-import mk.ukim.finki.tr.finkiask.timer.Countdown;
-import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
+import mk.ukim.finki.tr.finkiask.database.DBHelper;
+import mk.ukim.finki.tr.finkiask.database.models.Question;
 import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
+import mk.ukim.finki.tr.finkiask.timer.Countdown;
+import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
 
 
 /**
@@ -43,6 +50,7 @@ public class TestListActivity extends AppCompatActivity
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.timer) TextView toolbarTimer;
+    @Bind(R.id.submit) ImageButton submitButton;
 
     public Countdown countdown;
 
@@ -66,6 +74,18 @@ public class TestListActivity extends AppCompatActivity
         if(b != null) {
             TestInstance t = (TestInstance) b.getSerializable("testInstance");
             if (t != null) {
+                if (!DBHelper.isTestInstanceFound()) {
+                    t.save();
+                    for(Question q : DBHelper.getAllQuestion()) {
+                        q.setTestInstance(t);
+                        q.update();
+                    }
+                    Toast.makeText(getApplicationContext(), "TestInstance saved in local DB", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "TestInstance already found in DB", Toast.LENGTH_LONG).show();
+                }
+
                 TestContent.addAll(t.getQuestions());
                 countdown.start(t.getDuration());
             }
@@ -83,6 +103,18 @@ public class TestListActivity extends AppCompatActivity
                     .findFragmentById(R.id.test_list))
                     .setActivateOnItemClick(true);
         }
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (DBHelper.isTestInstanceFound()) {
+                    new Select().from(TestInstance.class).querySingle().delete();
+                    Toast.makeText(getApplicationContext(), "TestInstance removed from local DB", Toast.LENGTH_LONG).show();
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "No TestInstanceFound", Toast.LENGTH_LONG).show();
+            }
+        });
 
         // TODO: If exposing deep links into your app, handle intents here.
     }

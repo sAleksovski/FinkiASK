@@ -19,7 +19,7 @@ import mk.ukim.finki.tr.finkiask.database.AppDatabase;
 @Table(databaseName = AppDatabase.NAME)
 public class TestInstance extends BaseModel implements Serializable {
     @Column
-    @PrimaryKey(autoincrement = true)
+    @PrimaryKey(autoincrement = false)
     protected long id;
 
     @Column
@@ -32,9 +32,6 @@ public class TestInstance extends BaseModel implements Serializable {
     private int duration;
 
     @Column
-    private long testInstanceID;
-
-    @Column
     private long userID;
 
     @Column
@@ -44,11 +41,11 @@ public class TestInstance extends BaseModel implements Serializable {
 
     public TestInstance() { }
 
-    public TestInstance(String name, String type, int duration, long testInstanceID, long userID, Date startTime) {
+    public TestInstance(long id, String name, String type, int duration, long userID, Date startTime) {
+        this.id = id;
         this.name = name;
         this.type = type;
         this.duration = duration;
-        this.testInstanceID = testInstanceID;
         this.userID = userID;
         this.startTime = startTime;
     }
@@ -83,14 +80,6 @@ public class TestInstance extends BaseModel implements Serializable {
 
     public void setDuration(int duration) {
         this.duration = duration;
-    }
-
-    public long getTestInstanceID() {
-        return testInstanceID;
-    }
-
-    public void setTestInstanceID(long testInstanceID) {
-        this.testInstanceID = testInstanceID;
     }
 
     public long getUserID() {

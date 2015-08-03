@@ -2,6 +2,7 @@ package mk.ukim.finki.tr.finkiask.database.models;
 
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -26,7 +27,7 @@ public class Question extends BaseModel implements Serializable {
     public static String RANGE = "range";
 
     @Column
-    @PrimaryKey(autoincrement = true)
+    @PrimaryKey(autoincrement = false)
     protected long id;
 
     @Column
@@ -36,19 +37,17 @@ public class Question extends BaseModel implements Serializable {
     private String type;
 
     @Column
-    private long questionID;
-
-    @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "test_id",
                                     columnType = Long.class,
-                                    foreignColumnName = "id")})
+                                    foreignColumnName = "id")}, onDelete = ForeignKeyAction.CASCADE)
     protected TestInstance testInstance;
 
     protected List<Answer> answers;
 
     public Question() {}
 
-    public Question(String text, String type) {
+    public Question(long id, String text, String type) {
+        this.id = id;
         this.text = text;
         this.type = type;
     }
@@ -83,14 +82,6 @@ public class Question extends BaseModel implements Serializable {
 
     public TestInstance getTestInstance() {
         return testInstance;
-    }
-
-    public long getQuestionID() {
-        return questionID;
-    }
-
-    public void setQuestionID(long questionID) {
-        this.questionID = questionID;
     }
 
     @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "answers")
