@@ -41,7 +41,7 @@ public class TestRecyclerViewAdapter
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_main_test_row, parent, false);
+                .inflate(R.layout.item_main_test_list_row, parent, false);
         return new ViewHolder(view);
     }
 

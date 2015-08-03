@@ -3,10 +3,13 @@ package mk.ukim.finki.tr.finkiask.masterdetail;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
+import mk.ukim.finki.tr.finkiask.R;
+import mk.ukim.finki.tr.finkiask.adapters.QuestionListAdapter;
 import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 
 
@@ -71,12 +74,20 @@ public class TestListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<>(
-                getActivity(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                TestContent.ITEMS));
+//        // TODO: replace with a real list adapter.
+//        setListAdapter(new ArrayAdapter<>(
+//                getActivity(),
+//                android.R.layout.simple_list_item_activated_1,
+//                android.R.id.text1,
+//                TestContent.ITEMS));
+
+        // TODO set selected item style
+        setListAdapter(new QuestionListAdapter(getActivity(), TestContent.ITEMS));
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.question_list, container, false);
     }
 
     @Override
@@ -88,6 +99,7 @@ public class TestListFragment extends ListFragment {
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
+
     }
 
     @Override
@@ -117,7 +129,7 @@ public class TestListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(TestContent.ITEMS.get(position).getId()+"");
+        mCallbacks.onItemSelected(TestContent.ITEMS.get(position).getId() + "");
     }
 
     @Override
