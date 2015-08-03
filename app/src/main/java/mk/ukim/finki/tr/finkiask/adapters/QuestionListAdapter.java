@@ -50,9 +50,10 @@ public class QuestionListAdapter
         // TODO check from db
         viewHolder.questionAnsweredCb.setChecked(question.getId() % 2 == 0);
 
-        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.question_answered_checkbox);
-        DrawableCompat.setTint(drawable, getContext().getResources().getColor(R.color.question_answered));
-        viewHolder.questionAnsweredCb.setButtonDrawable(drawable);
+        final Drawable originalDrawable = ContextCompat.getDrawable(getContext(), R.drawable.question_answered_checkbox);
+        final Drawable wrappedDrawable = DrawableCompat.wrap(originalDrawable);
+        DrawableCompat.setTint(wrappedDrawable, getContext().getResources().getColor(R.color.question_answered));
+        viewHolder.questionAnsweredCb.setButtonDrawable(wrappedDrawable);
 
         // Return the completed view to render on screen
         return convertView;
