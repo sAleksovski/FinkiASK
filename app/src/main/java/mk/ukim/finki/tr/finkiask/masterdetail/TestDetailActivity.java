@@ -12,8 +12,8 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
-import mk.ukim.finki.tr.finkiask.TestTimer.TestCountdown;
-import mk.ukim.finki.tr.finkiask.TestTimer.TestCountdownInterface;
+import mk.ukim.finki.tr.finkiask.timer.Countdown;
+import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
 
 
 /**
@@ -25,11 +25,12 @@ import mk.ukim.finki.tr.finkiask.TestTimer.TestCountdownInterface;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link TestDetailFragment}.
  */
-public class TestDetailActivity extends AppCompatActivity implements TestCountdownInterface{
+public class TestDetailActivity extends AppCompatActivity implements CountdownInterface {
 
     @Bind(R.id.toolbar) Toolbar toolbar;
-    TextView toolbarTimer;
-    TestCountdown testCountdown;
+    @Bind(R.id.timer) TextView toolbarTimer;
+
+    Countdown countdown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +44,8 @@ public class TestDetailActivity extends AppCompatActivity implements TestCountdo
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
 
-        toolbarTimer = (TextView) toolbar.findViewById(R.id.toolbarTimer);
-        testCountdown = TestCountdown.getInstance();
-        testCountdown.addTestCountdownInterface(this);
-
+        countdown = Countdown.getInstance();
+        countdown.addTestCountdownInterface(this);
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
@@ -92,8 +91,8 @@ public class TestDetailActivity extends AppCompatActivity implements TestCountdo
     @Override
     public void changeTimer(long milliseconds) {
         int sec = (int) (milliseconds / 1000);
-        int min = sec/ 60;
-        sec = sec - min*60;
-        toolbarTimer.setText(min+" : "+sec);
+        int min = sec / 60;
+        sec = sec - (min * 60);
+        toolbarTimer.setText(String.format("%d:%02d", min, sec));
     }
 }

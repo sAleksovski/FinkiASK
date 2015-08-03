@@ -1,31 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="?android:attr/actionBarSize"
-    >
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/question_text"
-        style="?android:attr/textAppearanceLarge"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        />
-    <CheckBox
-        android:id="@+id/test_option1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    <CheckBox
-        android:id="@+id/test_option2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    <CheckBox
-        android:id="@+id/test_option3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="match_parent"
+        android:layout_margin="8dp">
 
-</LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/question_text"
+                        style="?android:attr/textAppearanceLarge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/question_text"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+
+                        <CheckBox
+                            android:id="@+id/test_option1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <CheckBox
+                            android:id="@+id/test_option2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <CheckBox
+                            android:id="@+id/test_option3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </ScrollView>
+
+            <include layout="@layout/fab_next_question" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>

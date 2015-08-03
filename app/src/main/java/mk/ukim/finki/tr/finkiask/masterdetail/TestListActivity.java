@@ -10,8 +10,8 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
-import mk.ukim.finki.tr.finkiask.TestTimer.TestCountdown;
-import mk.ukim.finki.tr.finkiask.TestTimer.TestCountdownInterface;
+import mk.ukim.finki.tr.finkiask.timer.Countdown;
+import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
 import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 
@@ -33,17 +33,18 @@ import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
  * to listen for item selections.
  */
 public class TestListActivity extends AppCompatActivity
-        implements TestListFragment.Callbacks, TestCountdownInterface {
+        implements TestListFragment.Callbacks, CountdownInterface {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
-    private TextView toolbarTimer;
-    public TestCountdown testCountdown;
 
     @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.timer) TextView toolbarTimer;
+
+    public Countdown countdown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,16 +58,16 @@ public class TestListActivity extends AppCompatActivity
         ab.setHomeAsUpIndicator(R.drawable.ic_action_school);
         ab.setDisplayHomeAsUpEnabled(true);
 
-        toolbarTimer = (TextView) toolbar.findViewById(R.id.toolbarTimer);
-        testCountdown = TestCountdown.getInstance();
-        testCountdown.addTestCountdownInterface(this);
+        toolbarTimer = (TextView) toolbar.findViewById(R.id.timer);
+        countdown = Countdown.getInstance();
+        countdown.addTestCountdownInterface(this);
 
         Bundle b = getIntent().getBundleExtra("testInstance");
         if(b != null) {
             TestInstance t = (TestInstance) b.getSerializable("testInstance");
             if (t != null) {
                 TestContent.addAll(t.getQuestions());
-                testCountdown.start(t.getDuration());
+                countdown.start(t.getDuration());
             }
         }
         if (findViewById(R.id.test_detail_container) != null) {
@@ -88,9 +89,9 @@ public class TestListActivity extends AppCompatActivity
 
     public void changeTimer(long milliseconds){
         int sec = (int) (milliseconds / 1000);
-        int min = sec/ 60;
-        sec = sec - min*60;
-        toolbarTimer.setText(min+" : "+sec);
+        int min = sec / 60;
+        sec = sec - (min * 60);
+        toolbarTimer.setText(String.format("%d:%02d", min, sec));
     }
     /**
      * Callback method from {@link TestListFragment.Callbacks}

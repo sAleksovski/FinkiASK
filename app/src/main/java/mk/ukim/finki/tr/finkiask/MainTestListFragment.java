@@ -31,8 +31,8 @@ import retrofit.client.Response;
  */
 public class MainTestListFragment extends Fragment {
 
-    @Bind(R.id.recyclerview) RecyclerView mRecyclerView;
-    @Bind(R.id.noTestsMessage)TextView mNoTestsMessage;
+    @Bind(R.id.tests_list) RecyclerView mRecyclerView;
+    @Bind(R.id.no_tests_message)TextView mNoTestsMessage;
     TestRecyclerViewAdapter adapter;
 
     List<TestPOJO> testDataSet;

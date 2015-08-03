@@ -1,11 +1,12 @@
 package mk.ukim.finki.tr.finkiask.masterdetail;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import mk.ukim.finki.tr.finkiask.R;
@@ -55,9 +56,8 @@ public class TestDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = null;
         if (mItem != null) {
-            rootView = inflater.inflate(mItem.getTemplateFile(), container, false);
+            final View rootView = inflater.inflate(mItem.getTemplateFile(), container, false);
 
             TextView tv = (TextView) rootView.findViewById(R.id.question_text);
             tv.setText(mItem.getText());
@@ -67,8 +67,18 @@ public class TestDetailFragment extends Fragment {
                 ((TextView) rootView.findViewById(R.id.test_option2)).setText(mItem.getAnswers().get(1).getText());
                 ((TextView) rootView.findViewById(R.id.test_option3)).setText(mItem.getAnswers().get(2).getText());
             }
+
+            FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.btn_next_question);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Snackbar.make(v, "Go to next question", Snackbar.LENGTH_LONG).show();
+                }
+            });
+
+            return rootView;
         }
 
-        return rootView;
+        return null;
     }
 }
