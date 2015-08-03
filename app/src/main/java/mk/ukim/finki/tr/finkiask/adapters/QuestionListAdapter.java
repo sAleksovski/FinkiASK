@@ -1,6 +1,9 @@
 package mk.ukim.finki.tr.finkiask.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +15,6 @@ import java.util.List;
 
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.database.models.Question;
-import mk.ukim.finki.tr.finkiask.helper.Strings;
 
 /**
  * Created by stefan on 8/3/15.
@@ -41,11 +43,17 @@ public class QuestionListAdapter
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
         // Populate the data into the template view using the data object
-        viewHolder.questionNumber.setText(question.getId()+"");
-        viewHolder.questionShortText.setText(Strings.subString(question.getText(), 20));
+        viewHolder.questionNumber.setText("Question #" + question.getId());
+        viewHolder.questionShortText.setText(question.getText());
         // TODO check from db
-        viewHolder.questionAnsweredCb.setChecked(false);
+        viewHolder.questionAnsweredCb.setChecked(question.getId() % 2 == 0);
+
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.question_answered_checkbox);
+        DrawableCompat.setTint(drawable, getContext().getResources().getColor(R.color.question_answered));
+        viewHolder.questionAnsweredCb.setButtonDrawable(drawable);
+
         // Return the completed view to render on screen
         return convertView;
     }
