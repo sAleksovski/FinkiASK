@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
+import mk.ukim.finki.tr.finkiask.TestTimer.TestCountdown;
+import mk.ukim.finki.tr.finkiask.TestTimer.TestCountdownInterface;
 import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 
@@ -30,13 +33,15 @@ import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
  * to listen for item selections.
  */
 public class TestListActivity extends AppCompatActivity
-        implements TestListFragment.Callbacks {
+        implements TestListFragment.Callbacks, TestCountdownInterface {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
+    private TextView toolbarTimer;
+    public TestCountdown testCountdown;
 
     @Bind(R.id.toolbar) Toolbar toolbar;
 
@@ -52,12 +57,16 @@ public class TestListActivity extends AppCompatActivity
         ab.setHomeAsUpIndicator(R.drawable.ic_action_school);
         ab.setDisplayHomeAsUpEnabled(true);
 
+        toolbarTimer = (TextView) toolbar.findViewById(R.id.toolbarTimer);
+        testCountdown = TestCountdown.getInstance();
+        testCountdown.addTestCountdownInterface(this);
 
         Bundle b = getIntent().getBundleExtra("testInstance");
         if(b != null) {
             TestInstance t = (TestInstance) b.getSerializable("testInstance");
             if (t != null) {
                 TestContent.addAll(t.getQuestions());
+                testCountdown.start(t.getDuration());
             }
         }
         if (findViewById(R.id.test_detail_container) != null) {
@@ -77,6 +86,12 @@ public class TestListActivity extends AppCompatActivity
         // TODO: If exposing deep links into your app, handle intents here.
     }
 
+    public void changeTimer(long milliseconds){
+        int sec = (int) (milliseconds / 1000);
+        int min = sec/ 60;
+        sec = sec - min*60;
+        toolbarTimer.setText(min+" : "+sec);
+    }
     /**
      * Callback method from {@link TestListFragment.Callbacks}
      * indicating that the item with the given ID was selected.

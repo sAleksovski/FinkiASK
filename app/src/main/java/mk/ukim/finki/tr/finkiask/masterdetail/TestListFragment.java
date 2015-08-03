@@ -102,6 +102,7 @@ public class TestListFragment extends ListFragment {
         mCallbacks = (Callbacks) activity;
     }
 
+
     @Override
     public void onDetach() {
         super.onDetach();

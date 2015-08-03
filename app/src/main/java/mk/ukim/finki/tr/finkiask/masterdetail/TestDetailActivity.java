@@ -7,10 +7,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
+import mk.ukim.finki.tr.finkiask.TestTimer.TestCountdown;
+import mk.ukim.finki.tr.finkiask.TestTimer.TestCountdownInterface;
 
 
 /**
@@ -22,9 +25,11 @@ import mk.ukim.finki.tr.finkiask.R;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link TestDetailFragment}.
  */
-public class TestDetailActivity extends AppCompatActivity {
+public class TestDetailActivity extends AppCompatActivity implements TestCountdownInterface{
 
     @Bind(R.id.toolbar) Toolbar toolbar;
+    TextView toolbarTimer;
+    TestCountdown testCountdown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,11 @@ public class TestDetailActivity extends AppCompatActivity {
         assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
 
+        toolbarTimer = (TextView) toolbar.findViewById(R.id.toolbarTimer);
+        testCountdown = TestCountdown.getInstance();
+        testCountdown.addTestCountdownInterface(this);
+
+
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
         // (e.g. when rotating the screen from portrait to landscape).
@@ -50,6 +60,8 @@ public class TestDetailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
+
+
             Bundle arguments = new Bundle();
             arguments.putString(TestDetailFragment.ARG_ITEM_ID,
                     getIntent().getStringExtra(TestDetailFragment.ARG_ITEM_ID));
@@ -75,5 +87,13 @@ public class TestDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void changeTimer(long milliseconds) {
+        int sec = (int) (milliseconds / 1000);
+        int min = sec/ 60;
+        sec = sec - min*60;
+        toolbarTimer.setText(min+" : "+sec);
     }
 }

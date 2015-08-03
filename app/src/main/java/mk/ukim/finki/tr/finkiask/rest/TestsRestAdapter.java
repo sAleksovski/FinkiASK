@@ -11,7 +11,7 @@ import retrofit.converter.GsonConverter;
 
 public class TestsRestAdapter {
     private static TestsRestInterface testsRestInterface;
-    private static final String BASE_URL = "http://192.168.1.67:3000/";
+    private static final String BASE_URL = "http://192.168.0.100:3000/";
 
     private TestsRestAdapter() { }
 
