@@ -31,7 +31,10 @@
                     android:id="@+id/toolbarTimer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="end"/>
+                    android:gravity="end"
+                    android:layout_gravity="end"
+                    android:paddingRight="15dp"
+                    android:textSize="20sp"/>
 
             </android.support.v7.widget.Toolbar>
 
