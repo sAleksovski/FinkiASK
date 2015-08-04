@@ -35,5 +35,10 @@ public class TestContent {
         ITEMS.add(item);
         ITEM_MAP.put(item.getId() + "", item);
     }
+    public static String getNextID(String id){
+        Question q = ITEM_MAP.get(id);
+        if(ITEMS.get(ITEMS.size()-1).getId() == q.getId()) return null;
+        return String.valueOf(ITEMS.get(ITEMS.indexOf(q)+1).getId());
+    }
 
 }

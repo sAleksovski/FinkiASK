@@ -31,7 +31,7 @@ public class TestDetailFragment extends Fragment {
      * The dummy content this fragment is presenting.
      */
     private Question mItem;
-
+    String nextID;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -69,13 +69,26 @@ public class TestDetailFragment extends Fragment {
             }
 
             FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.btn_next_question);
+            nextID = TestContent.getNextID(String.valueOf(mItem.getId()));
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Snackbar.make(v, "Go to next question", Snackbar.LENGTH_LONG).show();
+                    if(nextID != null) {
+                        Bundle arguments = new Bundle();
+                        arguments.putString(TestDetailFragment.ARG_ITEM_ID, nextID);
+                        TestDetailFragment fragment = new TestDetailFragment();
+                        fragment.setArguments(arguments);
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.test_detail_container, fragment)
+                                .addToBackStack(null)
+                                .commit();
+                    }
+
                 }
             });
-
+            if(nextID == null)
+                fab.hide();
             return rootView;
         }
 
