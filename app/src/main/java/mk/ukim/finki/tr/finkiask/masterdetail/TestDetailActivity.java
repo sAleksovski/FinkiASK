@@ -7,11 +7,18 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.raizlabs.android.dbflow.sql.language.Select;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
+import mk.ukim.finki.tr.finkiask.database.DBHelper;
+import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.timer.Countdown;
 import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
 
@@ -29,6 +36,7 @@ public class TestDetailActivity extends AppCompatActivity implements CountdownIn
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.timer) TextView toolbarTimer;
+    @Bind(R.id.submit) ImageButton submitButton;
 
     Countdown countdown;
 
@@ -46,6 +54,17 @@ public class TestDetailActivity extends AppCompatActivity implements CountdownIn
 
         countdown = Countdown.getInstance();
         countdown.addTestCountdownInterface(this);
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (DBHelper.isTestInstanceFound()) {
+                    new Select().from(TestInstance.class).querySingle().delete();
+                    Toast.makeText(getApplicationContext(), "TestInstance removed from local DB", Toast.LENGTH_LONG).show();
+                } else
+                    Toast.makeText(getApplicationContext(), "No TestInstanceFound", Toast.LENGTH_LONG).show();
+            }
+        });
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity

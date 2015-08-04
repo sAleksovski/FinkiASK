@@ -81,7 +81,6 @@ public class TestDetailFragment extends Fragment {
                         fragment.setArguments(arguments);
                         getFragmentManager().beginTransaction()
                                 .replace(R.id.test_detail_container, fragment)
-                                .addToBackStack(null)
                                 .commit();
                     }
 

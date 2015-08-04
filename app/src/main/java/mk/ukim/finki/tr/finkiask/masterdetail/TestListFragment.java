@@ -74,14 +74,6 @@ public class TestListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        // TODO: replace with a real list adapter.
-//        setListAdapter(new ArrayAdapter<>(
-//                getActivity(),
-//                android.R.layout.simple_list_item_activated_1,
-//                android.R.id.text1,
-//                TestContent.ITEMS));
-
-        // TODO set selected item style
         setListAdapter(new QuestionListAdapter(getActivity(), TestContent.ITEMS));
     }
 

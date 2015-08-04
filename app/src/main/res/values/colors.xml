@@ -7,6 +7,7 @@
     <color name="accent">#1976D2</color>
 
     <color name="question_answered">#66BB6A</color>
+    <color name="question_pressed_highlight">#E9EAED</color>
 
     <color name="iron">#CCCCCC</color>
     <color name="white">#FFFFFF</color>

@@ -99,9 +99,13 @@ public class TestListActivity extends AppCompatActivity
 
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
-            ((TestListFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.test_list))
-                    .setActivateOnItemClick(true);
+            TestListFragment fragment = (TestListFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.test_list);
+            fragment.setActivateOnItemClick(true);
+
+            fragment.getListView().requestFocusFromTouch();
+            fragment.getListView().setSelection(0);
+            fragment.getListView().performItemClick(fragment.getListView().getAdapter().getView(0, null, null), 0, 0);
         }
 
         submitButton.setOnClickListener(new View.OnClickListener() {
