@@ -2,6 +2,7 @@ package mk.ukim.finki.tr.finkiask.masterdetail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.database.DBHelper;
 import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
+import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 import mk.ukim.finki.tr.finkiask.timer.Countdown;
 import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
 
@@ -32,7 +34,8 @@ import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link TestDetailFragment}.
  */
-public class TestDetailActivity extends AppCompatActivity implements CountdownInterface {
+public class TestDetailActivity extends AppCompatActivity
+        implements CountdownInterface, TestDetailFragment.NextQuestionCallback {
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.timer) TextView toolbarTimer;
@@ -113,5 +116,17 @@ public class TestDetailActivity extends AppCompatActivity implements CountdownIn
         int min = sec / 60;
         sec = sec - (min * 60);
         toolbarTimer.setText(String.format("%d:%02d", min, sec));
+    }
+
+    @Override
+    public void onNextQuestion(long thisQuestionId) {
+        String nextID = TestContent.getNextID(String.valueOf(thisQuestionId));
+        Bundle arguments = new Bundle();
+        arguments.putString(TestDetailFragment.ARG_ITEM_ID, nextID);
+        Fragment fragment = new TestDetailFragment();
+        fragment.setArguments(arguments);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.test_detail_container, fragment)
+                .commit();
     }
 }

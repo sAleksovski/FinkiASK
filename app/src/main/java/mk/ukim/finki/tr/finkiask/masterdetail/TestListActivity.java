@@ -40,7 +40,7 @@ import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
  * to listen for item selections.
  */
 public class TestListActivity extends AppCompatActivity
-        implements TestListFragment.Callbacks, CountdownInterface {
+        implements TestListFragment.Callbacks, TestDetailFragment.NextQuestionCallback, CountdownInterface {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -53,6 +53,8 @@ public class TestListActivity extends AppCompatActivity
     @Bind(R.id.submit) ImageButton submitButton;
 
     public Countdown countdown;
+
+    private TestListFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,17 +95,16 @@ public class TestListActivity extends AppCompatActivity
         if (findViewById(R.id.test_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-large and
-            // res/values-sw600dp). If this view is present, then the
+            // res/values-sw600dp-land). If this view is present, then the
             // activity should be in two-pane mode.
             mTwoPane = true;
 
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
-            TestListFragment fragment = (TestListFragment) getSupportFragmentManager()
+            fragment = (TestListFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.test_list);
             fragment.setActivateOnItemClick(true);
 
-            fragment.getListView().requestFocusFromTouch();
             fragment.getListView().setSelection(0);
             fragment.getListView().performItemClick(fragment.getListView().getAdapter().getView(0, null, null), 0, 0);
         }
@@ -114,9 +115,9 @@ public class TestListActivity extends AppCompatActivity
                 if (DBHelper.isTestInstanceFound()) {
                     new Select().from(TestInstance.class).querySingle().delete();
                     Toast.makeText(getApplicationContext(), "TestInstance removed from local DB", Toast.LENGTH_LONG).show();
-                }
-                else
+                } else {
                     Toast.makeText(getApplicationContext(), "No TestInstanceFound", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -154,5 +155,14 @@ public class TestListActivity extends AppCompatActivity
             detailIntent.putExtra(TestDetailFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
         }
+    }
+
+    @Override
+    public void onNextQuestion(long thisQuestionId) {
+        int currentPosition = fragment.getActivatedPosition();
+        int total = fragment.getListView().getAdapter().getCount();
+        int nextPosition = (currentPosition + 1) % total;
+        fragment.getListView().setSelection(nextPosition);
+        fragment.getListView().performItemClick(fragment.getListView().getAdapter().getView(nextPosition, null, null), nextPosition, nextPosition);
     }
 }

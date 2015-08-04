@@ -1,5 +1,6 @@
 package mk.ukim.finki.tr.finkiask.masterdetail;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,31 @@ import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
  * on handsets.
  */
 public class TestDetailFragment extends Fragment {
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of request
+     * for next question.
+     */
+    public interface NextQuestionCallback {
+        /**
+         * Callback for when the fab for next question has been clicked.
+         */
+        void onNextQuestion(long thisQuestionId);
+    }
+
+    /**
+     * A dummy implementation of the {@link NextQuestionCallback} interface that does
+     * nothing. Used only when this fragment is not attached to an activity.
+     */
+    private static NextQuestionCallback sTestCallbacks = new NextQuestionCallback() {
+        @Override
+        public void onNextQuestion(long thisQuestionId) {
+        }
+    };
+
+    private NextQuestionCallback mCallbacks = sTestCallbacks;
+
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -74,23 +100,26 @@ public class TestDetailFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Snackbar.make(v, "Go to next question", Snackbar.LENGTH_LONG).show();
-                    if(nextID != null) {
-                        Bundle arguments = new Bundle();
-                        arguments.putString(TestDetailFragment.ARG_ITEM_ID, nextID);
-                        TestDetailFragment fragment = new TestDetailFragment();
-                        fragment.setArguments(arguments);
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.test_detail_container, fragment)
-                                .commit();
-                    }
-
+                    mCallbacks.onNextQuestion(mItem.getId());
                 }
             });
-            if(nextID == null)
-                fab.hide();
+
             return rootView;
         }
 
         return null;
     }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // Activities containing this fragment must implement its callbacks.
+        if (!(activity instanceof NextQuestionCallback)) {
+            throw new IllegalStateException("Activity must implement fragment's callbacks.");
+        }
+
+        mCallbacks = (NextQuestionCallback) activity;
+    }
+
 }

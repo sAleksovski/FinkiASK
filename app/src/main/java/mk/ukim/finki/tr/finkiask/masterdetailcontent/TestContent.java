@@ -36,8 +36,11 @@ public class TestContent {
         ITEM_MAP.put(item.getId() + "", item);
     }
     public static String getNextID(String id){
+        // TODO nuke this class, use db
         Question q = ITEM_MAP.get(id);
-        if(ITEMS.get(ITEMS.size()-1).getId() == q.getId()) return null;
+        if(ITEMS.get(ITEMS.size()-1).getId() == q.getId()) {
+            return String.valueOf(ITEMS.get(0).getId());
+        }
         return String.valueOf(ITEMS.get(ITEMS.indexOf(q)+1).getId());
     }
 

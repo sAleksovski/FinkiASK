@@ -122,6 +122,7 @@ public class TestListFragment extends ListFragment {
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
         mCallbacks.onItemSelected(TestContent.ITEMS.get(position).getId() + "");
+        setActivatedPosition(position);
     }
 
     @Override
@@ -153,5 +154,9 @@ public class TestListFragment extends ListFragment {
         }
 
         mActivatedPosition = position;
+    }
+
+    public int getActivatedPosition() {
+        return mActivatedPosition;
     }
 }
