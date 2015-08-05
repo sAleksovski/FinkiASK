@@ -2,7 +2,6 @@ package mk.ukim.finki.tr.finkiask.masterdetail;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +19,8 @@ import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.database.DBHelper;
 import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
+import mk.ukim.finki.tr.finkiask.masterdetail.questionfragment.BaseQuestionFragment;
+import mk.ukim.finki.tr.finkiask.masterdetail.questionfragment.QuestionFragmentFactory;
 import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 import mk.ukim.finki.tr.finkiask.timer.Countdown;
 import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
@@ -32,10 +33,10 @@ import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
  * in a {@link TestListActivity}.
  * <p/>
  * This activity is mostly just a 'shell' activity containing nothing
- * more than a {@link TestDetailFragment}.
+ * more than a {@link BaseQuestionFragment}.
  */
 public class TestDetailActivity extends AppCompatActivity
-        implements CountdownInterface, TestDetailFragment.NextQuestionCallback {
+        implements CountdownInterface, BaseQuestionFragment.NextQuestionCallback {
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.timer) TextView toolbarTimer;
@@ -84,9 +85,13 @@ public class TestDetailActivity extends AppCompatActivity
 
 
             Bundle arguments = new Bundle();
-            arguments.putString(TestDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(TestDetailFragment.ARG_ITEM_ID));
-            TestDetailFragment fragment = new TestDetailFragment();
+            arguments.putString(BaseQuestionFragment.ARG_ITEM_ID,
+                    getIntent().getStringExtra(BaseQuestionFragment.ARG_ITEM_ID));
+//            TestDetailFragment fragment = new TestDetailFragment();
+
+            BaseQuestionFragment fragment = QuestionFragmentFactory.
+                    getQuestionFragment(TestContent.ITEM_MAP.get(arguments.getString(BaseQuestionFragment.ARG_ITEM_ID)).getType());
+
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.test_detail_container, fragment)
@@ -122,8 +127,9 @@ public class TestDetailActivity extends AppCompatActivity
     public void onNextQuestion(long thisQuestionId) {
         String nextID = TestContent.getNextID(String.valueOf(thisQuestionId));
         Bundle arguments = new Bundle();
-        arguments.putString(TestDetailFragment.ARG_ITEM_ID, nextID);
-        Fragment fragment = new TestDetailFragment();
+        arguments.putString(BaseQuestionFragment.ARG_ITEM_ID, nextID);
+        BaseQuestionFragment fragment = QuestionFragmentFactory.
+                getQuestionFragment(TestContent.ITEM_MAP.get(arguments.getString(BaseQuestionFragment.ARG_ITEM_ID)).getType());
         fragment.setArguments(arguments);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.test_detail_container, fragment)

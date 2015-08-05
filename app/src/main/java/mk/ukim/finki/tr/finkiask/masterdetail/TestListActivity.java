@@ -18,6 +18,8 @@ import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.database.DBHelper;
 import mk.ukim.finki.tr.finkiask.database.models.Question;
 import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
+import mk.ukim.finki.tr.finkiask.masterdetail.questionfragment.BaseQuestionFragment;
+import mk.ukim.finki.tr.finkiask.masterdetail.questionfragment.QuestionFragmentFactory;
 import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 import mk.ukim.finki.tr.finkiask.timer.Countdown;
 import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
@@ -33,14 +35,14 @@ import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
  * <p/>
  * The activity makes heavy use of fragments. The list of items is a
  * {@link TestListFragment} and the item details
- * (if present) is a {@link TestDetailFragment}.
+ * (if present) is a {@link BaseQuestionFragment}.
  * <p/>
  * This activity also implements the required
  * {@link TestListFragment.Callbacks} interface
  * to listen for item selections.
  */
 public class TestListActivity extends AppCompatActivity
-        implements TestListFragment.Callbacks, TestDetailFragment.NextQuestionCallback, CountdownInterface {
+        implements TestListFragment.Callbacks, BaseQuestionFragment.NextQuestionCallback, CountdownInterface {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -141,8 +143,9 @@ public class TestListActivity extends AppCompatActivity
             // adding or replacing the detail fragment using a
             // fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(TestDetailFragment.ARG_ITEM_ID, id);
-            TestDetailFragment fragment = new TestDetailFragment();
+            arguments.putString(BaseQuestionFragment.ARG_ITEM_ID, id);
+            BaseQuestionFragment fragment = QuestionFragmentFactory.
+                    getQuestionFragment(TestContent.ITEM_MAP.get(arguments.getString(BaseQuestionFragment.ARG_ITEM_ID)).getType());
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.test_detail_container, fragment)
@@ -152,7 +155,7 @@ public class TestListActivity extends AppCompatActivity
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, TestDetailActivity.class);
-            detailIntent.putExtra(TestDetailFragment.ARG_ITEM_ID, id);
+            detailIntent.putExtra(BaseQuestionFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
         }
     }

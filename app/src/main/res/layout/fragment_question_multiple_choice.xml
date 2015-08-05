@@ -28,27 +28,12 @@
                         android:padding="16dp" />
 
                     <LinearLayout
+                        android:id="@+id/answers_checkbox_group"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@id/question_text"
                         android:orientation="vertical"
                         android:padding="16dp">
-
-
-                        <CheckBox
-                            android:id="@+id/test_option1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <CheckBox
-                            android:id="@+id/test_option2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <CheckBox
-                            android:id="@+id/test_option3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
 
                     </LinearLayout>
 

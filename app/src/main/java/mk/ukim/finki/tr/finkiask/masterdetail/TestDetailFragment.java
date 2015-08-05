@@ -57,7 +57,6 @@ public class TestDetailFragment extends Fragment {
      * The dummy content this fragment is presenting.
      */
     private Question mItem;
-    String nextID;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -88,14 +87,13 @@ public class TestDetailFragment extends Fragment {
             TextView tv = (TextView) rootView.findViewById(R.id.question_text);
             tv.setText(mItem.getText());
 
-            if(mItem.getAnswers().size() > 1) {
-                ((TextView) rootView.findViewById(R.id.test_option1)).setText(mItem.getAnswers().get(0).getText());
-                ((TextView) rootView.findViewById(R.id.test_option2)).setText(mItem.getAnswers().get(1).getText());
-                ((TextView) rootView.findViewById(R.id.test_option3)).setText(mItem.getAnswers().get(2).getText());
-            }
+//            if(mItem.getAnswers().size() > 1) {
+//                ((TextView) rootView.findViewById(R.id.test_option1)).setText(mItem.getAnswers().get(0).getText());
+//                ((TextView) rootView.findViewById(R.id.test_option2)).setText(mItem.getAnswers().get(1).getText());
+//                ((TextView) rootView.findViewById(R.id.test_option3)).setText(mItem.getAnswers().get(2).getText());
+//            }
 
             FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.btn_next_question);
-            nextID = TestContent.getNextID(String.valueOf(mItem.getId()));
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

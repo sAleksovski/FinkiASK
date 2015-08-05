@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.adapters.QuestionListAdapter;
+import mk.ukim.finki.tr.finkiask.masterdetail.questionfragment.BaseQuestionFragment;
 import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 
 
@@ -17,7 +18,7 @@ import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
  * A list fragment representing a list of Tests. This fragment
  * also supports tablet devices by allowing list items to be given an
  * 'activated' state upon selection. This helps indicate which item is
- * currently being viewed in a {@link TestDetailFragment}.
+ * currently being viewed in a {@link BaseQuestionFragment}.
  * <p/>
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.

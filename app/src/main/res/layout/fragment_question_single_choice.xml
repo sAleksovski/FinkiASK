@@ -30,26 +30,13 @@
                         android:padding="16dp" />
 
                     <RadioGroup
+                        android:id="@+id/answers_radio_group"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/question_text"
                         android:orientation="vertical"
                         android:padding="16dp">
 
-                        <RadioButton
-                            android:id="@+id/test_option1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <RadioButton
-                            android:id="@+id/test_option2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <RadioButton
-                            android:id="@+id/test_option3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
                     </RadioGroup>
 
                 </RelativeLayout>
