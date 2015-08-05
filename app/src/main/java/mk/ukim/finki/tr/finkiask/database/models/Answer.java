@@ -7,6 +7,7 @@ import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
 import java.io.Serializable;
 
@@ -30,8 +31,8 @@ public class Answer extends BaseModel implements Serializable {
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "question_id",
             columnType = Long.class,
-            foreignColumnName = "id")}, onDelete = ForeignKeyAction.CASCADE)
-    protected Question question;
+            foreignColumnName = "id")}, saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+    protected ForeignKeyContainer<Question> questionModelContainer;
 
     public Answer() {}
 
@@ -73,10 +74,12 @@ public class Answer extends BaseModel implements Serializable {
     }
 
     public Question getQuestion() {
-        return question;
+        return questionModelContainer.toModel();
     }
 
     public void setQuestion(Question question) {
-        this.question = question;
+        questionModelContainer = new ForeignKeyContainer<>(Question.class);
+        questionModelContainer.setModel(question);
+        questionModelContainer.put(Question$Table.ID, question.id);
     }
 }

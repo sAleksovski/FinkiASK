@@ -98,12 +98,12 @@ public class TestInstance extends BaseModel implements Serializable {
         this.startTime = startTime;
     }
 
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "questions")
+    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "questions")
     public List<Question> getQuestions() {
         if(questions == null) {
             questions = new Select()
                     .from(Question.class)
-                    .where(Condition.column(Question$Table.TESTINSTANCE_TEST_ID).eq(getId()))
+                    .where(Condition.column(Question$Table.TESTINSTANCEMODELCONTAINER_TEST_ID).eq(getId()))
                     .queryList();
         }
         return questions;

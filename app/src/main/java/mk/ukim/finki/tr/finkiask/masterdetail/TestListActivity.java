@@ -80,7 +80,7 @@ public class TestListActivity extends AppCompatActivity
                     t.save();
                     for(Question q : DBHelper.getAllQuestion()) {
                         q.setTestInstance(t);
-                        q.update();
+                        q.save();
                     }
                     Toast.makeText(getApplicationContext(), "TestInstance saved in local DB", Toast.LENGTH_LONG).show();
                 }

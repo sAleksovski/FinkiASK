@@ -10,6 +10,7 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
 import java.io.Serializable;
 import java.util.List;
@@ -39,8 +40,8 @@ public class Question extends BaseModel implements Serializable {
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "test_id",
                                     columnType = Long.class,
-                                    foreignColumnName = "id")}, onDelete = ForeignKeyAction.CASCADE)
-    protected TestInstance testInstance;
+                                    foreignColumnName = "id")}, saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+    protected ForeignKeyContainer<TestInstance> testInstanceModelContainer;
 
     protected List<Answer> answers;
 
@@ -77,19 +78,21 @@ public class Question extends BaseModel implements Serializable {
     }
 
     public void setTestInstance(TestInstance testInstance) {
-        this.testInstance = testInstance;
+        testInstanceModelContainer = new ForeignKeyContainer<>(TestInstance.class);
+        testInstanceModelContainer.setModel(testInstance);
+        testInstanceModelContainer.put(TestInstance$Table.ID, testInstance.id);
     }
 
     public TestInstance getTestInstance() {
-        return testInstance;
+        return testInstanceModelContainer.toModel();
     }
 
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "answers")
+    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "answers")
     public List<Answer> getAnswers() {
         if(answers == null) {
             answers = new Select()
                     .from(Answer.class)
-                    .where(Condition.column(Answer$Table.QUESTION_QUESTION_ID).eq(getId()))
+                    .where(Condition.column(Answer$Table.QUESTIONMODELCONTAINER_QUESTION_ID).eq(getId()))
                     .queryList();
         }
         return answers;
