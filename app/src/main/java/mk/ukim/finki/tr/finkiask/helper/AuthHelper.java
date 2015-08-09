@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/**
- * Created by stefan on 7/28/15.
- */
 public class AuthHelper {
 
     public static final String PREFS_NAME = "FINKI_ASK_PREFS";

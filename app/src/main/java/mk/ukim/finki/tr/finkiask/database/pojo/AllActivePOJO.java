@@ -3,9 +3,6 @@ package mk.ukim.finki.tr.finkiask.database.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by stefan on 8/2/15.
- */
 public class AllActivePOJO {
 
     private List<TestPOJO> tests;

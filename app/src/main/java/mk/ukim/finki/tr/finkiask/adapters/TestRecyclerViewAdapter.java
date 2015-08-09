@@ -30,9 +30,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-/**
- * Created by stefan on 7/31/15.
- */
 public class TestRecyclerViewAdapter
         extends RecyclerView.Adapter<TestRecyclerViewAdapter.ViewHolder> {
 

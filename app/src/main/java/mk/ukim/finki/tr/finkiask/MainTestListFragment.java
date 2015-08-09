@@ -26,9 +26,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-/**
- * Created by stefan on 7/31/15.
- */
 public class MainTestListFragment extends Fragment {
 
     @Bind(R.id.tests_list) RecyclerView mRecyclerView;

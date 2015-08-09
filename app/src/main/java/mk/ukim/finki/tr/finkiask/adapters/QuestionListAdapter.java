@@ -17,9 +17,6 @@ import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.database.DBHelper;
 import mk.ukim.finki.tr.finkiask.database.models.Question;
 
-/**
- * Created by stefan on 8/3/15.
- */
 public class QuestionListAdapter
         extends ArrayAdapter<Question> {
 

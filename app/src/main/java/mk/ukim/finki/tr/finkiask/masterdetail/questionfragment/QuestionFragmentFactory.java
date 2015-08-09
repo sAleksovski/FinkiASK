@@ -2,9 +2,6 @@ package mk.ukim.finki.tr.finkiask.masterdetail.questionfragment;
 
 import mk.ukim.finki.tr.finkiask.database.models.Question;
 
-/**
- * Created by stefan on 8/5/15.
- */
 public class QuestionFragmentFactory {
 
     public static BaseQuestionFragment getQuestionFragment(String questionType) {

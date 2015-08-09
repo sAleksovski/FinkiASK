@@ -13,9 +13,6 @@ import android.widget.TextView;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.database.models.Answer;
 
-/**
- * Created by stefan on 8/5/15.
- */
 public class TextQuestionFragment extends BaseQuestionFragment {
 
     EditText et;

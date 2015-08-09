@@ -11,9 +11,6 @@ import android.view.ViewGroup;
 import mk.ukim.finki.tr.finkiask.database.DBHelper;
 import mk.ukim.finki.tr.finkiask.database.models.Question;
 
-/**
- * Created by stefan on 8/5/15.
- */
 public abstract class BaseQuestionFragment extends Fragment {
 
     public static final String ARG_QUESTION_ID = "item_id";
