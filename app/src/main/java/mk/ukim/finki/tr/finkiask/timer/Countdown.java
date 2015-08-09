@@ -5,9 +5,6 @@ import android.os.CountDownTimer;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Beti on 8/3/2015.
- */
 public class Countdown {
     private long milliseconds = 0;
     public boolean isStarted = false;
