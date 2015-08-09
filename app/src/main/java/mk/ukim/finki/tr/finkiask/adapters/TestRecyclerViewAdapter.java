@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AlertDialog;
@@ -20,6 +19,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
+import mk.ukim.finki.tr.finkiask.database.DBHelper;
 import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.database.pojo.TestPOJO;
 import mk.ukim.finki.tr.finkiask.masterdetail.TestListActivity;
@@ -67,7 +67,7 @@ public class TestRecyclerViewAdapter
                 new AlertDialog.Builder(v.getContext())
                         .setTitle("Start test")
                         .setMessage("Are you sure you want to start this test?\n"
-                                + "You have " + mValues.get(position).getDuration() + "minutes to solve it.")
+                                + "You have " + mValues.get(position).getDuration() + " minutes to solve it.")
                         .setPositiveButton("Start", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // TODO
@@ -94,10 +94,11 @@ public class TestRecyclerViewAdapter
 
             @Override
             public void success(TestInstance testInstance, Response response) {
+
+                DBHelper.saveTestInstanceToDb(testInstance);
+
                 Intent intent = new Intent(context, TestListActivity.class);
-                Bundle b = new Bundle();
-                b.putSerializable("testInstance", testInstance);
-                intent.putExtra("testInstance", b);
+                intent.putExtra("testInstanceId", testInstance.getId());
 
                 context.startActivity(intent);
             }

@@ -12,16 +12,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.database.DBHelper;
-import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
+import mk.ukim.finki.tr.finkiask.database.models.Question;
 import mk.ukim.finki.tr.finkiask.masterdetail.questionfragment.BaseQuestionFragment;
 import mk.ukim.finki.tr.finkiask.masterdetail.questionfragment.QuestionFragmentFactory;
-import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 import mk.ukim.finki.tr.finkiask.timer.Countdown;
 import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
 
@@ -63,7 +60,7 @@ public class TestDetailActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 if (DBHelper.isTestInstanceFound()) {
-                    new Select().from(TestInstance.class).querySingle().delete();
+                    DBHelper.deleteEverything();
                     Toast.makeText(getApplicationContext(), "TestInstance removed from local DB", Toast.LENGTH_LONG).show();
                 } else
                     Toast.makeText(getApplicationContext(), "No TestInstanceFound", Toast.LENGTH_LONG).show();
@@ -83,14 +80,13 @@ public class TestDetailActivity extends AppCompatActivity
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
 
+            long id = getIntent().getLongExtra(BaseQuestionFragment.ARG_QUESTION_ID, -1);
 
             Bundle arguments = new Bundle();
-            arguments.putString(BaseQuestionFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(BaseQuestionFragment.ARG_ITEM_ID));
-//            TestDetailFragment fragment = new TestDetailFragment();
+            arguments.putLong(BaseQuestionFragment.ARG_QUESTION_ID, id);
 
             BaseQuestionFragment fragment = QuestionFragmentFactory.
-                    getQuestionFragment(TestContent.ITEM_MAP.get(arguments.getString(BaseQuestionFragment.ARG_ITEM_ID)).getType());
+                    getQuestionFragment(DBHelper.getQuestionById(id).getType());
 
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -125,11 +121,12 @@ public class TestDetailActivity extends AppCompatActivity
 
     @Override
     public void onNextQuestion(long thisQuestionId) {
-        String nextID = TestContent.getNextID(String.valueOf(thisQuestionId));
+        Question q = DBHelper.getNextQuestion(thisQuestionId);
+        long nextId = q.getId();
         Bundle arguments = new Bundle();
-        arguments.putString(BaseQuestionFragment.ARG_ITEM_ID, nextID);
+        arguments.putLong(BaseQuestionFragment.ARG_QUESTION_ID, nextId);
         BaseQuestionFragment fragment = QuestionFragmentFactory.
-                getQuestionFragment(TestContent.ITEM_MAP.get(arguments.getString(BaseQuestionFragment.ARG_ITEM_ID)).getType());
+                getQuestionFragment(q.getType());
         fragment.setArguments(arguments);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.test_detail_container, fragment)

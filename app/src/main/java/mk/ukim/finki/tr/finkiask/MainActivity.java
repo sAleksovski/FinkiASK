@@ -40,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
         ab.setHomeAsUpIndicator(R.drawable.ic_action_school);
         ab.setDisplayHomeAsUpEnabled(true);
 
-
-
         setupViewPager(viewPager);
 
         tabLayout.setupWithViewPager(viewPager);

@@ -7,14 +7,20 @@ import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import mk.ukim.finki.tr.finkiask.R;
+import mk.ukim.finki.tr.finkiask.database.models.Answer;
 
 /**
  * Created by stefan on 8/5/15.
  */
 public class TextQuestionFragment extends BaseQuestionFragment {
+
+    EditText et;
+    Answer a;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,6 +31,11 @@ public class TextQuestionFragment extends BaseQuestionFragment {
 
             TextView tv = (TextView) rootView.findViewById(R.id.question_text);
             tv.setText(mItem.getText());
+
+            et = (EditText) rootView.findViewById(R.id.test_edit);
+            a = mItem.getAnswers().get(0);
+
+            et.setText(a.getText());
 
             FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.btn_next_question);
             fab.setOnClickListener(new View.OnClickListener() {
@@ -39,5 +50,16 @@ public class TextQuestionFragment extends BaseQuestionFragment {
         }
 
         return null;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        a.setText(et.getText().toString());
+        a.save();
+
+        mItem.setIsAnswered(a.getText().length() > 0);
+        mItem.save();
     }
 }

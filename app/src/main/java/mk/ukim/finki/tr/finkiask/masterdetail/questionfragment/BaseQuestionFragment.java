@@ -8,15 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import mk.ukim.finki.tr.finkiask.database.DBHelper;
 import mk.ukim.finki.tr.finkiask.database.models.Question;
-import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 
 /**
  * Created by stefan on 8/5/15.
  */
 public abstract class BaseQuestionFragment extends Fragment {
 
-    public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_QUESTION_ID = "item_id";
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -46,12 +46,12 @@ public abstract class BaseQuestionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
+        if (getArguments().containsKey(ARG_QUESTION_ID)) {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
             // TODO read from db
-            mItem = TestContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+            mItem = DBHelper.getQuestionById(getArguments().getLong(ARG_QUESTION_ID));
         }
     }
 

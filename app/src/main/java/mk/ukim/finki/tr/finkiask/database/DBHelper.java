@@ -9,6 +9,7 @@ import mk.ukim.finki.tr.finkiask.database.models.Answer;
 import mk.ukim.finki.tr.finkiask.database.models.Question;
 import mk.ukim.finki.tr.finkiask.database.models.Question$Table;
 import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
+import mk.ukim.finki.tr.finkiask.database.models.TestInstance$Table;
 
 public class DBHelper {
     public static boolean isTestInstanceFound() {
@@ -25,5 +26,62 @@ public class DBHelper {
 
     public static Question getQuestionById(long id) {
         return new Select().from(Question.class).where(Condition.column(Question$Table.ID).is(id)).querySingle();
+    }
+
+    public static void saveTestInstanceToDb(TestInstance t) {
+        t.save();
+        for(Question q : DBHelper.getAllQuestion()) {
+            q.setTestInstance(t);
+            q.save();
+        }
+    }
+
+    public static TestInstance getTestInstanceById(long id) {
+        return new Select()
+                .from(TestInstance.class)
+                .where(Condition.column(TestInstance$Table.ID).is(id))
+                .querySingle();
+    }
+
+    public static void deleteEverything() {
+        new Select().from(TestInstance.class).querySingle().delete();
+        for (Question q : new Select().from(Question.class).queryList()) {
+            q.delete();
+        }
+        for (Answer a : DBHelper.getAllAnswers()) {
+            a.delete();
+        }
+    }
+
+    public static Question getNextQuestion(long id) {
+        Question q = new Select()
+                .from(Question.class)
+                .where(Condition.column(Question$Table.ID).greaterThan(id))
+                .and(Question$Table.ISANSWERED, false)
+                .querySingle();
+
+        if (q != null) return q;
+
+        q = new Select()
+                .from(Question.class)
+                .where(Condition.column(Question$Table.ID).lessThan(id))
+                .and(Question$Table.ISANSWERED, false)
+                .querySingle();
+
+        if (q != null) return q;
+
+        q = new Select()
+                .from(Question.class)
+                .where(Condition.column(Question$Table.ID).greaterThan(id))
+                .querySingle();
+
+        if (q != null) return q;
+
+        q = new Select()
+                .from(Question.class)
+                .where(Condition.column(Question$Table.ID).lessThan(id))
+                .querySingle();
+
+        return q;
     }
 }

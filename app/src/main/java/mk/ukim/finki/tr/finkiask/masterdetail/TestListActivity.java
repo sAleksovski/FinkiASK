@@ -10,17 +10,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.raizlabs.android.dbflow.sql.language.Select;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.database.DBHelper;
-import mk.ukim.finki.tr.finkiask.database.models.Question;
 import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.masterdetail.questionfragment.BaseQuestionFragment;
 import mk.ukim.finki.tr.finkiask.masterdetail.questionfragment.QuestionFragmentFactory;
-import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 import mk.ukim.finki.tr.finkiask.timer.Countdown;
 import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
 
@@ -74,26 +70,16 @@ public class TestListActivity extends AppCompatActivity
         countdown = Countdown.getInstance();
         countdown.addTestCountdownInterface(this);
 
-        Bundle b = getIntent().getBundleExtra("testInstance");
-        if(b != null) {
-            TestInstance t = (TestInstance) b.getSerializable("testInstance");
-            if (t != null) {
-                if (!DBHelper.isTestInstanceFound()) {
-                    t.save();
-                    for(Question q : DBHelper.getAllQuestion()) {
-                        q.setTestInstance(t);
-                        q.save();
-                    }
-                    Toast.makeText(getApplicationContext(), "TestInstance saved in local DB", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "TestInstance already found in DB", Toast.LENGTH_LONG).show();
-                }
+        long testInstanceId = getIntent().getLongExtra("testInstanceId", -1);
 
-                TestContent.addAll(t.getQuestions());
+        if (testInstanceId != -1) {
+            Toast.makeText(getApplicationContext(), "TestInstance already found in DB", Toast.LENGTH_LONG).show();
+            TestInstance t = DBHelper.getTestInstanceById(testInstanceId);
+            if (t != null) {
                 countdown.start(t.getDuration());
             }
         }
+
         if (findViewById(R.id.test_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-large and
@@ -115,7 +101,7 @@ public class TestListActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 if (DBHelper.isTestInstanceFound()) {
-                    new Select().from(TestInstance.class).querySingle().delete();
+                    DBHelper.deleteEverything();
                     Toast.makeText(getApplicationContext(), "TestInstance removed from local DB", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "No TestInstanceFound", Toast.LENGTH_LONG).show();
@@ -137,15 +123,15 @@ public class TestListActivity extends AppCompatActivity
      * indicating that the item with the given ID was selected.
      */
     @Override
-    public void onItemSelected(String id) {
+    public void onItemSelected(long id) {
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(BaseQuestionFragment.ARG_ITEM_ID, id);
+            arguments.putLong(BaseQuestionFragment.ARG_QUESTION_ID, id);
             BaseQuestionFragment fragment = QuestionFragmentFactory.
-                    getQuestionFragment(TestContent.ITEM_MAP.get(arguments.getString(BaseQuestionFragment.ARG_ITEM_ID)).getType());
+                    getQuestionFragment(DBHelper.getQuestionById(id).getType());
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.test_detail_container, fragment)
@@ -155,7 +141,7 @@ public class TestListActivity extends AppCompatActivity
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, TestDetailActivity.class);
-            detailIntent.putExtra(BaseQuestionFragment.ARG_ITEM_ID, id);
+            detailIntent.putExtra(BaseQuestionFragment.ARG_QUESTION_ID, id);
             startActivity(detailIntent);
         }
     }
@@ -167,5 +153,6 @@ public class TestListActivity extends AppCompatActivity
         int nextPosition = (currentPosition + 1) % total;
         fragment.getListView().setSelection(nextPosition);
         fragment.getListView().performItemClick(fragment.getListView().getAdapter().getView(nextPosition, null, null), nextPosition, nextPosition);
+        fragment.getListView().invalidate();
     }
 }

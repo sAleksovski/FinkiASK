@@ -72,5 +72,7 @@ public class SingleChoiceQuestionFragment extends BaseQuestionFragment {
         answer.save();
         previousAnswer = answer;
 
+        mItem.setIsAnswered(true);
+        mItem.save();
     }
 }

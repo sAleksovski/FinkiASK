@@ -18,6 +18,9 @@ import mk.ukim.finki.tr.finkiask.database.models.Answer;
  * Created by stefan on 8/5/15.
  */
 public class MultipleChoiceQuestionFragment extends BaseQuestionFragment {
+
+    int checked = 0;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +44,10 @@ public class MultipleChoiceQuestionFragment extends BaseQuestionFragment {
                     }
                 });
                 ll.addView(cb);
+
+                if (a.getIsAnswered()) {
+                    checked++;
+                }
             }
 
             FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.btn_next_question);
@@ -59,7 +66,16 @@ public class MultipleChoiceQuestionFragment extends BaseQuestionFragment {
     }
 
     private void onAnswerChanged(Answer a) {
-        a.setIsAnswered( ! a.getIsAnswered());
+        a.setIsAnswered(!a.getIsAnswered());
         a.save();
+
+        if (a.getIsAnswered()) {
+            checked++;
+        } else {
+            checked--;
+        }
+
+        mItem.setIsAnswered(checked > 0);
+        mItem.save();
     }
 }

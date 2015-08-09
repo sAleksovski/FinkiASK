@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import mk.ukim.finki.tr.finkiask.R;
+import mk.ukim.finki.tr.finkiask.database.DBHelper;
 import mk.ukim.finki.tr.finkiask.database.models.Question;
 
 /**
@@ -30,6 +31,9 @@ public class QuestionListAdapter
     public View getView(int position, View convertView, ViewGroup parent) {
 
         Question question = getItem(position);
+        // TODO
+        // hack
+        question = DBHelper.getQuestionById(question.getId());
 
         ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
@@ -47,8 +51,7 @@ public class QuestionListAdapter
         // Populate the data into the template view using the data object
         viewHolder.questionNumber.setText("Question #" + question.getId());
         viewHolder.questionShortText.setText(question.getText());
-        // TODO check from db
-        viewHolder.questionAnsweredCb.setChecked(question.getId() % 2 == 0);
+        viewHolder.questionAnsweredCb.setChecked(question.getIsAnswered());
 
         final Drawable originalDrawable = ContextCompat.getDrawable(getContext(), R.drawable.question_answered_checkbox);
         final Drawable wrappedDrawable = DrawableCompat.wrap(originalDrawable);

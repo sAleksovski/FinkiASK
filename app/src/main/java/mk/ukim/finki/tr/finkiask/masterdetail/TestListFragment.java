@@ -10,8 +10,9 @@ import android.widget.ListView;
 
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.adapters.QuestionListAdapter;
+import mk.ukim.finki.tr.finkiask.database.DBHelper;
+import mk.ukim.finki.tr.finkiask.database.models.Question;
 import mk.ukim.finki.tr.finkiask.masterdetail.questionfragment.BaseQuestionFragment;
-import mk.ukim.finki.tr.finkiask.masterdetailcontent.TestContent;
 
 
 /**
@@ -51,7 +52,7 @@ public class TestListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
-        void onItemSelected(String id);
+        void onItemSelected(long id);
     }
 
     /**
@@ -60,7 +61,7 @@ public class TestListFragment extends ListFragment {
      */
     private static Callbacks sTestCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(String id) {
+        public void onItemSelected(long id) {
         }
     };
 
@@ -75,7 +76,7 @@ public class TestListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setListAdapter(new QuestionListAdapter(getActivity(), TestContent.ITEMS));
+        setListAdapter(new QuestionListAdapter(getActivity(), DBHelper.getAllQuestion()));
     }
 
     @Override
@@ -122,7 +123,8 @@ public class TestListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(TestContent.ITEMS.get(position).getId() + "");
+        long itemId = ((Question) getListAdapter().getItem(position)).getId();
+        mCallbacks.onItemSelected(itemId);
         setActivatedPosition(position);
     }
 

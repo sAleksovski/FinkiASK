@@ -65,6 +65,9 @@ public class RangeQuestionFragment extends BaseQuestionFragment {
                     a.setText(String.format("%d:%d:%d", min, max, mProgress));
                     a.setIsAnswered(true);
                     a.save();
+
+                    mItem.setIsAnswered(true);
+                    mItem.save();
                 }
             });
 
