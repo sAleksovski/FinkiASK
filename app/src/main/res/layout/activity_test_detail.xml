@@ -21,6 +21,8 @@
             android:layout_marginTop="?actionBarSize"
             tools:ignore="MergeRootFrame" />
 
+        <include layout="@layout/fab_next_question" />
+
     </android.support.design.widget.CoordinatorLayout>
 
 </android.support.v4.widget.DrawerLayout>

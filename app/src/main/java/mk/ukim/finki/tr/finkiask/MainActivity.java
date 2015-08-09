@@ -48,11 +48,13 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
 
-        MainTestListFragment tests = MainTestListFragment.newInstance(TestPOJO.TEST);
-        adapter.addFragment(tests, "Tests");
+        if (AuthHelper.isLoggedIn(this)) {
+            MainTestListFragment tests = MainTestListFragment.newInstance(TestPOJO.TEST);
+            adapter.addFragment(tests, "Tests");
 
-        MainTestListFragment surveys = MainTestListFragment.newInstance(TestPOJO.SURVEY);
-        adapter.addFragment(surveys, "Surveys");
+            MainTestListFragment surveys = MainTestListFragment.newInstance(TestPOJO.SURVEY);
+            adapter.addFragment(surveys, "Surveys");
+        }
 
         MainTestListFragment anonSurvey = MainTestListFragment.newInstance(TestPOJO.ANONYMOUS_SURVEY);
         adapter.addFragment(anonSurvey, "Anonymous surveys");

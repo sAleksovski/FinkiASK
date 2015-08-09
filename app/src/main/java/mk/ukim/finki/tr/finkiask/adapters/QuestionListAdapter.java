@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.database.DBHelper;
 import mk.ukim.finki.tr.finkiask.database.models.Question;
@@ -34,12 +36,9 @@ public class QuestionListAdapter
 
         ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
-            viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.item_question_list, parent, false);
-            viewHolder.questionNumber = (TextView) convertView.findViewById(R.id.question_number);
-            viewHolder.questionShortText = (TextView) convertView.findViewById(R.id.question_short_text);
-            viewHolder.questionAnsweredCb = (CheckBox) convertView.findViewById(R.id.question_answered);
+            viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -61,11 +60,13 @@ public class QuestionListAdapter
 
     public static class ViewHolder {
 
-        TextView questionNumber;
-        TextView questionShortText;
-        CheckBox questionAnsweredCb;
+        @Bind(R.id.question_number) TextView questionNumber;
+        @Bind(R.id.question_short_text) TextView questionShortText;
+        @Bind(R.id.question_answered) CheckBox questionAnsweredCb;
 
-        public ViewHolder() {}
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
 
     }
 }

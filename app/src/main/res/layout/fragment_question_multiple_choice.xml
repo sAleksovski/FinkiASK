@@ -8,42 +8,34 @@
         android:layout_height="match_parent"
         android:layout_margin="8dp">
 
-        <RelativeLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ScrollView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
-                <RelativeLayout
+                <TextView
+                    android:id="@+id/question_text"
+                    style="?android:attr/textAppearanceLarge"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:padding="16dp" />
 
-                    <TextView
-                        android:id="@+id/question_text"
-                        style="?android:attr/textAppearanceLarge"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp" />
+                <LinearLayout
+                    android:id="@+id/answers_checkbox_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/question_text"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                    <LinearLayout
-                        android:id="@+id/answers_checkbox_group"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/question_text"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                </LinearLayout>
 
-                    </LinearLayout>
+            </RelativeLayout>
 
-                </RelativeLayout>
-
-            </ScrollView>
-
-            <include layout="@layout/fab_next_question" />
-
-        </RelativeLayout>
+        </ScrollView>
 
     </android.support.v7.widget.CardView>
 

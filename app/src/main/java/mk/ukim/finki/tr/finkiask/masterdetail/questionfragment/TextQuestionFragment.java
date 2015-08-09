@@ -2,20 +2,19 @@ package mk.ukim.finki.tr.finkiask.masterdetail.questionfragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.database.models.Answer;
 
 public class TextQuestionFragment extends BaseQuestionFragment {
 
-    EditText et;
+    @Bind(R.id.text_answer) EditText textAnswer;
     Answer a;
 
     @Nullable
@@ -26,22 +25,13 @@ public class TextQuestionFragment extends BaseQuestionFragment {
         if (mItem != null) {
             final View rootView = inflater.inflate(R.layout.fragment_question_text, container, false);
 
-            TextView tv = (TextView) rootView.findViewById(R.id.question_text);
-            tv.setText(mItem.getText());
+            ButterKnife.bind(this, rootView);
 
-            et = (EditText) rootView.findViewById(R.id.test_edit);
+            questionText.setText(mItem.getText());
+
             a = mItem.getAnswers().get(0);
 
-            et.setText(a.getText());
-
-            FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.btn_next_question);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Snackbar.make(v, "Go to next question", Snackbar.LENGTH_LONG).show();
-                    mCallbacks.onNextQuestion(mItem.getId());
-                }
-            });
+            textAnswer.setText(a.getText());
 
             return rootView;
         }
@@ -53,7 +43,7 @@ public class TextQuestionFragment extends BaseQuestionFragment {
     public void onPause() {
         super.onPause();
 
-        a.setText(et.getText().toString());
+        a.setText(textAnswer.getText().toString());
         a.save();
 
         mItem.setIsAnswered(a.getText().length() > 0);

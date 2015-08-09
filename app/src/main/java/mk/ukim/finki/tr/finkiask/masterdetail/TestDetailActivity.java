@@ -2,6 +2,7 @@ package mk.ukim.finki.tr.finkiask.masterdetail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,13 +34,15 @@ import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
  * more than a {@link BaseQuestionFragment}.
  */
 public class TestDetailActivity extends AppCompatActivity
-        implements CountdownInterface, BaseQuestionFragment.NextQuestionCallback {
+        implements CountdownInterface {
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.timer) TextView toolbarTimer;
     @Bind(R.id.submit) ImageButton submitButton;
+    @Bind(R.id.btn_next_question) FloatingActionButton btnNextQuestion;
 
     Countdown countdown;
+    long thisQuestionId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,19 +83,26 @@ public class TestDetailActivity extends AppCompatActivity
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
 
-            long id = getIntent().getLongExtra(BaseQuestionFragment.ARG_QUESTION_ID, -1);
+            thisQuestionId = getIntent().getLongExtra(BaseQuestionFragment.ARG_QUESTION_ID, -1);
 
             Bundle arguments = new Bundle();
-            arguments.putLong(BaseQuestionFragment.ARG_QUESTION_ID, id);
+            arguments.putLong(BaseQuestionFragment.ARG_QUESTION_ID, thisQuestionId);
 
             BaseQuestionFragment fragment = QuestionFragmentFactory.
-                    getQuestionFragment(DBHelper.getQuestionById(id).getType());
+                    getQuestionFragment(DBHelper.getQuestionById(thisQuestionId).getType());
 
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.test_detail_container, fragment)
                     .commit();
         }
+
+        btnNextQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextQuestion();
+            }
+        });
     }
 
     @Override
@@ -119,12 +129,11 @@ public class TestDetailActivity extends AppCompatActivity
         toolbarTimer.setText(String.format("%d:%02d", min, sec));
     }
 
-    @Override
-    public void onNextQuestion(long thisQuestionId) {
+    public void nextQuestion() {
         Question q = DBHelper.getNextQuestion(thisQuestionId);
-        long nextId = q.getId();
+        thisQuestionId = q.getId();
         Bundle arguments = new Bundle();
-        arguments.putLong(BaseQuestionFragment.ARG_QUESTION_ID, nextId);
+        arguments.putLong(BaseQuestionFragment.ARG_QUESTION_ID, thisQuestionId);
         BaseQuestionFragment fragment = QuestionFragmentFactory.
                 getQuestionFragment(q.getType());
         fragment.setArguments(arguments);

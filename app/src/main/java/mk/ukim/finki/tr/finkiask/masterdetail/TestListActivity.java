@@ -2,6 +2,8 @@ package mk.ukim.finki.tr.finkiask.masterdetail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -38,7 +40,7 @@ import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
  * to listen for item selections.
  */
 public class TestListActivity extends AppCompatActivity
-        implements TestListFragment.Callbacks, BaseQuestionFragment.NextQuestionCallback, CountdownInterface {
+        implements TestListFragment.Callbacks, CountdownInterface {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -49,6 +51,8 @@ public class TestListActivity extends AppCompatActivity
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.timer) TextView toolbarTimer;
     @Bind(R.id.submit) ImageButton submitButton;
+
+    @Nullable @Bind(R.id.btn_next_question) FloatingActionButton btnNextQuestion;
 
     public Countdown countdown;
 
@@ -66,7 +70,6 @@ public class TestListActivity extends AppCompatActivity
         ab.setHomeAsUpIndicator(R.drawable.ic_action_school);
         ab.setDisplayHomeAsUpEnabled(true);
 
-        toolbarTimer = (TextView) toolbar.findViewById(R.id.timer);
         countdown = Countdown.getInstance();
         countdown.addTestCountdownInterface(this);
 
@@ -109,6 +112,15 @@ public class TestListActivity extends AppCompatActivity
             }
         });
 
+        if (btnNextQuestion != null) {
+            btnNextQuestion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    nextQuestion();
+                }
+            });
+        }
+
         // TODO: If exposing deep links into your app, handle intents here.
     }
 
@@ -146,8 +158,9 @@ public class TestListActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onNextQuestion(long thisQuestionId) {
+    // TODO
+    // Different behavior from with TestDetailActivity
+    public void nextQuestion() {
         int currentPosition = fragment.getActivatedPosition();
         int total = fragment.getListView().getAdapter().getCount();
         int nextPosition = (currentPosition + 1) % total;
