@@ -1,11 +1,13 @@
 package mk.ukim.finki.tr.finkiask.database;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 
 import java.util.List;
 
 import mk.ukim.finki.tr.finkiask.database.models.Answer;
 import mk.ukim.finki.tr.finkiask.database.models.Question;
+import mk.ukim.finki.tr.finkiask.database.models.Question$Table;
 import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
 
 public class DBHelper {
@@ -19,5 +21,9 @@ public class DBHelper {
 
     public static List<Answer> getAllAnswers() {
         return new Select().from(Answer.class).queryList();
+    }
+
+    public static Question getQuestionById(long id) {
+        return new Select().from(Question.class).where(Condition.column(Question$Table.ID).is(id)).querySingle();
     }
 }

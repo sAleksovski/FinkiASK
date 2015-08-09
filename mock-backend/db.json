@@ -69,7 +69,14 @@
         {
           "id": 1,
           "type": "text",
-          "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod"
+          "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod",
+          "answers": [
+            {
+              "id": 1,
+              "text": "",
+              "questionID": 1
+            }
+          ]
         },
         {
           "id": 2,
@@ -77,16 +84,19 @@
           "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod",
           "answers": [
             {
+              "id": 2,
+              "text": "Answer 4",
+              "questionID": 2
+            },
+            {
+              "id": 3,
+              "text": "Answer 5",
+              "questionID": 2
+            },
+            {
               "id": 4,
-              "text": "Answer 4"
-            },
-            {
-              "id": 5,
-              "text": "Answer 5"
-            },
-            {
-              "id": 6,
-              "text": "Answer 6"
+              "text": "Answer 6",
+              "questionID": 2
             }
           ]
         },
@@ -96,16 +106,19 @@
           "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod",
           "answers": [
             {
+              "id": 5,
+              "text": "Answer 7",
+              "questionID": 3
+            },
+            {
+              "id": 6,
+              "text": "Answer 8",
+              "questionID": 3
+            },
+            {
               "id": 7,
-              "text": "Answer 7"
-            },
-            {
-              "id": 8,
-              "text": "Answer 8"
-            },
-            {
-              "id": 9,
-              "text": "Answer 9"
+              "text": "Answer 9",
+              "questionID": 3
             }
           ]
         },
@@ -115,8 +128,9 @@
           "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod",
           "answers": [
             {
-              "id": 10,
-              "text": "1:10"
+              "id": 8,
+              "text": "1:10",
+              "questionID": 4
             }
           ]
         }

@@ -1,13 +1,11 @@
 package mk.ukim.finki.tr.finkiask.database.models;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
-import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 
 import java.io.Serializable;
 
@@ -23,22 +21,19 @@ public class Answer extends BaseModel implements Serializable {
     private String text;
 
     @Column
-    private int isCorrect;
-
-    @Column
     private boolean isAnswered;
 
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "question_id",
-            columnType = Long.class,
-            foreignColumnName = "id")}, saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
-    protected ForeignKeyContainer<Question> questionModelContainer;
+    private long questionID;
+
+    private Question question;
 
     public Answer() {}
 
-    public Answer(long id, String text) {
+    public Answer(long id, String text, long questionID) {
         this.id = id;
         this.text = text;
+        this.questionID = questionID;
     }
 
     public long getId() {
@@ -57,14 +52,6 @@ public class Answer extends BaseModel implements Serializable {
         this.text = text;
     }
 
-    public int getIsCorrect() {
-        return isCorrect;
-    }
-
-    public void setIsCorrect(int isCorrect) {
-        this.isCorrect = isCorrect;
-    }
-
     public boolean getIsAnswered() {
         return isAnswered;
     }
@@ -74,12 +61,16 @@ public class Answer extends BaseModel implements Serializable {
     }
 
     public Question getQuestion() {
-        return questionModelContainer.toModel();
+        if (question == null)
+            question = new Select().from(Question.class).where(Condition.column(Question$Table.ID).eq(questionID)).querySingle();
+        return question;
     }
 
-    public void setQuestion(Question question) {
-        questionModelContainer = new ForeignKeyContainer<>(Question.class);
-        questionModelContainer.setModel(question);
-        questionModelContainer.put(Question$Table.ID, question.id);
+    public long getQuestionID() {
+        return questionID;
+    }
+
+    public void setQuestionID(long questionID) {
+        this.questionID = questionID;
     }
 }
