@@ -13,6 +13,8 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:windowBackground">@color/window_background</item>
+
+        <item name="discreteSeekBarStyle">@style/discreteSeekBarStyle</item>
     </style>
 
     <style name="Theme.FinkiASK.Login" parent="Theme.FinkiASK">
@@ -31,6 +33,13 @@
         <item name="colorAccent">@color/white</item>
         <item name="android:textColorPrimary">@color/iron</item>
         <item name="android:background">@color/primary</item>
+    </style>
+
+    <style name="discreteSeekBarStyle">
+        <item name="dsb_progressColor">@color/primary</item>
+        <item name="dsb_indicatorColor">@color/primary</item>
+        <item name="dsb_trackColor">@color/iron</item>
+        <item name="dsb_rippleColor">@color/iron</item>
     </style>
 
 </resources>

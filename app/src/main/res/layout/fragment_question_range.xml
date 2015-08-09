@@ -25,17 +25,18 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp" />
 
-                <SeekBar
-                    android:id="@+id/seekBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp" />
-
                 <TextView
                     android:id="@+id/seekBarText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
+                    android:textSize="24sp"
+                    android:padding="16dp" />
+
+                <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:padding="16dp" />
 
             </LinearLayout>

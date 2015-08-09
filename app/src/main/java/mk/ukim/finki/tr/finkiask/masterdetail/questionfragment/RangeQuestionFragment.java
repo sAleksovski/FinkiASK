@@ -5,8 +5,9 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
 import android.widget.TextView;
+
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -15,7 +16,7 @@ import mk.ukim.finki.tr.finkiask.database.models.Answer;
 
 public class RangeQuestionFragment extends BaseQuestionFragment {
 
-    @Bind(R.id.seekBar) SeekBar seekbar;
+    @Bind(R.id.seekBar) DiscreteSeekBar seekBar;
     @Bind(R.id.seekBarText) TextView seekBarText;
 
     @Nullable
@@ -41,27 +42,28 @@ public class RangeQuestionFragment extends BaseQuestionFragment {
                 value = Integer.parseInt(rangeParts[2]);
             }
 
-            seekbar.setMax(max - min);
-            seekbar.setProgress(value - min);
+            seekBar.setMin(min);
+            seekBar.setMax(max);
+            seekBar.setProgress(value);
 
             seekBarText.setText(String.valueOf(value));
 
-            seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            seekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
                 int mProgress;
 
                 @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    mProgress = min + progress;
+                public void onProgressChanged(DiscreteSeekBar discreteSeekBar, int i, boolean b) {
+                    mProgress = i;
                     seekBarText.setText(String.valueOf(mProgress));
                 }
 
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
+                public void onStartTrackingTouch(DiscreteSeekBar discreteSeekBar) {
 
                 }
 
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
+                public void onStopTrackingTouch(DiscreteSeekBar discreteSeekBar) {
                     a.setText(String.format("%d:%d:%d", min, max, mProgress));
                     a.setIsAnswered(true);
                     a.save();

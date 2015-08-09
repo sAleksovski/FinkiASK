@@ -32,5 +32,6 @@ dependencies {
     compile "com.raizlabs.android:DBFlow:2.2.1"
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.google.code.gson:gson:2.3'
+    compile 'org.adw.library:discrete-seekbar:1.0.0'
 
 }

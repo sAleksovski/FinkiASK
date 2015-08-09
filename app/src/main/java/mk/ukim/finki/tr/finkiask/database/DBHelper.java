@@ -54,23 +54,23 @@ public class DBHelper {
     }
 
     public static Question getNextQuestion(long id) {
+//        Question q = new Select()
+//                .from(Question.class)
+//                .where(Condition.column(Question$Table.ID).greaterThan(id))
+//                .and(Question$Table.ISANSWERED, false)
+//                .querySingle();
+//
+//        if (q != null) return q;
+//
+//        q = new Select()
+//                .from(Question.class)
+//                .where(Condition.column(Question$Table.ID).lessThan(id))
+//                .and(Question$Table.ISANSWERED, false)
+//                .querySingle();
+//
+//        if (q != null) return q;
+
         Question q = new Select()
-                .from(Question.class)
-                .where(Condition.column(Question$Table.ID).greaterThan(id))
-                .and(Question$Table.ISANSWERED, false)
-                .querySingle();
-
-        if (q != null) return q;
-
-        q = new Select()
-                .from(Question.class)
-                .where(Condition.column(Question$Table.ID).lessThan(id))
-                .and(Question$Table.ISANSWERED, false)
-                .querySingle();
-
-        if (q != null) return q;
-
-        q = new Select()
                 .from(Question.class)
                 .where(Condition.column(Question$Table.ID).greaterThan(id))
                 .querySingle();
