@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.ActionBar;
@@ -36,11 +35,11 @@ import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
  * lead to a {@link TestDetailActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
- * <p/>
+ * <p>
  * The activity makes heavy use of fragments. The list of items is a
  * {@link TestListFragment} and the item details
  * (if present) is a {@link BaseQuestionFragment}.
- * <p/>
+ * <p>
  * This activity also implements the required
  * {@link TestListFragment.Callbacks} interface
  * to listen for item selections.
@@ -127,18 +126,17 @@ public class TestListActivity extends AppCompatActivity
             });
         }
 
-        // TODO: If exposing deep links into your app, handle intents here.
     }
 
-    public void changeTimer(long milliseconds){
+    public void changeTimer(long milliseconds) {
         int sec = (int) (milliseconds / 1000);
         int min = sec / 60;
         sec = sec - (min * 60);
         toolbarTimer.setText(String.format("%d:%02d", min, sec));
     }
-    @Override
-    public void onBackPressed(){
 
+    @Override
+    public void onBackPressed() {
         final Drawable originalDrawable = ContextCompat.getDrawable(this, R.drawable.ic_action_school);
         final Drawable wrappedDrawable = DrawableCompat.wrap(originalDrawable);
         DrawableCompat.setTint(wrappedDrawable, this.getResources().getColor(R.color.primary));
@@ -159,6 +157,7 @@ public class TestListActivity extends AppCompatActivity
                 .setIcon(wrappedDrawable)
                 .show();
     }
+
     /**
      * Callback method from {@link TestListFragment.Callbacks}
      * indicating that the item with the given ID was selected.

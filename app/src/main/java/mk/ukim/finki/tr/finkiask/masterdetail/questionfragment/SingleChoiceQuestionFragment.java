@@ -34,6 +34,8 @@ public class SingleChoiceQuestionFragment extends BaseQuestionFragment {
             for (final Answer a : mItem.getAnswers()) {
                 RadioButton rb = new RadioButton(getActivity());
                 rb.setText(a.getText());
+                rb.setLayoutParams(new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT,
+                        RadioGroup.LayoutParams.MATCH_PARENT, 1f));
                 answersRadioGroup.addView(rb);
                 if (a.getIsAnswered()) {
                     rb.setChecked(true);
