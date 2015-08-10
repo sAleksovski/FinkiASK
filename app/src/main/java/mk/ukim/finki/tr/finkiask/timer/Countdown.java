@@ -10,6 +10,7 @@ public class Countdown {
     public boolean isStarted = false;
     public List<CountdownInterface> countdownInterfaces;
     private static Countdown countdown;
+    private CountDownTimer countDownTimer;
 
     protected Countdown() {
         countdownInterfaces = new ArrayList<>();
@@ -29,7 +30,7 @@ public class Countdown {
     public void start(int duration) {
         if (!isStarted) {
             isStarted = true;
-            new CountDownTimer(duration * 60 * 1000, 1000) {
+            countDownTimer = new CountDownTimer(duration * 60 * 1000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     milliseconds = millisUntilFinished;
@@ -39,15 +40,19 @@ public class Countdown {
 
                 @Override
                 public void onFinish() {
-                    //toolbarTimer.setText("done");
                     isStarted = false;
                 }
-            }.start();
+            };
+            countDownTimer.start();
         }
 
     }
 
     public long getMilliseconds() {
         return milliseconds;
+    }
+    public void stop(){
+        countDownTimer.cancel();
+        isStarted = false;
     }
 }

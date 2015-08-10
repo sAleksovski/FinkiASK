@@ -44,8 +44,8 @@ public class Question extends BaseModel implements Serializable {
 
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "test_id",
-                                    columnType = Long.class,
-                                    foreignColumnName = "id")}, saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
+            columnType = Long.class,
+            foreignColumnName = "id")}, saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
     protected ForeignKeyContainer<TestInstance> testInstanceModelContainer;
 
     protected List<Answer> answers;

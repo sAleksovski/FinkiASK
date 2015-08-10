@@ -1,10 +1,16 @@
 package mk.ukim.finki.tr.finkiask.masterdetail;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -129,6 +135,29 @@ public class TestListActivity extends AppCompatActivity
         int min = sec / 60;
         sec = sec - (min * 60);
         toolbarTimer.setText(String.format("%d:%02d", min, sec));
+    }
+    @Override
+    public void onBackPressed(){
+
+        final Drawable originalDrawable = ContextCompat.getDrawable(this, R.drawable.ic_action_school);
+        final Drawable wrappedDrawable = DrawableCompat.wrap(originalDrawable);
+        DrawableCompat.setTint(wrappedDrawable, this.getResources().getColor(R.color.primary));
+        new AlertDialog.Builder(this)
+                .setTitle("Cancel test")
+                .setMessage("Are you sure you want to cancel this test?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        countdown.stop();
+                        TestListActivity.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setIcon(wrappedDrawable)
+                .show();
     }
     /**
      * Callback method from {@link TestListFragment.Callbacks}
