@@ -9,6 +9,11 @@ public class TestPOJO implements Serializable {
     public static String SURVEY = "survey";
     public static String ANONYMOUS_SURVEY = "anonymousSurvey";
 
+    // GRADEDTEST
+    // UNGRADEDTEST
+    // SURVEY
+    // OPENSURVEY
+
     private long id;
     private String name;
     private String type;

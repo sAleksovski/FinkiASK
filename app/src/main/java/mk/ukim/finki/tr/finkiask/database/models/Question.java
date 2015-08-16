@@ -24,10 +24,10 @@ import mk.ukim.finki.tr.finkiask.database.AppDatabase;
 public class Question extends BaseModel implements Serializable {
 
     // Question types
-    public static String SINGLE_CHOICE = "single_choice";
-    public static String MULTIPLE_CHOICE = "multiple_choice";
-    public static String TEXT = "text";
-    public static String RANGE = "range";
+    public static String SINGLE_CHOICE = "SINGLE";
+    public static String MULTIPLE_CHOICE = "MULTIPLE";
+    public static String TEXT = "TEXT";
+    public static String RANGE = "RANGE";
 
     @Column
     @PrimaryKey(autoincrement = false)
