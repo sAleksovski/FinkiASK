@@ -1,15 +1,10 @@
 package mk.ukim.finki.tr.finkiask.masterdetail;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -26,6 +21,8 @@ import mk.ukim.finki.tr.finkiask.masterdetail.questionfragment.BaseQuestionFragm
 import mk.ukim.finki.tr.finkiask.masterdetail.questionfragment.QuestionFragmentFactory;
 import mk.ukim.finki.tr.finkiask.timer.Countdown;
 import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
+import mk.ukim.finki.tr.finkiask.ui.dialog.BaseDialogFragment;
+import mk.ukim.finki.tr.finkiask.ui.dialog.CancelTestDialogFragment;
 
 
 /**
@@ -35,11 +32,11 @@ import mk.ukim.finki.tr.finkiask.timer.CountdownInterface;
  * lead to a {@link TestDetailActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
- * <p>
+ * <p/>
  * The activity makes heavy use of fragments. The list of items is a
  * {@link TestListFragment} and the item details
  * (if present) is a {@link BaseQuestionFragment}.
- * <p>
+ * <p/>
  * This activity also implements the required
  * {@link TestListFragment.Callbacks} interface
  * to listen for item selections.
@@ -53,11 +50,16 @@ public class TestListActivity extends AppCompatActivity
      */
     private boolean mTwoPane;
 
-    @Bind(R.id.toolbar) Toolbar toolbar;
-    @Bind(R.id.timer) TextView toolbarTimer;
-    @Bind(R.id.submit) ImageButton submitButton;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.timer)
+    TextView toolbarTimer;
+    @Bind(R.id.submit)
+    ImageButton submitButton;
 
-    @Nullable @Bind(R.id.btn_next_question) FloatingActionButton btnNextQuestion;
+    @Nullable
+    @Bind(R.id.btn_next_question)
+    FloatingActionButton btnNextQuestion;
 
     public Countdown countdown;
 
@@ -137,25 +139,12 @@ public class TestListActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        final Drawable originalDrawable = ContextCompat.getDrawable(this, R.drawable.ic_action_school);
-        final Drawable wrappedDrawable = DrawableCompat.wrap(originalDrawable);
-        DrawableCompat.setTint(wrappedDrawable, this.getResources().getColor(R.color.primary));
-        new AlertDialog.Builder(this)
-                .setTitle("Cancel test")
-                .setMessage("Are you sure you want to cancel this test?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        countdown.stop();
-                        TestListActivity.super.onBackPressed();
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .setIcon(wrappedDrawable)
-                .show();
+        CancelTestDialogFragment.newInstance(new BaseDialogFragment.OnPositiveCallback() {
+            @Override
+            public void onPositiveClick() {
+                TestListActivity.super.onBackPressed();
+            }
+        }).show(getSupportFragmentManager(), "cancel_test_dialog");
     }
 
     /**

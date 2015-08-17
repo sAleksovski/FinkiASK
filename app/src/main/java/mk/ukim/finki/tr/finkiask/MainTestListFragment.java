@@ -1,5 +1,7 @@
 package mk.ukim.finki.tr.finkiask;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,18 +20,26 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.adapters.TestRecyclerViewAdapter;
+import mk.ukim.finki.tr.finkiask.database.DBHelper;
+import mk.ukim.finki.tr.finkiask.database.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.database.pojo.AllActivePOJO;
 import mk.ukim.finki.tr.finkiask.database.pojo.TestPOJO;
+import mk.ukim.finki.tr.finkiask.masterdetail.TestListActivity;
+import mk.ukim.finki.tr.finkiask.rest.RestError;
 import mk.ukim.finki.tr.finkiask.rest.TestsRestAdapter;
 import mk.ukim.finki.tr.finkiask.rest.TestsRestInterface;
+import mk.ukim.finki.tr.finkiask.ui.dialog.BaseDialogFragment;
+import mk.ukim.finki.tr.finkiask.ui.dialog.StartTestDialog;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class MainTestListFragment extends Fragment {
 
-    @Bind(R.id.tests_list) RecyclerView mRecyclerView;
-    @Bind(R.id.no_tests_message)TextView mNoTestsMessage;
+    @Bind(R.id.tests_list)
+    RecyclerView mRecyclerView;
+    @Bind(R.id.no_tests_message)
+    TextView mNoTestsMessage;
     TestRecyclerViewAdapter adapter;
 
     List<TestPOJO> testDataSet;
@@ -59,7 +69,12 @@ public class MainTestListFragment extends Fragment {
         getTests();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
-        adapter = new TestRecyclerViewAdapter(testDataSet);
+        adapter = new TestRecyclerViewAdapter(testDataSet, new TestRecyclerViewAdapter.TestRecyclerViewAdapterClickCallback() {
+            @Override
+            public void onItemClick(int position) {
+                testSelected(testDataSet.get(position));
+            }
+        });
         mRecyclerView.setAdapter(adapter);
 
         if (testDataSet.size() == 0) {
@@ -95,6 +110,47 @@ public class MainTestListFragment extends Fragment {
         }
         mNoTestsMessage.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
+    }
+
+    private void testSelected(final TestPOJO test) {
+        // TODO
+        // if tests is locked, InsertPasswordDialog
+
+        StartTestDialog.newInstance(test.getDuration(),
+                new BaseDialogFragment.OnPositiveCallback() {
+                    @Override
+                    public void onPositiveClick() {
+                        // TODO
+                        // startTest(getActivity(), test.getId());
+                        startTest(getActivity(), 1);
+                    }
+                }).show(getFragmentManager(), "fragment_start_test");
+    }
+
+    private void startTest(final Context context, long id) {
+        TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
+        testsRestAdapter.getTest(id, new Callback<TestInstance>() {
+
+            @Override
+            public void success(TestInstance testInstance, Response response) {
+
+                DBHelper.saveTestInstanceToDb(testInstance);
+
+                Intent intent = new Intent(context, TestListActivity.class);
+                intent.putExtra("testInstanceId", testInstance.getId());
+
+                context.startActivity(intent);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("REST", "Not loaded correctly");
+                if (error.getResponse() != null) {
+                    RestError body = (RestError) error.getBodyAs(RestError.class);
+                    Log.e("RESTError", body.errorDetails);
+                }
+            }
+        });
     }
 
 }

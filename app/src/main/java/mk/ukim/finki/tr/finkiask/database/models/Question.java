@@ -16,7 +16,6 @@ import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 import java.io.Serializable;
 import java.util.List;
 
-import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.database.AppDatabase;
 
 @Table(databaseName = AppDatabase.NAME)
@@ -114,20 +113,6 @@ public class Question extends BaseModel implements Serializable {
     @Override
     public String toString() {
         return "Question " + getId();
-    }
-
-    public int getTemplateFile() {
-        if (type.equals(SINGLE_CHOICE)) {
-            return R.layout.fragment_question_single_choice;
-        } else if (type.equals(MULTIPLE_CHOICE)) {
-            return R.layout.fragment_question_multiple_choice;
-        } else if (type.equals(TEXT)) {
-            return R.layout.fragment_question_text;
-        } else if (type.equals(RANGE)) {
-            return R.layout.fragment_question_range;
-        }
-        // TODO handle exception
-        return R.layout.fragment_question_text;
     }
 
 }
