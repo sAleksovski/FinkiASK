@@ -5,13 +5,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="mk.ukim.finki.tr.finkiask.database.FinkiaskApplication"
+        android:name="mk.ukim.finki.tr.finkiask.data.FinkiaskApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.FinkiASK" >
         <activity
-            android:name=".masterdetail.TestListActivity"
+            android:name=".ui.masterdetail.TestListActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,11 +20,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".masterdetail.TestDetailActivity"
+            android:name=".ui.masterdetail.TestDetailActivity"
             android:label="@string/title_test_detail" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="masterdetail.TestListActivity" />
+                android:value=".ui.masterdetail.TestListActivity" />
         </activity>
         <activity
             android:name=".CheckLoginActivity"
@@ -37,12 +37,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.FinkiASK.Login">
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
 
