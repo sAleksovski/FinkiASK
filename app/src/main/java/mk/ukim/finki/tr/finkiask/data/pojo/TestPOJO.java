@@ -5,23 +5,22 @@ import java.util.Date;
 
 public class TestPOJO implements Serializable {
 
-    public static String TEST = "test";
-    public static String SURVEY = "survey";
-    public static String ANONYMOUS_SURVEY = "anonymousSurvey";
-
-    // TODO
-    // GRADEDTEST
-    // UNGRADEDTEST
-    // SURVEY
-    // OPENSURVEY
+    public static String TEST = "TEST";
+    public static String ANONYMOUS_TEST = "ANONYMOUSTEST";
+    public static String SURVEY = "SURVEY";
 
     private long id;
     private String name;
     private String type;
+    private boolean isPublic;
+    private Date dateCreated;
+    private Date start;
+    private Date end;
     private int duration;
-    private Date endTime;
+    private boolean isActive;
 
-    public TestPOJO() {}
+    public TestPOJO() {
+    }
 
     public long getId() {
         return id;
@@ -55,12 +54,43 @@ public class TestPOJO implements Serializable {
         this.duration = duration;
     }
 
-    public Date getEndTime() {
-        return endTime;
+    public Date getEnd() {
+        return end;
     }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    public void setEnd(Date end) {
+        this.end = end;
     }
 
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public void setStart(Date start) {
+        this.start = start;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
 }

@@ -82,6 +82,10 @@ public class DBHelper {
                 .where(Condition.column(Question$Table.ID).lessThan(id))
                 .querySingle();
 
+        if (q != null) return q;
+
+        q = getQuestionById(id);
+
         return q;
     }
 }

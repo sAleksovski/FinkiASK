@@ -11,6 +11,8 @@ import java.io.Serializable;
 
 import mk.ukim.finki.tr.finkiask.data.AppDatabase;
 
+//TODO sent to server (id, isChecked, text) with list of all questions
+
 @Table(databaseName = AppDatabase.NAME)
 public class Answer extends BaseModel implements Serializable {
     @Column
@@ -21,7 +23,7 @@ public class Answer extends BaseModel implements Serializable {
     private String text;
 
     @Column
-    private boolean isAnswered;
+    private boolean isChecked;
 
     @Column
     private long questionID;
@@ -53,11 +55,11 @@ public class Answer extends BaseModel implements Serializable {
     }
 
     public boolean getIsAnswered() {
-        return isAnswered;
+        return isChecked;
     }
 
     public void setIsAnswered(boolean isAnswered) {
-        this.isAnswered = isAnswered;
+        this.isChecked = isAnswered;
     }
 
     public Question getQuestion() {

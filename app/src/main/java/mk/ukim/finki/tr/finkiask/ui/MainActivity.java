@@ -52,13 +52,13 @@ public class MainActivity extends AppCompatActivity {
         if (AuthHelper.isLoggedIn(this)) {
             MainTestListFragment tests = MainTestListFragment.newInstance(TestPOJO.TEST);
             adapter.addFragment(tests, "Tests");
-
-            MainTestListFragment surveys = MainTestListFragment.newInstance(TestPOJO.SURVEY);
-            adapter.addFragment(surveys, "Surveys");
         }
 
-        MainTestListFragment anonSurvey = MainTestListFragment.newInstance(TestPOJO.ANONYMOUS_SURVEY);
-        adapter.addFragment(anonSurvey, "Anonymous surveys");
+        MainTestListFragment anonSurvey = MainTestListFragment.newInstance(TestPOJO.ANONYMOUS_TEST);
+        adapter.addFragment(anonSurvey, "Anonymous test");
+
+        MainTestListFragment surveys = MainTestListFragment.newInstance(TestPOJO.SURVEY);
+        adapter.addFragment(surveys, "Surveys");
 
         viewPager.setAdapter(adapter);
     }

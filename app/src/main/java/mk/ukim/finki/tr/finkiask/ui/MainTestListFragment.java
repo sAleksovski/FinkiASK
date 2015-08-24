@@ -22,15 +22,15 @@ import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.adapter.TestRecyclerViewAdapter;
 import mk.ukim.finki.tr.finkiask.data.DBHelper;
-import mk.ukim.finki.tr.finkiask.data.models.TestInstance;
-import mk.ukim.finki.tr.finkiask.data.pojo.AllActivePOJO;
-import mk.ukim.finki.tr.finkiask.data.pojo.TestPOJO;
-import mk.ukim.finki.tr.finkiask.ui.masterdetail.TestListActivity;
 import mk.ukim.finki.tr.finkiask.data.api.RestError;
 import mk.ukim.finki.tr.finkiask.data.api.TestsRestAdapter;
 import mk.ukim.finki.tr.finkiask.data.api.TestsRestInterface;
+import mk.ukim.finki.tr.finkiask.data.models.TestInstance;
+import mk.ukim.finki.tr.finkiask.data.pojo.TestInstanceWrapperPOJO;
+import mk.ukim.finki.tr.finkiask.data.pojo.TestPOJO;
 import mk.ukim.finki.tr.finkiask.ui.dialog.BaseDialogFragment;
 import mk.ukim.finki.tr.finkiask.ui.dialog.StartTestDialog;
+import mk.ukim.finki.tr.finkiask.ui.masterdetail.TestListActivity;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -55,7 +55,7 @@ public class MainTestListFragment extends Fragment {
     }
 
     public String getType() {
-        return getArguments().getString("type", "test");
+        return getArguments().getString("type", TestPOJO.SURVEY);
     }
 
     @Nullable
@@ -87,9 +87,9 @@ public class MainTestListFragment extends Fragment {
 
     private void getTests() {
         TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
-        testsRestAdapter.listAllActive(new Callback<AllActivePOJO>() {
+        testsRestAdapter.listAllActive(getType(), new Callback<List<TestPOJO>>() {
             @Override
-            public void success(AllActivePOJO tests, Response response) {
+            public void success(List<TestPOJO> tests, Response response) {
                 processTests(tests);
             }
 
@@ -100,10 +100,9 @@ public class MainTestListFragment extends Fragment {
         });
     }
 
-    private void processTests(AllActivePOJO tests) {
+    private void processTests(List<TestPOJO> tests) {
 
-        String type = getType();
-        testDataSet.addAll(tests.get(type));
+        testDataSet.addAll(tests);
 
         if (testDataSet.size() == 0) {
             mNoTestsMessage.setVisibility(View.VISIBLE);
@@ -130,11 +129,13 @@ public class MainTestListFragment extends Fragment {
 
     private void startTest(final Context context, long id) {
         TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
-        testsRestAdapter.getTest(id, new Callback<TestInstance>() {
+        //TODO get password from user with form
+        //TODO get session from response cookie (can be stored in shared preferences)
+        testsRestAdapter.getTest(id, "password123", new Callback<TestInstanceWrapperPOJO>() {
 
             @Override
-            public void success(TestInstance testInstance, Response response) {
-
+            public void success(TestInstanceWrapperPOJO testInstanceWrapperPOJO, Response response) {
+                TestInstance testInstance = testInstanceWrapperPOJO.getData();
                 DBHelper.saveTestInstanceToDb(testInstance);
 
                 Intent intent = new Intent(context, TestListActivity.class);
