@@ -141,7 +141,7 @@ public class TestListActivity extends AppCompatActivity
     public void onBackPressed() {
         CancelTestDialogFragment.newInstance(new BaseDialogFragment.OnPositiveCallback() {
             @Override
-            public void onPositiveClick() {
+            public void onPositiveClick(String data) {
                 countdown.stop();
                 TestListActivity.super.onBackPressed();
             }

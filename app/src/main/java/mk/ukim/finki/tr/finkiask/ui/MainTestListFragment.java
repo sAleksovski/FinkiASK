@@ -29,10 +29,12 @@ import mk.ukim.finki.tr.finkiask.data.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.data.pojo.TestInstanceWrapperPOJO;
 import mk.ukim.finki.tr.finkiask.data.pojo.TestPOJO;
 import mk.ukim.finki.tr.finkiask.ui.dialog.BaseDialogFragment;
-import mk.ukim.finki.tr.finkiask.ui.dialog.StartTestDialog;
+import mk.ukim.finki.tr.finkiask.ui.dialog.InsertPasswordDialog;
 import mk.ukim.finki.tr.finkiask.ui.masterdetail.TestListActivity;
+import mk.ukim.finki.tr.finkiask.util.AuthHelper;
 import retrofit.Callback;
 import retrofit.RetrofitError;
+import retrofit.client.Header;
 import retrofit.client.Response;
 
 public class MainTestListFragment extends Fragment {
@@ -113,28 +115,29 @@ public class MainTestListFragment extends Fragment {
     }
 
     private void testSelected(final TestPOJO test) {
-        // TODO
-        // if tests is locked, InsertPasswordDialog
-
-        StartTestDialog.newInstance(test.getDuration(),
-                new BaseDialogFragment.OnPositiveCallback() {
-                    @Override
-                    public void onPositiveClick() {
-                        // TODO
-                        // startTest(getActivity(), test.getId());
-                        startTest(getActivity(), 1);
-                    }
-                }).show(getFragmentManager(), "fragment_start_test");
+        InsertPasswordDialog.newInstance(test.getDuration(), new BaseDialogFragment.OnPositiveCallback() {
+            @Override
+            public void onPositiveClick(String data) {
+                startTest(getActivity(), test.getId(), data);
+            }
+        }).show(getFragmentManager(), "fragment_start_test");
     }
 
-    private void startTest(final Context context, long id) {
+    private void startTest(final Context context, long id, String password) {
         TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
-        //TODO get password from user with form
         //TODO get session from response cookie (can be stored in shared preferences)
-        testsRestAdapter.getTest(id, "password123", new Callback<TestInstanceWrapperPOJO>() {
+        testsRestAdapter.getTest(id, password, new Callback<TestInstanceWrapperPOJO>() {
 
             @Override
             public void success(TestInstanceWrapperPOJO testInstanceWrapperPOJO, Response response) {
+                for (Header header : response.getHeaders()) {
+                    // TODO
+                    // Header name
+                    if (header.getName().equals("JSESID")) {
+                        AuthHelper.setSessionCookie(context, header.getValue());
+                    }
+                }
+
                 TestInstance testInstance = testInstanceWrapperPOJO.getData();
                 DBHelper.saveTestInstanceToDb(testInstance);
 

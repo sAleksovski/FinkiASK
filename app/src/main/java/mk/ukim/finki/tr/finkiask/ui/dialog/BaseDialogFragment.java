@@ -31,7 +31,7 @@ public class BaseDialogFragment extends DialogFragment {
         btnPositive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPositiveCallback.onPositiveClick();
+                mPositiveCallback.onPositiveClick("");
                 dismiss();
             }
         });
@@ -42,6 +42,6 @@ public class BaseDialogFragment extends DialogFragment {
     }
 
     public interface OnPositiveCallback {
-        void onPositiveClick();
+        void onPositiveClick(String data);
     }
 }

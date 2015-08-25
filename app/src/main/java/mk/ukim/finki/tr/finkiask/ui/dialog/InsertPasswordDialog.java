@@ -38,4 +38,26 @@ public class InsertPasswordDialog extends BaseDialogFragment {
         text.setText(String.format(textFormat, getArguments().getInt("minutes")));
         return view;
     }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        btnNegative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
+        btnPositive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPositiveCallback.onPositiveClick(getPassword());
+                dismiss();
+            }
+        });
+    }
+
+    public String getPassword() {
+        return password.getText().toString();
+    }
 }
