@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.data.DBHelper;
 import mk.ukim.finki.tr.finkiask.data.models.TestInstance;
+import mk.ukim.finki.tr.finkiask.ui.ResultActivity;
 import mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment.BaseQuestionFragment;
 import mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment.QuestionFragmentFactory;
 import mk.ukim.finki.tr.finkiask.util.timer.Countdown;
@@ -113,6 +114,9 @@ public class TestListActivity extends AppCompatActivity
                 if (DBHelper.isTestInstanceFound()) {
                     DBHelper.deleteEverything();
                     Toast.makeText(getApplicationContext(), "TestInstance removed from local DB", Toast.LENGTH_LONG).show();
+
+                    Intent resultIntent = new Intent(getApplication(), ResultActivity.class);
+                    startActivity(resultIntent);
                 } else {
                     Toast.makeText(getApplicationContext(), "No TestInstanceFound", Toast.LENGTH_LONG).show();
                 }

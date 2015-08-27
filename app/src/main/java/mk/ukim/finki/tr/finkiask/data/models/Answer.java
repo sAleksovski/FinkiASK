@@ -54,12 +54,12 @@ public class Answer extends BaseModel implements Serializable {
         this.text = text;
     }
 
-    public boolean getIsAnswered() {
+    public boolean getIsChecked() {
         return isChecked;
     }
 
-    public void setIsAnswered(boolean isAnswered) {
-        this.isChecked = isAnswered;
+    public void setIsChecked(boolean isChecked) {
+        this.isChecked = isChecked;
     }
 
     public Question getQuestion() {

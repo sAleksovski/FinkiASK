@@ -38,7 +38,7 @@ public class RangeQuestionFragment extends BaseQuestionFragment {
             final int max = Integer.parseInt(rangeParts[1]);
 
             int value = min;
-            if (a.getIsAnswered()) {
+            if (a.getIsChecked()) {
                 value = Integer.parseInt(rangeParts[2]);
             }
 
@@ -65,7 +65,7 @@ public class RangeQuestionFragment extends BaseQuestionFragment {
                 @Override
                 public void onStopTrackingTouch(DiscreteSeekBar discreteSeekBar) {
                     a.setText(String.format("%d:%d:%d", min, max, mProgress));
-                    a.setIsAnswered(true);
+                    a.setIsChecked(true);
                     a.save();
 
                     mItem.setIsAnswered(true);

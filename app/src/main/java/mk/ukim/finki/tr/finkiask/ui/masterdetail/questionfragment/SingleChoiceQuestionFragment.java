@@ -37,7 +37,7 @@ public class SingleChoiceQuestionFragment extends BaseQuestionFragment {
                 rb.setLayoutParams(new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT,
                         RadioGroup.LayoutParams.MATCH_PARENT, 1f));
                 answersRadioGroup.addView(rb);
-                if (a.getIsAnswered()) {
+                if (a.getIsChecked()) {
                     rb.setChecked(true);
                     previousAnswer = a;
                 }
@@ -57,10 +57,10 @@ public class SingleChoiceQuestionFragment extends BaseQuestionFragment {
 
     private void onAnswerChanged(Answer answer) {
         if (previousAnswer != null) {
-            previousAnswer.setIsAnswered(false);
+            previousAnswer.setIsChecked(false);
             previousAnswer.save();
         }
-        answer.setIsAnswered(true);
+        answer.setIsChecked(true);
         answer.save();
         previousAnswer = answer;
 
