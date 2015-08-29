@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,7 @@ import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.adapter.TestRecyclerViewAdapter;
 import mk.ukim.finki.tr.finkiask.data.DBHelper;
+import mk.ukim.finki.tr.finkiask.data.api.ResponseStatus;
 import mk.ukim.finki.tr.finkiask.data.api.RestError;
 import mk.ukim.finki.tr.finkiask.data.api.TestsRestAdapter;
 import mk.ukim.finki.tr.finkiask.data.api.TestsRestInterface;
@@ -131,20 +133,27 @@ public class MainTestListFragment extends Fragment {
             @Override
             public void success(TestInstanceWrapperPOJO testInstanceWrapperPOJO, Response response) {
                 for (Header header : response.getHeaders()) {
-                    // TODO
-                    // Header name
-                    if (header.getName().equals("JSESID")) {
-                        AuthHelper.setSessionCookie(context, header.getValue());
+                    if (header.getName() != null && header.getName().equals("Set-Cookie")) {
+                        if (header.getValue().startsWith("JSESSIONID")) {
+                            String sessionId = header.getValue().split(";")[0];
+                            sessionId = sessionId.replace("JSESSIONID=", "");
+                            AuthHelper.setSessionCookie(context, sessionId);
+                        }
                     }
                 }
 
-                TestInstance testInstance = testInstanceWrapperPOJO.getData();
-                DBHelper.saveTestInstanceToDb(testInstance);
+                if (testInstanceWrapperPOJO.getResponseStatus().equals(ResponseStatus.SUCCESS)) {
+                    TestInstance testInstance = testInstanceWrapperPOJO.getData();
+                    DBHelper.saveTestInstanceToDb(testInstance);
 
-                Intent intent = new Intent(context, TestListActivity.class);
-                intent.putExtra("testInstanceId", testInstance.getId());
+                    Intent intent = new Intent(context, TestListActivity.class);
+                    intent.putExtra("testInstanceId", testInstance.getId());
 
-                context.startActivity(intent);
+                    context.startActivity(intent);
+                } else if (testInstanceWrapperPOJO.getResponseStatus().equals(ResponseStatus.ERROR)) {
+                    Snackbar.make(mRecyclerView, testInstanceWrapperPOJO.getDescription(), Snackbar.LENGTH_LONG).show();
+                }
+
             }
 
             @Override

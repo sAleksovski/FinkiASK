@@ -31,23 +31,29 @@ public class TestInstance extends BaseModel implements Serializable {
     @Column
     private int duration;
 
+    // TODO
+    // fali u api
     @Column
     private long userID;
 
     @Column
-    private Date startTime;
+    private Date start;
+
+    @Column
+    private Date end;
 
     protected List<Question> questions;
 
     public TestInstance() { }
 
-    public TestInstance(long id, String name, String type, int duration, long userID, Date startTime) {
+    public TestInstance(long id, String name, String type, int duration, long userID, Date start, Date end) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.duration = duration;
         this.userID = userID;
-        this.startTime = startTime;
+        this.start = start;
+        this.end = end;
     }
 
     public long getId() {
@@ -90,12 +96,12 @@ public class TestInstance extends BaseModel implements Serializable {
         this.userID = userID;
     }
 
-    public Date getStartTime() {
-        return startTime;
+    public Date getStart() {
+        return start;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+    public void setStart(Date start) {
+        this.start = start;
     }
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "questions")
@@ -107,5 +113,13 @@ public class TestInstance extends BaseModel implements Serializable {
                     .queryList();
         }
         return questions;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
     }
 }
