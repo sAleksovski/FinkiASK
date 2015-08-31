@@ -6,13 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.data.models.Answer;
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 public class RangeQuestionFragment extends BaseQuestionFragment {
 

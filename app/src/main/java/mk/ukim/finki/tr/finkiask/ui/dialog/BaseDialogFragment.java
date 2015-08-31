@@ -5,7 +5,6 @@ import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import butterknife.Bind;
 import mk.ukim.finki.tr.finkiask.R;
 

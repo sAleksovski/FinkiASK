@@ -6,10 +6,9 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import mk.ukim.finki.tr.finkiask.data.AppDatabase;
 
 import java.io.Serializable;
-
-import mk.ukim.finki.tr.finkiask.data.AppDatabase;
 
 //TODO sent to server (id, isChecked, text) with list of all questions
 

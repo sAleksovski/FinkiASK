@@ -5,10 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import mk.ukim.finki.tr.finkiask.util.AuthHelper;
 import mk.ukim.finki.tr.finkiask.ui.LoginActivity;
 import mk.ukim.finki.tr.finkiask.ui.MainActivity;
+import mk.ukim.finki.tr.finkiask.util.AuthHelper;
 
 public class CheckLoginActivity extends Activity {
 

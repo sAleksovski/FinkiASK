@@ -11,19 +11,23 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.data.DBHelper;
 import mk.ukim.finki.tr.finkiask.data.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.ui.ResultActivity;
+import mk.ukim.finki.tr.finkiask.ui.dialog.BaseDialogFragment;
+import mk.ukim.finki.tr.finkiask.ui.dialog.CancelTestDialogFragment;
 import mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment.BaseQuestionFragment;
 import mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment.QuestionFragmentFactory;
 import mk.ukim.finki.tr.finkiask.util.timer.Countdown;
+import mk.ukim.finki.tr.finkiask.util.timer.CountdownHelper;
 import mk.ukim.finki.tr.finkiask.util.timer.CountdownInterface;
-import mk.ukim.finki.tr.finkiask.ui.dialog.BaseDialogFragment;
-import mk.ukim.finki.tr.finkiask.ui.dialog.CancelTestDialogFragment;
+import mk.ukim.finki.tr.finkiask.util.timer.TimeUtils;
+
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -87,7 +91,8 @@ public class TestListActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(), "TestInstance already found in DB", Toast.LENGTH_LONG).show();
             TestInstance t = DBHelper.getTestInstanceById(testInstanceId);
             if (t != null) {
-                countdown.start(t.getDuration());
+                CountdownHelper.setStartTime(getApplicationContext(), t.getOpenedTime());
+                CountdownHelper.setDuration(getApplicationContext(), t.getDuration());
             }
         }
 
@@ -133,6 +138,24 @@ public class TestListActivity extends AppCompatActivity
         }
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        countdown.stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        long duration = TimeUnit.MILLISECONDS.convert(CountdownHelper.getDuration(getApplicationContext()), TimeUnit.MINUTES);
+        long elapsedTime = TimeUtils.getDateDiff(CountdownHelper.getStartTime(getApplicationContext()),
+                new Date(), TimeUnit.MILLISECONDS);
+        countdown.start(duration - elapsedTime, TimeUnit.MILLISECONDS);
+    }
+
 
     public void changeTimer(long milliseconds) {
         int sec = (int) (milliseconds / 1000);

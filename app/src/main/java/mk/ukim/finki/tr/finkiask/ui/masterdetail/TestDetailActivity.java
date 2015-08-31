@@ -7,12 +7,12 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
@@ -22,7 +22,12 @@ import mk.ukim.finki.tr.finkiask.ui.ResultActivity;
 import mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment.BaseQuestionFragment;
 import mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment.QuestionFragmentFactory;
 import mk.ukim.finki.tr.finkiask.util.timer.Countdown;
+import mk.ukim.finki.tr.finkiask.util.timer.CountdownHelper;
 import mk.ukim.finki.tr.finkiask.util.timer.CountdownInterface;
+import mk.ukim.finki.tr.finkiask.util.timer.TimeUtils;
+
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -124,6 +129,29 @@ public class TestDetailActivity extends AppCompatActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        long ms = System.currentTimeMillis();
+        countdown.stop();
+        Log.i("DetailStop", "" + (System.currentTimeMillis() - ms));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        long ms = System.currentTimeMillis();
+        long duration = TimeUnit.MILLISECONDS.convert(CountdownHelper.getDuration(getApplicationContext()), TimeUnit.MINUTES);
+        long elapsedTime = TimeUtils.getDateDiff(CountdownHelper.getStartTime(getApplicationContext()),
+                new Date(), TimeUnit.MILLISECONDS);
+        Log.i("DetailCalculate", "" + (System.currentTimeMillis() - ms));
+        ms = System.currentTimeMillis();
+        countdown.start(duration - elapsedTime, TimeUnit.MILLISECONDS);
+        Log.i("DetailStart", "" + (System.currentTimeMillis() - ms));
     }
 
     @Override

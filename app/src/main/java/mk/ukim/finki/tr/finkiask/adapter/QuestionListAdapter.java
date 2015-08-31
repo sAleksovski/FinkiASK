@@ -10,14 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.data.DBHelper;
 import mk.ukim.finki.tr.finkiask.data.models.Question;
+
+import java.util.List;
 
 public class QuestionListAdapter
         extends ArrayAdapter<Question> {

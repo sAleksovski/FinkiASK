@@ -5,13 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.data.pojo.TestPOJO;
+
+import java.util.List;
 
 public class TestRecyclerViewAdapter
         extends RecyclerView.Adapter<TestRecyclerViewAdapter.ViewHolder> {

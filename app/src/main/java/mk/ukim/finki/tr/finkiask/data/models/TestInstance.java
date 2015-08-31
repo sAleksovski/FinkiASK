@@ -8,12 +8,11 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import mk.ukim.finki.tr.finkiask.data.AppDatabase;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
-import mk.ukim.finki.tr.finkiask.data.AppDatabase;
 
 @ModelContainer
 @Table(databaseName = AppDatabase.NAME)
@@ -42,6 +41,9 @@ public class TestInstance extends BaseModel implements Serializable {
     @Column
     private Date end;
 
+    @Column
+    private Date openedTime;
+
     protected List<Question> questions;
 
     public TestInstance() { }
@@ -54,6 +56,7 @@ public class TestInstance extends BaseModel implements Serializable {
         this.userID = userID;
         this.start = start;
         this.end = end;
+        this.openedTime = new Date();
     }
 
     public long getId() {
@@ -121,5 +124,13 @@ public class TestInstance extends BaseModel implements Serializable {
 
     public void setEnd(Date end) {
         this.end = end;
+    }
+
+    public Date getOpenedTime() {
+        return openedTime;
+    }
+
+    public void setOpenedTime(Date openedTime) {
+        this.openedTime = openedTime;
     }
 }

@@ -14,10 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
@@ -38,6 +34,10 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Header;
 import retrofit.client.Response;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class MainTestListFragment extends Fragment {
 
@@ -127,7 +127,6 @@ public class MainTestListFragment extends Fragment {
 
     private void startTest(final Context context, long id, String password) {
         TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
-        //TODO get session from response cookie (can be stored in shared preferences)
         testsRestAdapter.getTest(id, password, new Callback<TestInstanceWrapperPOJO>() {
 
             @Override
@@ -144,6 +143,7 @@ public class MainTestListFragment extends Fragment {
 
                 if (testInstanceWrapperPOJO.getResponseStatus().equals(ResponseStatus.SUCCESS)) {
                     TestInstance testInstance = testInstanceWrapperPOJO.getData();
+                    testInstance.setOpenedTime(new Date());
                     DBHelper.saveTestInstanceToDb(testInstance);
 
                     Intent intent = new Intent(context, TestListActivity.class);
