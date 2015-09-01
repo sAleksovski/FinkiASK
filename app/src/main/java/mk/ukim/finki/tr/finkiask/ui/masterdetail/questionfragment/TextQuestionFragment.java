@@ -40,12 +40,12 @@ public class TextQuestionFragment extends BaseQuestionFragment {
 
     @Override
     public void onPause() {
-        super.onPause();
-
         a.setText(textAnswer.getText().toString());
         a.save();
 
         mItem.setIsAnswered(a.getText().length() > 0);
         mItem.save();
+
+        super.onPause();
     }
 }

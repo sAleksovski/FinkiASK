@@ -6,11 +6,10 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
-import mk.ukim.finki.tr.finkiask.data.AppDatabase;
 
 import java.io.Serializable;
 
-//TODO sent to server (id, isChecked, text) with list of all questions
+import mk.ukim.finki.tr.finkiask.data.AppDatabase;
 
 @Table(databaseName = AppDatabase.NAME)
 public class Answer extends BaseModel implements Serializable {
@@ -25,16 +24,16 @@ public class Answer extends BaseModel implements Serializable {
     private boolean isChecked;
 
     @Column
-    private long questionID;
+    private long questionId;
 
     private Question question;
 
     public Answer() {}
 
-    public Answer(long id, String text, long questionID) {
+    public Answer(long id, String text, long questionId) {
         this.id = id;
         this.text = text;
-        this.questionID = questionID;
+        this.questionId = questionId;
     }
 
     public long getId() {
@@ -63,15 +62,15 @@ public class Answer extends BaseModel implements Serializable {
 
     public Question getQuestion() {
         if (question == null)
-            question = new Select().from(Question.class).where(Condition.column(Question$Table.ID).eq(questionID)).querySingle();
+            question = new Select().from(Question.class).where(Condition.column(Question$Table.ID).eq(questionId)).querySingle();
         return question;
     }
 
-    public long getQuestionID() {
-        return questionID;
+    public long getQuestionId() {
+        return questionId;
     }
 
-    public void setQuestionID(long questionID) {
-        this.questionID = questionID;
+    public void setQuestionId(long questionId) {
+        this.questionId = questionId;
     }
 }

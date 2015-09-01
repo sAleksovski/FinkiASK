@@ -1,14 +1,14 @@
-package mk.ukim.finki.tr.finkiask.data.pojo;
+package mk.ukim.finki.tr.finkiask.data.api;
 
 import mk.ukim.finki.tr.finkiask.data.models.TestInstance;
 
-public class TestInstanceWrapperPOJO {
+public class ServerResponseWrapper {
 
     private String responseStatus;
     private String description;
     private TestInstance data;
 
-    public TestInstanceWrapperPOJO(String responseStatus, String description, TestInstance testInstance) {
+    public ServerResponseWrapper(String responseStatus, String description, TestInstance testInstance) {
         this.responseStatus = responseStatus;
         this.description = description;
         this.data = testInstance;

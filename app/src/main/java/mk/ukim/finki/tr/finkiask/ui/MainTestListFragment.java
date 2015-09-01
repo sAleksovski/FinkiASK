@@ -24,7 +24,7 @@ import mk.ukim.finki.tr.finkiask.data.api.RestError;
 import mk.ukim.finki.tr.finkiask.data.api.TestsRestAdapter;
 import mk.ukim.finki.tr.finkiask.data.api.TestsRestInterface;
 import mk.ukim.finki.tr.finkiask.data.models.TestInstance;
-import mk.ukim.finki.tr.finkiask.data.pojo.TestInstanceWrapperPOJO;
+import mk.ukim.finki.tr.finkiask.data.api.ServerResponseWrapper;
 import mk.ukim.finki.tr.finkiask.data.pojo.TestPOJO;
 import mk.ukim.finki.tr.finkiask.ui.dialog.BaseDialogFragment;
 import mk.ukim.finki.tr.finkiask.ui.dialog.InsertPasswordDialog;
@@ -105,7 +105,6 @@ public class MainTestListFragment extends Fragment {
     }
 
     private void processTests(List<TestPOJO> tests) {
-
         testDataSet.addAll(tests);
 
         if (testDataSet.size() == 0) {
@@ -127,22 +126,21 @@ public class MainTestListFragment extends Fragment {
 
     private void startTest(final Context context, long id, String password) {
         TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
-        testsRestAdapter.getTest(id, password, new Callback<TestInstanceWrapperPOJO>() {
+        testsRestAdapter.getTest(id, password, new Callback<ServerResponseWrapper>() {
 
             @Override
-            public void success(TestInstanceWrapperPOJO testInstanceWrapperPOJO, Response response) {
+            public void success(ServerResponseWrapper serverResponseWrapper, Response response) {
                 for (Header header : response.getHeaders()) {
                     if (header.getName() != null && header.getName().equals("Set-Cookie")) {
                         if (header.getValue().startsWith("JSESSIONID")) {
                             String sessionId = header.getValue().split(";")[0];
-                            sessionId = sessionId.replace("JSESSIONID=", "");
                             AuthHelper.setSessionCookie(context, sessionId);
                         }
                     }
                 }
 
-                if (testInstanceWrapperPOJO.getResponseStatus().equals(ResponseStatus.SUCCESS)) {
-                    TestInstance testInstance = testInstanceWrapperPOJO.getData();
+                if (serverResponseWrapper.getResponseStatus().equals(ResponseStatus.SUCCESS)) {
+                    TestInstance testInstance = serverResponseWrapper.getData();
                     testInstance.setOpenedTime(new Date());
                     DBHelper.saveTestInstanceToDb(testInstance);
 
@@ -150,8 +148,8 @@ public class MainTestListFragment extends Fragment {
                     intent.putExtra("testInstanceId", testInstance.getId());
 
                     context.startActivity(intent);
-                } else if (testInstanceWrapperPOJO.getResponseStatus().equals(ResponseStatus.ERROR)) {
-                    Snackbar.make(mRecyclerView, testInstanceWrapperPOJO.getDescription(), Snackbar.LENGTH_LONG).show();
+                } else if (serverResponseWrapper.getResponseStatus().equals(ResponseStatus.ERROR)) {
+                    Snackbar.make(mRecyclerView, serverResponseWrapper.getDescription(), Snackbar.LENGTH_LONG).show();
                 }
 
             }
