@@ -10,7 +10,6 @@ import retrofit.converter.GsonConverter;
 
 public class TestsRestAdapter {
     private static TestsRestInterface testsRestInterface;
-//    private static final String BASE_URL = "http://ancient-wildwood-1356.herokuapp.com/";
     private static final String BASE_URL = "http://192.168.0.109:8080/";
 
     private TestsRestAdapter() { }

@@ -43,7 +43,10 @@ public class DBHelper {
     }
 
     public static void deleteEverything() {
-        new Select().from(TestInstance.class).querySingle().delete();
+        TestInstance ti = new Select().from(TestInstance.class).querySingle();
+        if (ti != null) {
+            ti.delete();
+        }
         for (Question q : new Select().from(Question.class).queryList()) {
             q.delete();
         }

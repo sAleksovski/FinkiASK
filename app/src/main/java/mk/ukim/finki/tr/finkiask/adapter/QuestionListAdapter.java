@@ -44,7 +44,7 @@ public class QuestionListAdapter
         }
 
         // Populate the data into the template view using the data object
-        viewHolder.questionNumber.setText("Question #" + question.getId());
+        viewHolder.questionNumber.setText("Question #" + (position + 1));
         viewHolder.questionShortText.setText(question.getText());
         viewHolder.questionAnsweredCb.setChecked(question.getIsAnswered());
 

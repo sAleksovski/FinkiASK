@@ -140,6 +140,7 @@ public class MainTestListFragment extends Fragment {
                 }
 
                 if (serverResponseWrapper.getResponseStatus().equals(ResponseStatus.SUCCESS)) {
+                    DBHelper.deleteEverything();
                     TestInstance testInstance = serverResponseWrapper.getData();
                     testInstance.setOpenedTime(new Date());
                     DBHelper.saveTestInstanceToDb(testInstance);

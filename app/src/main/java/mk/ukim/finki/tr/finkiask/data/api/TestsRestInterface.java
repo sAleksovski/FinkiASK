@@ -13,7 +13,7 @@ import retrofit.http.Query;
 import java.util.List;
 
 public interface TestsRestInterface {
-    @GET("/ask//api/tests")
+    @GET("/ask/api/tests")
     void listAllActive(@Query("type") String type, Callback<List<TestPOJO>> cb);
 
     @GET("/ask/api/tests/{id}")
