@@ -17,16 +17,27 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.data.DBHelper;
+import mk.ukim.finki.tr.finkiask.data.api.ServerResponseWrapper;
+import mk.ukim.finki.tr.finkiask.data.api.TestsRestAdapter;
+import mk.ukim.finki.tr.finkiask.data.api.TestsRestInterface;
+import mk.ukim.finki.tr.finkiask.data.models.Answer;
 import mk.ukim.finki.tr.finkiask.data.models.Question;
 import mk.ukim.finki.tr.finkiask.ui.ResultActivity;
+import mk.ukim.finki.tr.finkiask.ui.dialog.BaseDialogFragment;
+import mk.ukim.finki.tr.finkiask.ui.dialog.FinishTestDialogFragment;
 import mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment.BaseQuestionFragment;
 import mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment.QuestionFragmentFactory;
+import mk.ukim.finki.tr.finkiask.util.AuthHelper;
 import mk.ukim.finki.tr.finkiask.util.timer.Countdown;
 import mk.ukim.finki.tr.finkiask.util.timer.CountdownHelper;
 import mk.ukim.finki.tr.finkiask.util.timer.CountdownInterface;
 import mk.ukim.finki.tr.finkiask.util.timer.TimeUtils;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -69,11 +80,39 @@ public class TestDetailActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 if (DBHelper.isTestInstanceFound()) {
-                    DBHelper.deleteEverything();
-                    Toast.makeText(getApplicationContext(), "TestInstance removed from local DB", Toast.LENGTH_LONG).show();
 
-                    Intent resultIntent = new Intent(getApplication(), ResultActivity.class);
-                    startActivity(resultIntent);
+                    List<Question> unsynced = DBHelper.getUnsyncedQuestions();
+                    for (final Question q : unsynced) {
+                        List<Answer> answers = q.getAnswers();
+                        TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
+                        testsRestAdapter.postAnswer(AuthHelper.getSessionCookie(view.getContext()), q.getTestInstance().getId(), answers, new Callback<ServerResponseWrapper>() {
+
+                            @Override
+                            public void success(ServerResponseWrapper serverResponseWrapper, Response response) {
+                                Log.d("SAVE", serverResponseWrapper.getResponseStatus());
+                                q.setIsSynced(true);
+                                q.save();
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                            }
+                        });
+                    }
+
+                    FinishTestDialogFragment.newInstance(new BaseDialogFragment.OnPositiveCallback() {
+                        @Override
+                        public void onPositiveClick(String data) {
+
+                            DBHelper.deleteEverything();
+                            Toast.makeText(getApplicationContext(), "TestInstance removed from local DB", Toast.LENGTH_LONG).show();
+
+                            Intent resultIntent = new Intent(getApplication(), ResultActivity.class);
+                            startActivity(resultIntent);
+
+                        }
+                    }).show(getSupportFragmentManager(), "finish_test_dialog");
+
                 } else {
                     Toast.makeText(getApplicationContext(), "No TestInstanceFound", Toast.LENGTH_LONG).show();
                 }
