@@ -6,21 +6,55 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.ui.result.Circle;
 import mk.ukim.finki.tr.finkiask.ui.result.CircleAngleAnimation;
 
 public class ResultActivity extends AppCompatActivity {
 
+    @Bind(R.id.grade) TextView gradeTv;
+    @Bind(R.id.circle) Circle circle;
+    @Bind(R.id.points) TextView pointsTv;
+    @Bind(R.id.comment) TextView commentTv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
-        Circle circle = (Circle) findViewById(R.id.circle);
-        CircleAngleAnimation animation = new CircleAngleAnimation(circle, 94);
+        ButterKnife.bind(this);
+
+        // TODO
+        // get from Bundle
+        int points = 72;
+
+        CircleAngleAnimation animation = new CircleAngleAnimation(circle, 72);
         animation.setDuration(2000);
         circle.startAnimation(animation);
+
+        String youScoredFormat = getResources().getString(R.string.you_scored_xx_percent);
+        pointsTv.setText(String.format(youScoredFormat, 72));
+
+        String grade;
+        if (points > 90) {
+            grade = "A";
+        } else if (points > 80) {
+            grade = "B";
+        } else if (points > 70) {
+            grade = "C";
+        } else if (points > 60) {
+            grade = "D";
+        } else if (points > 50) {
+            grade = "E";
+        } else {
+            grade = "F";
+        }
+
+        gradeTv.setText(grade);
+
     }
 
     @Override

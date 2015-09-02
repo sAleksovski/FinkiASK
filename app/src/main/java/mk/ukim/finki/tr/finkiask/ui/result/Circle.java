@@ -1,12 +1,17 @@
 package mk.ukim.finki.tr.finkiask.ui.result;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
+
+import mk.ukim.finki.tr.finkiask.R;
 
 public class Circle extends View {
 
@@ -17,9 +22,21 @@ public class Circle extends View {
 
     private float angle;
 
-
     public Circle(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        TypedArray a = context.getTheme().obtainStyledAttributes(
+                attrs,
+                R.styleable.Circle,
+                0, 0);
+
+        int size = -1;
+
+        try {
+            size = a.getInteger(R.styleable.Circle_size, -1);
+        } finally {
+            a.recycle();
+        }
 
         final int strokeWidth = 30;
 
@@ -30,8 +47,15 @@ public class Circle extends View {
         //Circle color
         paint.setColor(Color.BLUE);
 
+        float px = 300;
+
+        if (size != -1) {
+            Resources r = getResources();
+            px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, r.getDisplayMetrics());
+        }
+
         //size 200x200 example
-        rect = new RectF(strokeWidth, strokeWidth, 300 + strokeWidth, 300 + strokeWidth);
+        rect = new RectF(strokeWidth, strokeWidth, px - strokeWidth, px - strokeWidth);
 
         //Initial Angle (optional, it can be zero)
         angle = 0;
@@ -51,46 +75,4 @@ public class Circle extends View {
         this.angle = angle;
     }
 
-//    @Override
-//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//
-//        int desiredWidth = 100;
-//        int desiredHeight = 100;
-//
-//        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-//        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-//        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-//        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-//
-//        int width;
-//        int height;
-//
-//        //Measure Width
-//        if (widthMode == MeasureSpec.EXACTLY) {
-//            //Must be this size
-//            width = widthSize;
-//        } else if (widthMode == MeasureSpec.AT_MOST) {
-//            //Can't be bigger than...
-//            width = Math.min(desiredWidth, widthSize);
-//        } else {
-//            //Be whatever you want
-//            width = desiredWidth;
-//        }
-//
-//        //Measure Height
-//        if (heightMode == MeasureSpec.EXACTLY) {
-//            //Must be this size
-//            height = heightSize;
-//        } else if (heightMode == MeasureSpec.AT_MOST) {
-//            //Can't be bigger than...
-//            height = Math.min(desiredHeight, heightSize);
-//        } else {
-//            //Be whatever you want
-//            height = desiredHeight;
-//        }
-//
-//        //MUST CALL THIS
-//        setMeasuredDimension(width, height);
-//    }
 }
