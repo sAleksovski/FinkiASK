@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+
 import mk.ukim.finki.tr.finkiask.R;
+import mk.ukim.finki.tr.finkiask.ui.result.Circle;
+import mk.ukim.finki.tr.finkiask.ui.result.CircleAngleAnimation;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -13,6 +17,10 @@ public class ResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
+        Circle circle = (Circle) findViewById(R.id.circle);
+        CircleAngleAnimation animation = new CircleAngleAnimation(circle, 94);
+        animation.setDuration(2000);
+        circle.startAnimation(animation);
     }
 
     @Override
