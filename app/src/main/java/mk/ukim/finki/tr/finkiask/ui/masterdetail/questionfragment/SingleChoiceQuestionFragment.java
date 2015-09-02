@@ -48,6 +48,8 @@ public class SingleChoiceQuestionFragment extends BaseQuestionFragment {
                 });
             }
 
+            isChanged = false;
+
             return rootView;
         }
 
@@ -62,6 +64,8 @@ public class SingleChoiceQuestionFragment extends BaseQuestionFragment {
         answer.setIsChecked(true);
         answer.save();
         previousAnswer = answer;
+
+        isChanged = true;
 
         mItem.setIsAnswered(true);
         mItem.save();

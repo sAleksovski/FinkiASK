@@ -30,6 +30,8 @@ public abstract class BaseQuestionFragment extends Fragment {
 
     protected Question mItem;
 
+    protected boolean isChanged;
+
     @Bind(R.id.question_text) TextView questionText;
 
     public BaseQuestionFragment() {
@@ -52,20 +54,26 @@ public abstract class BaseQuestionFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
-        List<Answer> answers = mItem.getAnswers();
+        if (isChanged) {
+            mItem.setIsSynced(false);
+            mItem.save();
+            List<Answer> answers = mItem.getAnswers();
 
-        TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
-        testsRestAdapter.postAnswer(AuthHelper.getSessionCookie(getActivity()), mItem.getTestInstance().getId(), answers, new Callback<ServerResponseWrapper>() {
+            TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
+            testsRestAdapter.postAnswer(AuthHelper.getSessionCookie(getActivity()), mItem.getTestInstance().getId(), answers, new Callback<ServerResponseWrapper>() {
 
-            @Override
-            public void success(ServerResponseWrapper serverResponseWrapper, Response response) {
-                Log.d("SAVE", serverResponseWrapper.getResponseStatus());
-            }
+                @Override
+                public void success(ServerResponseWrapper serverResponseWrapper, Response response) {
+                    Log.d("SAVE", serverResponseWrapper.getResponseStatus());
+                    mItem.setIsSynced(true);
+                    mItem.save();
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.d("FAILURE", error.getMessage());
-            }
-        });
+                @Override
+                public void failure(RetrofitError error) {
+                }
+            });
+        }
+
     }
 }

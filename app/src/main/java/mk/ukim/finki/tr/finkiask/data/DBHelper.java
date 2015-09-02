@@ -42,6 +42,14 @@ public class DBHelper {
                 .querySingle();
     }
 
+    public static List<Question> getUnsyncedQuestions() {
+        return new Select()
+                .from(Question.class)
+                .where(Condition.column(Question$Table.ISANSWERED).is(true),
+                        Condition.column(Question$Table.ISSYNCED).is(false))
+                .queryList();
+    }
+
     public static void deleteEverything() {
         TestInstance ti = new Select().from(TestInstance.class).querySingle();
         if (ti != null) {

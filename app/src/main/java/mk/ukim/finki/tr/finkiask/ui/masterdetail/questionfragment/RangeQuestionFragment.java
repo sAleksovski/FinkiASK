@@ -46,6 +46,8 @@ public class RangeQuestionFragment extends BaseQuestionFragment {
 
             seekBarText.setText(String.valueOf(value));
 
+            isChanged = false;
+
             seekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
                 int mProgress;
 
@@ -65,6 +67,8 @@ public class RangeQuestionFragment extends BaseQuestionFragment {
                     a.setText(String.format("%d:%d:%d", min, max, mProgress));
                     a.setIsChecked(true);
                     a.save();
+
+                    isChanged = true;
 
                     mItem.setIsAnswered(true);
                     mItem.save();

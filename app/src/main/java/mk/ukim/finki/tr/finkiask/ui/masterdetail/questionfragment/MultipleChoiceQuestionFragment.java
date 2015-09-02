@@ -47,6 +47,8 @@ public class MultipleChoiceQuestionFragment extends BaseQuestionFragment {
                 }
             }
 
+            isChanged = false;
+
             return rootView;
         }
 
@@ -56,6 +58,8 @@ public class MultipleChoiceQuestionFragment extends BaseQuestionFragment {
     private void onAnswerChanged(Answer a) {
         a.setIsChecked(!a.getIsChecked());
         a.save();
+
+        isChanged = true;
 
         if (a.getIsChecked()) {
             checked++;

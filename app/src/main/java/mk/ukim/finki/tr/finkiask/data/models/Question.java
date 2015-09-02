@@ -44,6 +44,9 @@ public class Question extends BaseModel implements Serializable {
     private boolean isAnswered;
 
     @Column
+    private boolean isSynced;
+
+    @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "test_id",
             columnType = Long.class,
             foreignColumnName = "id")}, saveForeignKeyModel = false, onDelete = ForeignKeyAction.CASCADE)
@@ -124,5 +127,13 @@ public class Question extends BaseModel implements Serializable {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public boolean getIsSynced() {
+        return isSynced;
+    }
+
+    public void setIsSynced(boolean isSynced) {
+        this.isSynced = isSynced;
     }
 }
