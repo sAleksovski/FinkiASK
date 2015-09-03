@@ -28,4 +28,6 @@
     <string name="test_finish_title">Finish test</string>
     <string name="test_finish_text">Are you sure you want to finish this test?\nYou can\'t edit your answers.</string>
     <string name="you_scored_xx_percent">You scored %d%% on the test</string>
+    <string name="test_started_text">Found started test, do you want to continue with that test?\nRemaining time %d minutes</string>
+    <string name="test_started_title">Test already started</string>
 </resources>

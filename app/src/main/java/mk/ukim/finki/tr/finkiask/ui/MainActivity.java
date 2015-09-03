@@ -12,14 +12,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import mk.ukim.finki.tr.finkiask.R;
-import mk.ukim.finki.tr.finkiask.data.pojo.TestPOJO;
-import mk.ukim.finki.tr.finkiask.util.AuthHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import mk.ukim.finki.tr.finkiask.R;
+import mk.ukim.finki.tr.finkiask.data.DBHelper;
+import mk.ukim.finki.tr.finkiask.data.models.TestInstance;
+import mk.ukim.finki.tr.finkiask.data.pojo.TestPOJO;
+import mk.ukim.finki.tr.finkiask.ui.dialog.BaseDialogFragment;
+import mk.ukim.finki.tr.finkiask.ui.dialog.ReopenTestDialogFragment;
+import mk.ukim.finki.tr.finkiask.ui.masterdetail.TestListActivity;
+import mk.ukim.finki.tr.finkiask.util.AuthHelper;
+import mk.ukim.finki.tr.finkiask.util.timer.TimeUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +51,20 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(viewPager);
 
         tabLayout.setupWithViewPager(viewPager);
+
+        if (DBHelper.isTestInstanceFound()) {
+            TestInstance testInstance = DBHelper.getSingleTestInstance();
+            ReopenTestDialogFragment.newInstance(TimeUtils.remainingTime(testInstance, TimeUnit.MINUTES),
+                    new BaseDialogFragment.OnPositiveCallback() {
+                        @Override
+                        public void onPositiveClick(String data) {
+                            Intent intent = new Intent(getApplicationContext(), TestListActivity.class);
+                            intent.putExtra("testInstanceId", DBHelper.getSingleTestInstance().getId());
+
+                            startActivity(intent);
+                        }
+                    }).show(getSupportFragmentManager(), "reopen_test_dialog");
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {

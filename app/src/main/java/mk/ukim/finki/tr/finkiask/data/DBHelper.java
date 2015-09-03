@@ -2,13 +2,14 @@ package mk.ukim.finki.tr.finkiask.data;
 
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
+
+import java.util.List;
+
 import mk.ukim.finki.tr.finkiask.data.models.Answer;
 import mk.ukim.finki.tr.finkiask.data.models.Question;
 import mk.ukim.finki.tr.finkiask.data.models.Question$Table;
 import mk.ukim.finki.tr.finkiask.data.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.data.models.TestInstance$Table;
-
-import java.util.List;
 
 public class DBHelper {
     public static boolean isTestInstanceFound() {
@@ -40,6 +41,10 @@ public class DBHelper {
                 .from(TestInstance.class)
                 .where(Condition.column(TestInstance$Table.ID).is(id))
                 .querySingle();
+    }
+
+    public static TestInstance getSingleTestInstance() {
+        return new Select().from(TestInstance.class).querySingle();
     }
 
     public static List<Question> getUnsyncedQuestions() {
