@@ -14,6 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
@@ -21,23 +27,23 @@ import mk.ukim.finki.tr.finkiask.adapter.TestRecyclerViewAdapter;
 import mk.ukim.finki.tr.finkiask.data.DBHelper;
 import mk.ukim.finki.tr.finkiask.data.api.ResponseStatus;
 import mk.ukim.finki.tr.finkiask.data.api.RestError;
+import mk.ukim.finki.tr.finkiask.data.api.ServerResponseWrapper;
 import mk.ukim.finki.tr.finkiask.data.api.TestsRestAdapter;
 import mk.ukim.finki.tr.finkiask.data.api.TestsRestInterface;
+import mk.ukim.finki.tr.finkiask.data.models.Answer;
+import mk.ukim.finki.tr.finkiask.data.models.Question;
 import mk.ukim.finki.tr.finkiask.data.models.TestInstance;
-import mk.ukim.finki.tr.finkiask.data.api.ServerResponseWrapper;
 import mk.ukim.finki.tr.finkiask.data.pojo.TestPOJO;
+import mk.ukim.finki.tr.finkiask.ui.dialog.AnotherTestDialogFragment;
 import mk.ukim.finki.tr.finkiask.ui.dialog.BaseDialogFragment;
 import mk.ukim.finki.tr.finkiask.ui.dialog.InsertPasswordDialog;
 import mk.ukim.finki.tr.finkiask.ui.masterdetail.TestListActivity;
 import mk.ukim.finki.tr.finkiask.util.AuthHelper;
+import mk.ukim.finki.tr.finkiask.util.timer.TimeUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Header;
 import retrofit.client.Response;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class MainTestListFragment extends Fragment {
 
@@ -116,12 +122,73 @@ public class MainTestListFragment extends Fragment {
     }
 
     private void testSelected(final TestPOJO test) {
+        final boolean[] startNewTest = {true};
+
+        if (DBHelper.isTestInstanceFound()) {
+            TestInstance testInstance = DBHelper.getSingleTestInstance();
+            if (TimeUtils.remainingTime(testInstance, TimeUnit.MINUTES) <= 0) {
+                DBHelper.deleteEverything();
+            }
+        }
+
+        if (DBHelper.isTestInstanceFound() && DBHelper.getSingleTestInstance().getId() != test.getId()) {
+            startNewTest[0] = false;
+
+            AnotherTestDialogFragment.newInstance(new BaseDialogFragment.OnPositiveCallback() {
+                @Override
+                public void onPositiveClick(String data) {
+                    submitPreviusTest();
+                    InsertPasswordDialog.newInstance(test.getDuration(), new BaseDialogFragment.OnPositiveCallback() {
+                        @Override
+                        public void onPositiveClick(String data) {
+                            startTest(getActivity(), test.getId(), data);
+                        }
+                    }).show(getFragmentManager(), "fragment_start_test");
+                }
+            }).show(getFragmentManager(), "fragment_another_test");
+        }
+
+        if (DBHelper.isTestInstanceFound() && DBHelper.getSingleTestInstance().getId() == test.getId()) {
+            Intent intent = new Intent(getActivity().getApplicationContext(), TestListActivity.class);
+            intent.putExtra("testInstanceId", DBHelper.getSingleTestInstance().getId());
+
+            startActivity(intent);
+            return;
+        }
+
+        if (!startNewTest[0]) {
+            return;
+        }
+
         InsertPasswordDialog.newInstance(test.getDuration(), new BaseDialogFragment.OnPositiveCallback() {
             @Override
             public void onPositiveClick(String data) {
                 startTest(getActivity(), test.getId(), data);
             }
         }).show(getFragmentManager(), "fragment_start_test");
+    }
+
+    private void submitPreviusTest() {
+        List<Question> unsynced = DBHelper.getUnsyncedQuestions();
+        for (final Question q : unsynced) {
+            List<Answer> answers = q.getAnswers();
+            TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
+            testsRestAdapter.postAnswer(AuthHelper.getSessionCookie(getActivity().getApplicationContext()),
+                    q.getTestInstance().getId(), answers, new Callback<ServerResponseWrapper>() {
+
+                        @Override
+                        public void success(ServerResponseWrapper serverResponseWrapper, Response response) {
+                            Log.d("SAVE", serverResponseWrapper.getResponseStatus());
+                            /*q.setIsSynced(true);
+                            q.save();*/
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                        }
+                    });
+        }
+        DBHelper.deleteEverything();
     }
 
     private void startTest(final Context context, long id, String password) {
@@ -166,4 +233,20 @@ public class MainTestListFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        if (testDataSet.size() > 0) {
+            adapter.notifyDataSetChanged();
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext()));
+            adapter = new TestRecyclerViewAdapter(testDataSet, new TestRecyclerViewAdapter.TestRecyclerViewAdapterClickCallback() {
+                @Override
+                public void onItemClick(int position) {
+                    testSelected(testDataSet.get(position));
+                }
+            });
+            mRecyclerView.setAdapter(adapter);
+        }
+
+        super.onResume();
+    }
 }
