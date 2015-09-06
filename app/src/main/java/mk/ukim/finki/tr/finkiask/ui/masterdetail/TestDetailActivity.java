@@ -22,9 +22,11 @@ import mk.ukim.finki.tr.finkiask.data.api.TestsRestAdapter;
 import mk.ukim.finki.tr.finkiask.data.api.TestsRestInterface;
 import mk.ukim.finki.tr.finkiask.data.models.Answer;
 import mk.ukim.finki.tr.finkiask.data.models.Question;
+import mk.ukim.finki.tr.finkiask.ui.MainActivity;
 import mk.ukim.finki.tr.finkiask.ui.ResultActivity;
 import mk.ukim.finki.tr.finkiask.ui.dialog.BaseDialogFragment;
 import mk.ukim.finki.tr.finkiask.ui.dialog.FinishTestDialogFragment;
+import mk.ukim.finki.tr.finkiask.ui.dialog.TimerExpiredDialogFragment;
 import mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment.BaseQuestionFragment;
 import mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment.QuestionFragmentFactory;
 import mk.ukim.finki.tr.finkiask.util.AuthHelper;
@@ -187,10 +189,21 @@ public class TestDetailActivity extends AppCompatActivity
         long duration = TimeUnit.MILLISECONDS.convert(CountdownHelper.getDuration(getApplicationContext()), TimeUnit.MINUTES);
         long elapsedTime = TimeUtils.getDateDiff(CountdownHelper.getStartTime(getApplicationContext()),
                 new Date(), TimeUnit.MILLISECONDS);
-        Log.i("DetailCalculate", "" + (System.currentTimeMillis() - ms));
-        ms = System.currentTimeMillis();
+
+        if ((duration - elapsedTime) <= 0) {
+            toolbarTimer.setText(String.format("%d:%02d", 0, 0));
+            TimerExpiredDialogFragment.newInstance(new BaseDialogFragment.OnPositiveCallback() {
+                @Override
+                public void onPositiveClick(String data) {
+                    DBHelper.deleteEverything();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+            }).show(getSupportFragmentManager(), "time_expired_dialog");
+            return;
+        }
+
         countdown.start(duration - elapsedTime, TimeUnit.MILLISECONDS);
-        Log.i("DetailStart", "" + (System.currentTimeMillis() - ms));
     }
 
     @Override

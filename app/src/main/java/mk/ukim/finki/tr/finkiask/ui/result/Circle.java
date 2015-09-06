@@ -40,24 +40,22 @@ public class Circle extends View {
 
         final int strokeWidth = 30;
 
+        Resources r = getResources();
+
         paint = new Paint();
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(strokeWidth);
-        //Circle color
-        paint.setColor(Color.BLUE);
+        paint.setColor(r.getColor(R.color.primary));
 
         float px = 300;
 
         if (size != -1) {
-            Resources r = getResources();
             px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, r.getDisplayMetrics());
         }
 
-        //size 200x200 example
         rect = new RectF(strokeWidth, strokeWidth, px - strokeWidth, px - strokeWidth);
 
-        //Initial Angle (optional, it can be zero)
         angle = 0;
     }
 

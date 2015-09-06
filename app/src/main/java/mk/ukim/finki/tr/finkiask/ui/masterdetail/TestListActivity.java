@@ -2,6 +2,7 @@ package mk.ukim.finki.tr.finkiask.ui.masterdetail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -22,10 +23,13 @@ import mk.ukim.finki.tr.finkiask.data.api.TestsRestInterface;
 import mk.ukim.finki.tr.finkiask.data.models.Answer;
 import mk.ukim.finki.tr.finkiask.data.models.Question;
 import mk.ukim.finki.tr.finkiask.data.models.TestInstance;
+import mk.ukim.finki.tr.finkiask.ui.MainActivity;
+import mk.ukim.finki.tr.finkiask.ui.MainTestListFragment;
 import mk.ukim.finki.tr.finkiask.ui.ResultActivity;
 import mk.ukim.finki.tr.finkiask.ui.dialog.BaseDialogFragment;
 import mk.ukim.finki.tr.finkiask.ui.dialog.CancelTestDialogFragment;
 import mk.ukim.finki.tr.finkiask.ui.dialog.FinishTestDialogFragment;
+import mk.ukim.finki.tr.finkiask.ui.dialog.TimerExpiredDialogFragment;
 import mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment.BaseQuestionFragment;
 import mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment.QuestionFragmentFactory;
 import mk.ukim.finki.tr.finkiask.util.AuthHelper;
@@ -193,7 +197,24 @@ public class TestListActivity extends AppCompatActivity
         long duration = TimeUnit.MILLISECONDS.convert(CountdownHelper.getDuration(getApplicationContext()), TimeUnit.MINUTES);
         long elapsedTime = TimeUtils.getDateDiff(CountdownHelper.getStartTime(getApplicationContext()),
                 new Date(), TimeUnit.MILLISECONDS);
+
+        if ((duration - elapsedTime) <= 0) {
+            toolbarTimer.setText(String.format("%d:%02d", 0, 0));
+            TimerExpiredDialogFragment.newInstance(new BaseDialogFragment.OnPositiveCallback() {
+                @Override
+                public void onPositiveClick(String data) {
+                    DBHelper.deleteEverything();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+            }).show(getSupportFragmentManager(), "time_expired_dialog");
+            return;
+        }
+
         countdown.start(duration - elapsedTime, TimeUnit.MILLISECONDS);
+
+
+        // if timer is finished
     }
 
 
@@ -243,8 +264,6 @@ public class TestListActivity extends AppCompatActivity
         }
     }
 
-    // TODO
-    // Different behavior from with TestDetailActivity
     public void nextQuestion() {
         int currentPosition = fragment.getActivatedPosition();
         int total = fragment.getListView().getAdapter().getCount();

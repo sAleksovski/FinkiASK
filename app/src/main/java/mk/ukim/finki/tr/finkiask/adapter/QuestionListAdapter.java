@@ -29,8 +29,6 @@ public class QuestionListAdapter
     public View getView(int position, View convertView, ViewGroup parent) {
 
         Question question = getItem(position);
-        // TODO
-        // hack
         question = DBHelper.getQuestionById(question.getId());
 
         ViewHolder viewHolder; // view lookup cache stored in tag

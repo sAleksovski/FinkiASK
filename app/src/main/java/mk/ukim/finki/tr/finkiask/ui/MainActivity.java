@@ -54,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (DBHelper.isTestInstanceFound()) {
             TestInstance testInstance = DBHelper.getSingleTestInstance();
+            if (TimeUtils.remainingTime(testInstance, TimeUnit.MINUTES) <= 0) {
+                DBHelper.deleteEverything();
+                return;
+            }
+
             ReopenTestDialogFragment.newInstance(TimeUtils.remainingTime(testInstance, TimeUnit.MINUTES),
                     new BaseDialogFragment.OnPositiveCallback() {
                         @Override
