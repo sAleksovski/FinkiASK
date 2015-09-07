@@ -40,7 +40,7 @@ public class ResultActivity extends AppCompatActivity {
             return;
         }
 
-        int points = getIntent().getIntExtra(TestListActivity.ARG_RESULT, 50);
+        int points = getIntent().getIntExtra(TestListActivity.ARG_RESULT, 0);
 
         CircleAngleAnimation animation = new CircleAngleAnimation(circle, points);
         animation.setDuration(2000);

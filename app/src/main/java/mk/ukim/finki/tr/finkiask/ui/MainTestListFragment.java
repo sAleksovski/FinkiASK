@@ -111,6 +111,7 @@ public class MainTestListFragment extends Fragment {
     }
 
     private void processTests(List<TestPOJO> tests) {
+        testDataSet.removeAll(testDataSet);
         testDataSet.addAll(tests);
 
         if (testDataSet.size() == 0) {

@@ -112,7 +112,9 @@ public class TestDetailActivity extends AppCompatActivity
                             Toast.makeText(getApplicationContext(), "TestInstance removed from local DB", Toast.LENGTH_LONG).show();
                             TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
                             final String type = DBHelper.getSingleTestInstance().getType();
-                            testsRestAdapter.getResult(AuthHelper.getSessionCookie(getApplicationContext()), DBHelper.getSingleTestInstance().getId(),
+                            final long testId = DBHelper.getSingleTestInstance().getId();
+                            DBHelper.deleteEverything();
+                            testsRestAdapter.getResult(AuthHelper.getSessionCookie(getApplicationContext()), testId,
                                     new ArrayList<Answer>(), new Callback<ServerResponseWrapper<Integer>>() {
                                         @Override
                                         public void success(ServerResponseWrapper<Integer> serverResponseWrapper, Response response) {
@@ -129,9 +131,7 @@ public class TestDetailActivity extends AppCompatActivity
                                             Log.d("getResult", error.toString());
                                         }
                                     });
-                            DBHelper.deleteEverything();
-
-
+//                            DBHelper.deleteEverything();
                         }
                     }).show(getSupportFragmentManager(), "finish_test_dialog");
 

@@ -107,6 +107,7 @@ public class TestListActivity extends AppCompatActivity
         long testInstanceId = getIntent().getLongExtra("testInstanceId", -1);
 
         if (testInstanceId != -1) {
+            //TODO inspect,
             Toast.makeText(getApplicationContext(), "TestInstance already found in DB", Toast.LENGTH_LONG).show();
             TestInstance t = DBHelper.getTestInstanceById(testInstanceId);
             if (t != null) {
@@ -163,7 +164,9 @@ public class TestListActivity extends AppCompatActivity
                             Toast.makeText(getApplicationContext(), "TestInstance removed from local DB", Toast.LENGTH_LONG).show();
                             TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
                             final String type = DBHelper.getSingleTestInstance().getType();
-                            testsRestAdapter.getResult(AuthHelper.getSessionCookie(getApplicationContext()), DBHelper.getSingleTestInstance().getId(),
+                            final long testId = DBHelper.getSingleTestInstance().getId();
+                            DBHelper.deleteEverything();
+                            testsRestAdapter.getResult(AuthHelper.getSessionCookie(getApplicationContext()), testId,
                                     new ArrayList<Answer>(), new Callback<ServerResponseWrapper<Integer>>() {
                                         @Override
                                         public void success(ServerResponseWrapper<Integer> serverResponseWrapper, Response response) {
@@ -180,7 +183,7 @@ public class TestListActivity extends AppCompatActivity
                                             Log.d("getResult", error.toString());
                                         }
                                     });
-                            DBHelper.deleteEverything();
+//                            DBHelper.deleteEverything();
 
                         }
                     }).show(getSupportFragmentManager(), "finish_test_dialog");
