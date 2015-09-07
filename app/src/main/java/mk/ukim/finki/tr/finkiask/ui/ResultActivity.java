@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
+import mk.ukim.finki.tr.finkiask.ui.masterdetail.TestListActivity;
 import mk.ukim.finki.tr.finkiask.ui.result.Circle;
 import mk.ukim.finki.tr.finkiask.ui.result.CircleAngleAnimation;
 
@@ -20,6 +22,7 @@ public class ResultActivity extends AppCompatActivity {
     @Bind(R.id.circle) Circle circle;
     @Bind(R.id.points) TextView pointsTv;
     @Bind(R.id.comment) TextView commentTv;
+    @Bind(R.id.success_survey) ImageView successImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +30,24 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
         ButterKnife.bind(this);
 
-        // TODO
-        // get from Bundle
-        int points = 72;
+        String type = getIntent().getStringExtra(TestListActivity.ARG_TYPE);
+        if (type.equals("SURVEY")) {
+            pointsTv.setText(getResources().getString(R.string.survey_finish_text));
+            gradeTv.setText("");
+            circle.setVisibility(View.GONE);
+            commentTv.setText("");
+            successImage.setVisibility(View.VISIBLE);
+            return;
+        }
 
-        CircleAngleAnimation animation = new CircleAngleAnimation(circle, 72);
+        int points = getIntent().getIntExtra(TestListActivity.ARG_RESULT, 50);
+
+        CircleAngleAnimation animation = new CircleAngleAnimation(circle, points);
         animation.setDuration(2000);
         circle.startAnimation(animation);
 
         String youScoredFormat = getResources().getString(R.string.you_scored_xx_percent);
-        pointsTv.setText(String.format(youScoredFormat, 72));
+        pointsTv.setText(String.format(youScoredFormat, points));
 
         String grade;
         if (points > 90) {

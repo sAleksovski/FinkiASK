@@ -137,7 +137,7 @@ public class MainTestListFragment extends Fragment {
             AnotherTestDialogFragment.newInstance(new BaseDialogFragment.OnPositiveCallback() {
                 @Override
                 public void onPositiveClick(String data) {
-                    submitPreviusTest();
+                    submitPreviousTest();
                     InsertPasswordDialog.newInstance(test.getDuration(), new BaseDialogFragment.OnPositiveCallback() {
                         @Override
                         public void onPositiveClick(String data) {
@@ -168,19 +168,17 @@ public class MainTestListFragment extends Fragment {
         }).show(getFragmentManager(), "fragment_start_test");
     }
 
-    private void submitPreviusTest() {
+    private void submitPreviousTest() {
         List<Question> unsynced = DBHelper.getUnsyncedQuestions();
         for (final Question q : unsynced) {
             List<Answer> answers = q.getAnswers();
             TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
             testsRestAdapter.postAnswer(AuthHelper.getSessionCookie(getActivity().getApplicationContext()),
-                    q.getTestInstance().getId(), answers, new Callback<ServerResponseWrapper>() {
+                    q.getTestInstance().getId(), answers, new Callback<ServerResponseWrapper<TestInstance>>() {
 
                         @Override
-                        public void success(ServerResponseWrapper serverResponseWrapper, Response response) {
+                        public void success(ServerResponseWrapper<TestInstance> serverResponseWrapper, Response response) {
                             Log.d("SAVE", serverResponseWrapper.getResponseStatus());
-                            /*q.setIsSynced(true);
-                            q.save();*/
                         }
 
                         @Override
@@ -193,10 +191,10 @@ public class MainTestListFragment extends Fragment {
 
     private void startTest(final Context context, long id, String password) {
         TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
-        testsRestAdapter.getTest(id, password, new Callback<ServerResponseWrapper>() {
+        testsRestAdapter.getTest(id, password, new Callback<ServerResponseWrapper<TestInstance>>() {
 
             @Override
-            public void success(ServerResponseWrapper serverResponseWrapper, Response response) {
+            public void success(ServerResponseWrapper<TestInstance> serverResponseWrapper, Response response) {
                 for (Header header : response.getHeaders()) {
                     if (header.getName() != null && header.getName().equals("Set-Cookie")) {
                         if (header.getValue().startsWith("JSESSIONID")) {

@@ -36,6 +36,15 @@
             android:layout_gravity="center"
             custom:size="300"
             />
+        <ImageView
+            android:id="@+id/success_survey"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:src="@drawable/success"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

@@ -2,7 +2,6 @@ package mk.ukim.finki.tr.finkiask.ui.masterdetail;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -13,6 +12,12 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
@@ -24,7 +29,6 @@ import mk.ukim.finki.tr.finkiask.data.models.Answer;
 import mk.ukim.finki.tr.finkiask.data.models.Question;
 import mk.ukim.finki.tr.finkiask.data.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.ui.MainActivity;
-import mk.ukim.finki.tr.finkiask.ui.MainTestListFragment;
 import mk.ukim.finki.tr.finkiask.ui.ResultActivity;
 import mk.ukim.finki.tr.finkiask.ui.dialog.BaseDialogFragment;
 import mk.ukim.finki.tr.finkiask.ui.dialog.CancelTestDialogFragment;
@@ -40,10 +44,6 @@ import mk.ukim.finki.tr.finkiask.util.timer.TimeUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -81,6 +81,9 @@ public class TestListActivity extends AppCompatActivity
     @Nullable
     @Bind(R.id.btn_next_question)
     FloatingActionButton btnNextQuestion;
+
+    public static String ARG_RESULT = "result";
+    public static String ARG_TYPE = "type";
 
     public Countdown countdown;
 
@@ -138,10 +141,10 @@ public class TestListActivity extends AppCompatActivity
                     for (final Question q : unsynced) {
                         List<Answer> answers = q.getAnswers();
                         TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
-                        testsRestAdapter.postAnswer(AuthHelper.getSessionCookie(view.getContext()), q.getTestInstance().getId(), answers, new Callback<ServerResponseWrapper>() {
+                        testsRestAdapter.postAnswer(AuthHelper.getSessionCookie(view.getContext()), q.getTestInstance().getId(), answers, new Callback<ServerResponseWrapper<TestInstance>>() {
 
                             @Override
-                            public void success(ServerResponseWrapper serverResponseWrapper, Response response) {
+                            public void success(ServerResponseWrapper<TestInstance> serverResponseWrapper, Response response) {
                                 Log.d("SAVE", serverResponseWrapper.getResponseStatus());
                                 q.setIsSynced(true);
                                 q.save();
@@ -157,11 +160,27 @@ public class TestListActivity extends AppCompatActivity
                         @Override
                         public void onPositiveClick(String data) {
 
-                            DBHelper.deleteEverything();
                             Toast.makeText(getApplicationContext(), "TestInstance removed from local DB", Toast.LENGTH_LONG).show();
+                            TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
+                            final String type = DBHelper.getSingleTestInstance().getType();
+                            testsRestAdapter.getResult(AuthHelper.getSessionCookie(getApplicationContext()), DBHelper.getSingleTestInstance().getId(),
+                                    new ArrayList<Answer>(), new Callback<ServerResponseWrapper<Integer>>() {
+                                        @Override
+                                        public void success(ServerResponseWrapper<Integer> serverResponseWrapper, Response response) {
+                                            Log.d("getResult", serverResponseWrapper.getData() + "");
+                                            Log.d("getResultType", type);
+                                            Intent resultIntent = new Intent(getApplication(), ResultActivity.class);
+                                            resultIntent.putExtra(TestListActivity.ARG_RESULT, serverResponseWrapper.getData());
+                                            resultIntent.putExtra(TestListActivity.ARG_TYPE, type);
+                                            startActivity(resultIntent);
+                                        }
 
-                            Intent resultIntent = new Intent(getApplication(), ResultActivity.class);
-                            startActivity(resultIntent);
+                                        @Override
+                                        public void failure(RetrofitError error) {
+                                            Log.d("getResult", error.toString());
+                                        }
+                                    });
+                            DBHelper.deleteEverything();
 
                         }
                     }).show(getSupportFragmentManager(), "finish_test_dialog");

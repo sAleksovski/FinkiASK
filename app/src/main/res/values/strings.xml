@@ -35,4 +35,5 @@
     <string name="no_more_time">Time for this test has expired.</string>
     <string name="ok">Ok</string>
     <string name="dialog_timer_finished_title">Time expired</string>
+    <string name="survey_finish_text">Thank you for participating in this survey.</string>
 </resources>

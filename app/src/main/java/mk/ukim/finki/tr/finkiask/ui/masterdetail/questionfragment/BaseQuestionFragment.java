@@ -19,6 +19,7 @@ import mk.ukim.finki.tr.finkiask.data.api.TestsRestAdapter;
 import mk.ukim.finki.tr.finkiask.data.api.TestsRestInterface;
 import mk.ukim.finki.tr.finkiask.data.models.Answer;
 import mk.ukim.finki.tr.finkiask.data.models.Question;
+import mk.ukim.finki.tr.finkiask.data.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.util.AuthHelper;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -54,19 +55,21 @@ public abstract class BaseQuestionFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
-        if (isChanged) {
+        if (isChanged && DBHelper.isTestInstanceFound()) {
             mItem.setIsSynced(false);
             mItem.save();
             List<Answer> answers = mItem.getAnswers();
 
             TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
-            testsRestAdapter.postAnswer(AuthHelper.getSessionCookie(getActivity()), mItem.getTestInstance().getId(), answers, new Callback<ServerResponseWrapper>() {
+            testsRestAdapter.postAnswer(AuthHelper.getSessionCookie(getActivity()), mItem.getTestInstance().getId(), answers, new Callback<ServerResponseWrapper<TestInstance>>() {
 
                 @Override
-                public void success(ServerResponseWrapper serverResponseWrapper, Response response) {
+                public void success(ServerResponseWrapper<TestInstance> serverResponseWrapper, Response response) {
                     Log.d("SAVE", serverResponseWrapper.getResponseStatus());
-                    mItem.setIsSynced(true);
-                    mItem.save();
+                    if (DBHelper.isTestInstanceFound()) {
+                        mItem.setIsSynced(true);
+                        mItem.save();
+                    }
                 }
 
                 @Override

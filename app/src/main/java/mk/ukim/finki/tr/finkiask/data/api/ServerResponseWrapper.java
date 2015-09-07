@@ -1,17 +1,15 @@
 package mk.ukim.finki.tr.finkiask.data.api;
 
-import mk.ukim.finki.tr.finkiask.data.models.TestInstance;
-
-public class ServerResponseWrapper {
+public class ServerResponseWrapper<T> {
 
     private String responseStatus;
     private String description;
-    private TestInstance data;
+    private T data;
 
-    public ServerResponseWrapper(String responseStatus, String description, TestInstance testInstance) {
+    public ServerResponseWrapper(String responseStatus, String description, T data) {
         this.responseStatus = responseStatus;
         this.description = description;
-        this.data = testInstance;
+        this.data = data;
     }
 
 
@@ -31,11 +29,11 @@ public class ServerResponseWrapper {
         this.description = description;
     }
 
-    public TestInstance getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(TestInstance data) {
+    public void setData(T data) {
         this.data = data;
     }
 }
