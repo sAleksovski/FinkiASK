@@ -2,6 +2,7 @@ package mk.ukim.finki.tr.finkiask.ui.masterdetail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -257,7 +258,9 @@ public class TestListActivity extends AppCompatActivity
             @Override
             public void onPositiveClick(String data) {
                 countdown.stop();
-                TestListActivity.super.onBackPressed();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         }).show(getSupportFragmentManager(), "cancel_test_dialog");
     }
