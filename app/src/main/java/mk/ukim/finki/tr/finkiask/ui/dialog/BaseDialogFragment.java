@@ -14,7 +14,7 @@ public class BaseDialogFragment extends DialogFragment {
     @Bind(R.id.positive) Button btnPositive;
     @Bind(R.id.negative) Button btnNegative;
 
-    OnPositiveCallback mPositiveCallback;
+    static OnPositiveCallback mPositiveCallback;
 
     public BaseDialogFragment() {}
 

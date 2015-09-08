@@ -142,7 +142,7 @@ public class MainTestListFragment extends Fragment {
                     InsertPasswordDialog.newInstance(test.getDuration(), new BaseDialogFragment.OnPositiveCallback() {
                         @Override
                         public void onPositiveClick(String data) {
-                            startTest(getActivity(), test.getId(), data);
+                            startTest(test.getId(), data);
                         }
                     }).show(getFragmentManager(), "fragment_start_test");
                 }
@@ -164,7 +164,7 @@ public class MainTestListFragment extends Fragment {
         InsertPasswordDialog.newInstance(test.getDuration(), new BaseDialogFragment.OnPositiveCallback() {
             @Override
             public void onPositiveClick(String data) {
-                startTest(getActivity(), test.getId(), data);
+                startTest(test.getId(), data);
             }
         }).show(getFragmentManager(), "fragment_start_test");
     }
@@ -190,12 +190,14 @@ public class MainTestListFragment extends Fragment {
         DBHelper.deleteEverything();
     }
 
-    private void startTest(final Context context, long id, String password) {
+    private void startTest(long id, String password) {
         TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
         testsRestAdapter.getTest(id, password, new Callback<ServerResponseWrapper<TestInstance>>() {
 
             @Override
             public void success(ServerResponseWrapper<TestInstance> serverResponseWrapper, Response response) {
+                final Context context = mRecyclerView.getContext();
+
                 for (Header header : response.getHeaders()) {
                     if (header.getName() != null && header.getName().equals("Set-Cookie")) {
                         if (header.getValue().startsWith("JSESSIONID")) {

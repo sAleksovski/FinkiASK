@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -110,7 +109,6 @@ public class TestListActivity extends AppCompatActivity
 
         if (testInstanceId != -1) {
             //TODO inspect,
-            Toast.makeText(getApplicationContext(), "TestInstance already found in DB", Toast.LENGTH_LONG).show();
             TestInstance t = DBHelper.getTestInstanceById(testInstanceId);
             if (t != null) {
                 CountdownHelper.setStartTime(getApplicationContext(), t.getOpenedTime());
@@ -196,8 +194,6 @@ public class TestListActivity extends AppCompatActivity
                         }
                     }).show(getSupportFragmentManager(), "finish_test_dialog");
 
-                } else {
-                    Toast.makeText(getApplicationContext(), "No TestInstanceFound", Toast.LENGTH_LONG).show();
                 }
             }
         });

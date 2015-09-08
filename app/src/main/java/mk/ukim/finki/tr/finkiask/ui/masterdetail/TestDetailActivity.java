@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -144,8 +143,6 @@ public class TestDetailActivity extends AppCompatActivity
                         }
                     }).show(getSupportFragmentManager(), "finish_test_dialog");
 
-                } else {
-                    Toast.makeText(getApplicationContext(), "No TestInstanceFound", Toast.LENGTH_LONG).show();
                 }
             }
         });
