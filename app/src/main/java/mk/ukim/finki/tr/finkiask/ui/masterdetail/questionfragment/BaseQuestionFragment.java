@@ -55,9 +55,8 @@ public abstract class BaseQuestionFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
-        if (isChanged && DBHelper.isTestInstanceFound()) {
-            mItem.setIsSynced(false);
-            mItem.save();
+        if (DBHelper.isTestInstanceFound() && isChanged) {
+
             List<Answer> answers = mItem.getAnswers();
 
             TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();

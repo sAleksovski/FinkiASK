@@ -2,6 +2,7 @@ package mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,6 @@ public class SingleChoiceQuestionFragment extends BaseQuestionFragment {
                              Bundle savedInstanceState) {
         if (mItem != null) {
             final View rootView = inflater.inflate(R.layout.fragment_question_single_choice, container, false);
-
             ButterKnife.bind(this, rootView);
 
             questionText.setText(mItem.getText());
@@ -67,6 +67,7 @@ public class SingleChoiceQuestionFragment extends BaseQuestionFragment {
 
         isChanged = true;
 
+        mItem.setIsSynced(false);
         mItem.setIsAnswered(true);
         mItem.save();
     }

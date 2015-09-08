@@ -71,6 +71,7 @@ public class RangeQuestionFragment extends BaseQuestionFragment {
                     isChanged = true;
 
                     mItem.setIsAnswered(true);
+                    mItem.setIsSynced(false);
                     mItem.save();
                 }
             });

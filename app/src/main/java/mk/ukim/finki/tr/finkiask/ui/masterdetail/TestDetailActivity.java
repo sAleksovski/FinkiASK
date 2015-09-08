@@ -17,6 +17,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
@@ -95,8 +97,8 @@ public class TestDetailActivity extends AppCompatActivity
                             @Override
                             public void success(ServerResponseWrapper<TestInstance> serverResponseWrapper, Response response) {
                                 Log.d("SAVE", serverResponseWrapper.getResponseStatus());
-                                q.setIsSynced(true);
-                                q.save();
+//                                q.setIsSynced(true);
+//                                q.save();
                             }
 
                             @Override
@@ -109,29 +111,36 @@ public class TestDetailActivity extends AppCompatActivity
                         @Override
                         public void onPositiveClick(String data) {
 
-                            Toast.makeText(getApplicationContext(), "TestInstance removed from local DB", Toast.LENGTH_LONG).show();
-                            TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
                             final String type = DBHelper.getSingleTestInstance().getType();
                             final long testId = DBHelper.getSingleTestInstance().getId();
                             DBHelper.deleteEverything();
-                            testsRestAdapter.getResult(AuthHelper.getSessionCookie(getApplicationContext()), testId,
-                                    new ArrayList<Answer>(), new Callback<ServerResponseWrapper<Integer>>() {
-                                        @Override
-                                        public void success(ServerResponseWrapper<Integer> serverResponseWrapper, Response response) {
-                                            Log.d("getResult", serverResponseWrapper.getData() + "");
-                                            Log.d("getResultType", type);
-                                            Intent resultIntent = new Intent(getApplication(), ResultActivity.class);
-                                            resultIntent.putExtra(TestListActivity.ARG_RESULT, serverResponseWrapper.getData());
-                                            resultIntent.putExtra(TestListActivity.ARG_TYPE, type);
-                                            startActivity(resultIntent);
-                                        }
 
-                                        @Override
-                                        public void failure(RetrofitError error) {
-                                            Log.d("getResult", error.toString());
-                                        }
-                                    });
-//                            DBHelper.deleteEverything();
+                            Timer timer = new Timer();
+                            timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
+                                    testsRestAdapter.getResult(AuthHelper.getSessionCookie(getApplicationContext()), testId,
+                                            new ArrayList<Answer>(), new Callback<ServerResponseWrapper<Integer>>() {
+                                                @Override
+                                                public void success(ServerResponseWrapper<Integer> serverResponseWrapper, Response response) {
+                                                    Log.d("getResult", serverResponseWrapper.getData() + "");
+                                                    Log.d("getResultType", type);
+                                                    Intent resultIntent = new Intent(getApplication(), ResultActivity.class);
+                                                    resultIntent.putExtra(TestListActivity.ARG_RESULT, serverResponseWrapper.getData());
+                                                    resultIntent.putExtra(TestListActivity.ARG_TYPE, type);
+                                                    startActivity(resultIntent);
+                                                }
+
+                                                @Override
+                                                public void failure(RetrofitError error) {
+                                                    Log.d("getResult", error.toString());
+                                                }
+                                            });
+                                }
+
+                            }, 1000);
+
                         }
                     }).show(getSupportFragmentManager(), "finish_test_dialog");
 
@@ -202,7 +211,6 @@ public class TestDetailActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-        long ms = System.currentTimeMillis();
         long duration = TimeUnit.MILLISECONDS.convert(CountdownHelper.getDuration(getApplicationContext()), TimeUnit.MINUTES);
         long elapsedTime = TimeUtils.getDateDiff(CountdownHelper.getStartTime(getApplicationContext()),
                 new Date(), TimeUnit.MILLISECONDS);

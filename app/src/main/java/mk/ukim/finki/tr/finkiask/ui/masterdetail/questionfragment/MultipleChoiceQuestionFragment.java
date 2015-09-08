@@ -68,6 +68,7 @@ public class MultipleChoiceQuestionFragment extends BaseQuestionFragment {
         }
 
         mItem.setIsAnswered(checked > 0);
+        mItem.setIsSynced(false);
         mItem.save();
     }
 }
