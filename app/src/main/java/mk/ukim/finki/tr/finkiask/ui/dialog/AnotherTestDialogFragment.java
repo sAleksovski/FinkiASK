@@ -5,15 +5,15 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 
-public class CancelTestDialogFragment extends BaseDialogFragment {
+public class AnotherTestDialogFragment extends BaseDialogFragment {
+    public AnotherTestDialogFragment() {}
 
-    public CancelTestDialogFragment() {}
-
-    public static CancelTestDialogFragment newInstance(BaseDialogFragment.OnPositiveCallback positiveCallback) {
-        CancelTestDialogFragment frag = new CancelTestDialogFragment();
+    public static AnotherTestDialogFragment newInstance(BaseDialogFragment.OnPositiveCallback positiveCallback) {
+        AnotherTestDialogFragment frag = new AnotherTestDialogFragment();
         frag.setPositiveCallback(positiveCallback);
         return frag;
     }
@@ -21,10 +21,9 @@ public class CancelTestDialogFragment extends BaseDialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_cancel_test, container);
-        getDialog().setTitle(R.string.test_cancel_title);
+        View view = inflater.inflate(R.layout.dialog_another_test_started, container);
+        getDialog().setTitle(R.string.another_test_title);
         ButterKnife.bind(this, view);
         return view;
     }
-
 }

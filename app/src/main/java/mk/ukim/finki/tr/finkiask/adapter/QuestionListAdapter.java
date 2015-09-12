@@ -10,14 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.data.DBHelper;
 import mk.ukim.finki.tr.finkiask.data.models.Question;
+
+import java.util.List;
 
 public class QuestionListAdapter
         extends ArrayAdapter<Question> {
@@ -30,8 +29,6 @@ public class QuestionListAdapter
     public View getView(int position, View convertView, ViewGroup parent) {
 
         Question question = getItem(position);
-        // TODO
-        // hack
         question = DBHelper.getQuestionById(question.getId());
 
         ViewHolder viewHolder; // view lookup cache stored in tag
@@ -45,7 +42,7 @@ public class QuestionListAdapter
         }
 
         // Populate the data into the template view using the data object
-        viewHolder.questionNumber.setText("Question #" + question.getId());
+        viewHolder.questionNumber.setText("Question #" + (position + 1));
         viewHolder.questionShortText.setText(question.getText());
         viewHolder.questionAnsweredCb.setChecked(question.getIsAnswered());
 

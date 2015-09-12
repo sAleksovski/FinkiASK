@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
@@ -37,5 +36,27 @@ public class InsertPasswordDialog extends BaseDialogFragment {
         ButterKnife.bind(this, view);
         text.setText(String.format(textFormat, getArguments().getInt("minutes")));
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        btnNegative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
+        btnPositive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPositiveCallback.onPositiveClick(getPassword());
+                dismiss();
+            }
+        });
+    }
+
+    public String getPassword() {
+        return password.getText().toString();
     }
 }

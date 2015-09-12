@@ -21,19 +21,19 @@ public class Answer extends BaseModel implements Serializable {
     private String text;
 
     @Column
-    private boolean isAnswered;
+    private boolean isChecked;
 
     @Column
-    private long questionID;
+    private long questionId;
 
     private Question question;
 
     public Answer() {}
 
-    public Answer(long id, String text, long questionID) {
+    public Answer(long id, String text, long questionId) {
         this.id = id;
         this.text = text;
-        this.questionID = questionID;
+        this.questionId = questionId;
     }
 
     public long getId() {
@@ -52,25 +52,25 @@ public class Answer extends BaseModel implements Serializable {
         this.text = text;
     }
 
-    public boolean getIsAnswered() {
-        return isAnswered;
+    public boolean getIsChecked() {
+        return isChecked;
     }
 
-    public void setIsAnswered(boolean isAnswered) {
-        this.isAnswered = isAnswered;
+    public void setIsChecked(boolean isChecked) {
+        this.isChecked = isChecked;
     }
 
     public Question getQuestion() {
         if (question == null)
-            question = new Select().from(Question.class).where(Condition.column(Question$Table.ID).eq(questionID)).querySingle();
+            question = new Select().from(Question.class).where(Condition.column(Question$Table.ID).eq(questionId)).querySingle();
         return question;
     }
 
-    public long getQuestionID() {
-        return questionID;
+    public long getQuestionId() {
+        return questionId;
     }
 
-    public void setQuestionID(long questionID) {
-        this.questionID = questionID;
+    public void setQuestionId(long questionId) {
+        this.questionId = questionId;
     }
 }

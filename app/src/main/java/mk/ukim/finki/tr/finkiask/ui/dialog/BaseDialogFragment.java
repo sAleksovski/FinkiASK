@@ -5,7 +5,6 @@ import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import butterknife.Bind;
 import mk.ukim.finki.tr.finkiask.R;
 
@@ -15,7 +14,7 @@ public class BaseDialogFragment extends DialogFragment {
     @Bind(R.id.positive) Button btnPositive;
     @Bind(R.id.negative) Button btnNegative;
 
-    OnPositiveCallback mPositiveCallback;
+    static OnPositiveCallback mPositiveCallback;
 
     public BaseDialogFragment() {}
 
@@ -31,7 +30,7 @@ public class BaseDialogFragment extends DialogFragment {
         btnPositive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPositiveCallback.onPositiveClick();
+                mPositiveCallback.onPositiveClick("");
                 dismiss();
             }
         });
@@ -42,6 +41,6 @@ public class BaseDialogFragment extends DialogFragment {
     }
 
     public interface OnPositiveCallback {
-        void onPositiveClick();
+        void onPositiveClick(String data);
     }
 }

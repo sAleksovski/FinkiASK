@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
@@ -34,7 +33,7 @@ public class MultipleChoiceQuestionFragment extends BaseQuestionFragment {
             for (final Answer a : mItem.getAnswers()) {
                 CheckBox cb = new CheckBox(getActivity());
                 cb.setText(a.getText());
-                cb.setChecked(a.getIsAnswered());
+                cb.setChecked(a.getIsChecked());
                 cb.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -43,10 +42,12 @@ public class MultipleChoiceQuestionFragment extends BaseQuestionFragment {
                 });
                 answersCheckboxGroup.addView(cb);
 
-                if (a.getIsAnswered()) {
+                if (a.getIsChecked()) {
                     checked++;
                 }
             }
+
+            isChanged = false;
 
             return rootView;
         }
@@ -55,16 +56,19 @@ public class MultipleChoiceQuestionFragment extends BaseQuestionFragment {
     }
 
     private void onAnswerChanged(Answer a) {
-        a.setIsAnswered(!a.getIsAnswered());
+        a.setIsChecked(!a.getIsChecked());
         a.save();
 
-        if (a.getIsAnswered()) {
+        isChanged = true;
+
+        if (a.getIsChecked()) {
             checked++;
         } else {
             checked--;
         }
 
         mItem.setIsAnswered(checked > 0);
+        mItem.setIsSynced(false);
         mItem.save();
     }
 }

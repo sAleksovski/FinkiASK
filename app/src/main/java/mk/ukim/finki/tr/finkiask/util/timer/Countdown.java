@@ -4,6 +4,7 @@ import android.os.CountDownTimer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Countdown {
     private long milliseconds = 0;
@@ -27,10 +28,11 @@ public class Countdown {
         countdownInterfaces.add(countdownInterface);
     }
 
-    public void start(int duration) {
+    public void start(long duration, TimeUnit sourceUnit) {
         if (!isStarted) {
             isStarted = true;
-            countDownTimer = new CountDownTimer(duration * 60 * 1000, 1000) {
+            TimeUnit timeUnitMilliSeconds = TimeUnit.MILLISECONDS;
+            countDownTimer = new CountDownTimer(timeUnitMilliSeconds.convert(duration, sourceUnit), 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     milliseconds = millisUntilFinished;

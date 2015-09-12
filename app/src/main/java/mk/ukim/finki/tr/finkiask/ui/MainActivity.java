@@ -15,12 +15,19 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
+import mk.ukim.finki.tr.finkiask.data.DBHelper;
+import mk.ukim.finki.tr.finkiask.data.models.TestInstance;
 import mk.ukim.finki.tr.finkiask.data.pojo.TestPOJO;
+import mk.ukim.finki.tr.finkiask.ui.dialog.BaseDialogFragment;
+import mk.ukim.finki.tr.finkiask.ui.dialog.ReopenTestDialogFragment;
+import mk.ukim.finki.tr.finkiask.ui.masterdetail.TestListActivity;
 import mk.ukim.finki.tr.finkiask.util.AuthHelper;
+import mk.ukim.finki.tr.finkiask.util.timer.TimeUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,6 +51,25 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(viewPager);
 
         tabLayout.setupWithViewPager(viewPager);
+
+        if (DBHelper.isTestInstanceFound()) {
+            TestInstance testInstance = DBHelper.getSingleTestInstance();
+            if (TimeUtils.remainingTime(testInstance, TimeUnit.MINUTES) <= 0) {
+                DBHelper.deleteEverything();
+                return;
+            }
+
+            ReopenTestDialogFragment.newInstance(TimeUtils.remainingTime(testInstance, TimeUnit.MINUTES),
+                    new BaseDialogFragment.OnPositiveCallback() {
+                        @Override
+                        public void onPositiveClick(String data) {
+                            Intent intent = new Intent(getApplicationContext(), TestListActivity.class);
+                            intent.putExtra("testInstanceId", DBHelper.getSingleTestInstance().getId());
+
+                            startActivity(intent);
+                        }
+                    }).show(getSupportFragmentManager(), "reopen_test_dialog");
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -52,13 +78,13 @@ public class MainActivity extends AppCompatActivity {
         if (AuthHelper.isLoggedIn(this)) {
             MainTestListFragment tests = MainTestListFragment.newInstance(TestPOJO.TEST);
             adapter.addFragment(tests, "Tests");
-
-            MainTestListFragment surveys = MainTestListFragment.newInstance(TestPOJO.SURVEY);
-            adapter.addFragment(surveys, "Surveys");
         }
 
-        MainTestListFragment anonSurvey = MainTestListFragment.newInstance(TestPOJO.ANONYMOUS_SURVEY);
-        adapter.addFragment(anonSurvey, "Anonymous surveys");
+        MainTestListFragment anonSurvey = MainTestListFragment.newInstance(TestPOJO.ANONYMOUS_TEST);
+        adapter.addFragment(anonSurvey, "Anonymous test");
+
+        MainTestListFragment surveys = MainTestListFragment.newInstance(TestPOJO.SURVEY);
+        adapter.addFragment(surveys, "Surveys");
 
         viewPager.setAdapter(adapter);
     }

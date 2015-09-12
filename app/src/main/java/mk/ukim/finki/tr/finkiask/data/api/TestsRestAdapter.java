@@ -5,13 +5,12 @@ import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.raizlabs.android.dbflow.structure.ModelAdapter;
-
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
 public class TestsRestAdapter {
     private static TestsRestInterface testsRestInterface;
-    private static final String BASE_URL = "http://ancient-wildwood-1356.herokuapp.com/";
+    private static final String BASE_URL = "http://192.168.1.67:8080/";
 
     private TestsRestAdapter() { }
 
@@ -28,7 +27,7 @@ public class TestsRestAdapter {
                         return false;
                     }
                 })
-                .setDateFormat("dd/MM/yy hh:mm")
+                .setDateFormat("dd/MM/yyyy HH:mm")
                 .create();
 
         RestAdapter restAdapter = new RestAdapter.Builder()

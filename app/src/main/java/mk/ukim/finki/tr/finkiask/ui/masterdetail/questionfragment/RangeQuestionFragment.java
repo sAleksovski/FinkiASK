@@ -6,13 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.data.models.Answer;
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 public class RangeQuestionFragment extends BaseQuestionFragment {
 
@@ -38,7 +36,7 @@ public class RangeQuestionFragment extends BaseQuestionFragment {
             final int max = Integer.parseInt(rangeParts[1]);
 
             int value = min;
-            if (a.getIsAnswered()) {
+            if (a.getIsChecked()) {
                 value = Integer.parseInt(rangeParts[2]);
             }
 
@@ -47,6 +45,8 @@ public class RangeQuestionFragment extends BaseQuestionFragment {
             seekBar.setProgress(value);
 
             seekBarText.setText(String.valueOf(value));
+
+            isChanged = false;
 
             seekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
                 int mProgress;
@@ -65,10 +65,13 @@ public class RangeQuestionFragment extends BaseQuestionFragment {
                 @Override
                 public void onStopTrackingTouch(DiscreteSeekBar discreteSeekBar) {
                     a.setText(String.format("%d:%d:%d", min, max, mProgress));
-                    a.setIsAnswered(true);
+                    a.setIsChecked(true);
                     a.save();
 
+                    isChanged = true;
+
                     mItem.setIsAnswered(true);
+                    mItem.setIsSynced(false);
                     mItem.save();
                 }
             });

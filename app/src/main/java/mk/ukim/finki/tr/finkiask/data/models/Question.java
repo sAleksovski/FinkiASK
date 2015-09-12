@@ -12,11 +12,10 @@ import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
+import mk.ukim.finki.tr.finkiask.data.AppDatabase;
 
 import java.io.Serializable;
 import java.util.List;
-
-import mk.ukim.finki.tr.finkiask.data.AppDatabase;
 
 @Table(databaseName = AppDatabase.NAME)
 @ModelContainer
@@ -39,7 +38,13 @@ public class Question extends BaseModel implements Serializable {
     private String type;
 
     @Column
+    private int points;
+
+    @Column
     private boolean isAnswered;
+
+    @Column
+    private boolean isSynced;
 
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = "test_id",
@@ -51,10 +56,11 @@ public class Question extends BaseModel implements Serializable {
 
     public Question() {}
 
-    public Question(long id, String text, String type) {
+    public Question(long id, String text, String type, int points) {
         this.id = id;
         this.text = text;
         this.type = type;
+        this.points = points;
     }
 
     public long getId() {
@@ -115,4 +121,19 @@ public class Question extends BaseModel implements Serializable {
         return "Question " + getId();
     }
 
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public boolean getIsSynced() {
+        return isSynced;
+    }
+
+    public void setIsSynced(boolean isSynced) {
+        this.isSynced = isSynced;
+    }
 }

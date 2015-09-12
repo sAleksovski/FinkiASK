@@ -43,8 +43,23 @@ public class DBHelper {
                 .querySingle();
     }
 
+    public static TestInstance getSingleTestInstance() {
+        return new Select().from(TestInstance.class).querySingle();
+    }
+
+    public static List<Question> getUnsyncedQuestions() {
+        return new Select()
+                .from(Question.class)
+                .where(Condition.column(Question$Table.ISANSWERED).is(true),
+                        Condition.column(Question$Table.ISSYNCED).is(false))
+                .queryList();
+    }
+
     public static void deleteEverything() {
-        new Select().from(TestInstance.class).querySingle().delete();
+        TestInstance ti = new Select().from(TestInstance.class).querySingle();
+        if (ti != null) {
+            ti.delete();
+        }
         for (Question q : new Select().from(Question.class).queryList()) {
             q.delete();
         }
@@ -81,6 +96,10 @@ public class DBHelper {
                 .from(Question.class)
                 .where(Condition.column(Question$Table.ID).lessThan(id))
                 .querySingle();
+
+        if (q != null) return q;
+
+        q = getQuestionById(id);
 
         return q;
     }

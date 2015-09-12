@@ -2,27 +2,50 @@ package mk.ukim.finki.tr.finkiask.ui.masterdetail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
 import mk.ukim.finki.tr.finkiask.data.DBHelper;
+import mk.ukim.finki.tr.finkiask.data.api.ServerResponseWrapper;
+import mk.ukim.finki.tr.finkiask.data.api.TestsRestAdapter;
+import mk.ukim.finki.tr.finkiask.data.api.TestsRestInterface;
+import mk.ukim.finki.tr.finkiask.data.models.Answer;
+import mk.ukim.finki.tr.finkiask.data.models.Question;
 import mk.ukim.finki.tr.finkiask.data.models.TestInstance;
-import mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment.BaseQuestionFragment;
-import mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment.QuestionFragmentFactory;
-import mk.ukim.finki.tr.finkiask.util.timer.Countdown;
-import mk.ukim.finki.tr.finkiask.util.timer.CountdownInterface;
+import mk.ukim.finki.tr.finkiask.ui.MainActivity;
+import mk.ukim.finki.tr.finkiask.ui.ResultActivity;
 import mk.ukim.finki.tr.finkiask.ui.dialog.BaseDialogFragment;
 import mk.ukim.finki.tr.finkiask.ui.dialog.CancelTestDialogFragment;
+import mk.ukim.finki.tr.finkiask.ui.dialog.FinishTestDialogFragment;
+import mk.ukim.finki.tr.finkiask.ui.dialog.TimerExpiredDialogFragment;
+import mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment.BaseQuestionFragment;
+import mk.ukim.finki.tr.finkiask.ui.masterdetail.questionfragment.QuestionFragmentFactory;
+import mk.ukim.finki.tr.finkiask.util.AuthHelper;
+import mk.ukim.finki.tr.finkiask.util.timer.Countdown;
+import mk.ukim.finki.tr.finkiask.util.timer.CountdownHelper;
+import mk.ukim.finki.tr.finkiask.util.timer.CountdownInterface;
+import mk.ukim.finki.tr.finkiask.util.timer.TimeUtils;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 /**
@@ -61,6 +84,9 @@ public class TestListActivity extends AppCompatActivity
     @Bind(R.id.btn_next_question)
     FloatingActionButton btnNextQuestion;
 
+    public static String ARG_RESULT = "result";
+    public static String ARG_TYPE = "type";
+
     public Countdown countdown;
 
     private TestListFragment fragment;
@@ -83,10 +109,11 @@ public class TestListActivity extends AppCompatActivity
         long testInstanceId = getIntent().getLongExtra("testInstanceId", -1);
 
         if (testInstanceId != -1) {
-            Toast.makeText(getApplicationContext(), "TestInstance already found in DB", Toast.LENGTH_LONG).show();
+            //TODO inspect,
             TestInstance t = DBHelper.getTestInstanceById(testInstanceId);
             if (t != null) {
-                countdown.start(t.getDuration());
+                CountdownHelper.setStartTime(getApplicationContext(), t.getOpenedTime());
+                CountdownHelper.setDuration(getApplicationContext(), t.getDuration());
             }
         }
 
@@ -111,10 +138,63 @@ public class TestListActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 if (DBHelper.isTestInstanceFound()) {
-                    DBHelper.deleteEverything();
-                    Toast.makeText(getApplicationContext(), "TestInstance removed from local DB", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "No TestInstanceFound", Toast.LENGTH_LONG).show();
+
+                    List<Question> unsynced = DBHelper.getUnsyncedQuestions();
+                    for (final Question q : unsynced) {
+                        List<Answer> answers = q.getAnswers();
+                        TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
+                        testsRestAdapter.postAnswer(AuthHelper.getSessionCookie(view.getContext()), q.getTestInstance().getId(), answers, new Callback<ServerResponseWrapper<TestInstance>>() {
+
+                            @Override
+                            public void success(ServerResponseWrapper<TestInstance> serverResponseWrapper, Response response) {
+                                Log.d("SAVE", serverResponseWrapper.getResponseStatus());
+//                                q.setIsSynced(true);
+//                                q.save();
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                            }
+                        });
+                    }
+
+                    FinishTestDialogFragment.newInstance(new BaseDialogFragment.OnPositiveCallback() {
+                        @Override
+                        public void onPositiveClick(String data) {
+
+                            final String type = DBHelper.getSingleTestInstance().getType();
+                            final long testId = DBHelper.getSingleTestInstance().getId();
+                            DBHelper.deleteEverything();
+
+                            Timer timer = new Timer();
+                            timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    TestsRestInterface testsRestAdapter = TestsRestAdapter.getInstance();
+                                    testsRestAdapter.getResult(AuthHelper.getSessionCookie(getApplicationContext()), testId,
+                                            new ArrayList<Answer>(), new Callback<ServerResponseWrapper<Integer>>() {
+                                                @Override
+                                                public void success(ServerResponseWrapper<Integer> serverResponseWrapper, Response response) {
+                                                    Log.d("getResult", serverResponseWrapper.getData() + "");
+                                                    Log.d("getResultType", type);
+                                                    Intent resultIntent = new Intent(getApplication(), ResultActivity.class);
+                                                    resultIntent.putExtra(TestListActivity.ARG_RESULT, serverResponseWrapper.getData());
+                                                    resultIntent.putExtra(TestListActivity.ARG_TYPE, type);
+                                                    startActivity(resultIntent);
+                                                }
+
+                                                @Override
+                                                public void failure(RetrofitError error) {
+                                                    Log.d("getResult", error.toString());
+                                                }
+                                            });
+                                }
+
+                            }, 1000);
+
+                        }
+                    }).show(getSupportFragmentManager(), "finish_test_dialog");
+
                 }
             }
         });
@@ -130,6 +210,41 @@ public class TestListActivity extends AppCompatActivity
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        countdown.stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        long duration = TimeUnit.MILLISECONDS.convert(CountdownHelper.getDuration(getApplicationContext()), TimeUnit.MINUTES);
+        long elapsedTime = TimeUtils.getDateDiff(CountdownHelper.getStartTime(getApplicationContext()),
+                new Date(), TimeUnit.MILLISECONDS);
+
+        if ((duration - elapsedTime) <= 0) {
+            toolbarTimer.setText(String.format("%d:%02d", 0, 0));
+            TimerExpiredDialogFragment.newInstance(new BaseDialogFragment.OnPositiveCallback() {
+                @Override
+                public void onPositiveClick(String data) {
+                    DBHelper.deleteEverything();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+            }).show(getSupportFragmentManager(), "time_expired_dialog");
+            return;
+        }
+
+        countdown.start(duration - elapsedTime, TimeUnit.MILLISECONDS);
+
+
+        // if timer is finished
+    }
+
+
     public void changeTimer(long milliseconds) {
         int sec = (int) (milliseconds / 1000);
         int min = sec / 60;
@@ -141,9 +256,11 @@ public class TestListActivity extends AppCompatActivity
     public void onBackPressed() {
         CancelTestDialogFragment.newInstance(new BaseDialogFragment.OnPositiveCallback() {
             @Override
-            public void onPositiveClick() {
+            public void onPositiveClick(String data) {
                 countdown.stop();
-                TestListActivity.super.onBackPressed();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         }).show(getSupportFragmentManager(), "cancel_test_dialog");
     }
@@ -176,8 +293,6 @@ public class TestListActivity extends AppCompatActivity
         }
     }
 
-    // TODO
-    // Different behavior from with TestDetailActivity
     public void nextQuestion() {
         int currentPosition = fragment.getActivatedPosition();
         int total = fragment.getListView().getAdapter().getCount();

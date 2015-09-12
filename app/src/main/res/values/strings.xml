@@ -4,6 +4,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_main">Finki ASK</string>
+    <string name="title_activity_result">ResultActivity</string>
     <string name="login_logo">Login logo</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -24,4 +25,15 @@
     <string name="test_cancel_text">Are you sure you want to cancel this test?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="test_finish_title">Finish test</string>
+    <string name="test_finish_text">Are you sure you want to finish this test?\nYou cannot edit your answers later.</string>
+    <string name="you_scored_xx_percent">You scored %d%% on the test</string>
+    <string name="test_started_text">Found started test, do you want to continue with that test?\nRemaining time %d minutes</string>
+    <string name="test_started_title">Test already started</string>
+    <string name="another_test_started">Another test already started. Do you want to submit it and start this one?</string>
+    <string name="another_test_title">Another test started</string>
+    <string name="no_more_time">Time for this test has expired.</string>
+    <string name="ok">Ok</string>
+    <string name="dialog_timer_finished_title">Time expired</string>
+    <string name="survey_finish_text">Thank you for participating in this survey.</string>
 </resources>
