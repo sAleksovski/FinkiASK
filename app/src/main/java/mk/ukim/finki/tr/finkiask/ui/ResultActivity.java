@@ -12,7 +12,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mk.ukim.finki.tr.finkiask.R;
-import mk.ukim.finki.tr.finkiask.ui.masterdetail.TestListActivity;
+import mk.ukim.finki.tr.finkiask.ui.masterdetail.TestAbstractActivity;
 import mk.ukim.finki.tr.finkiask.ui.result.Circle;
 import mk.ukim.finki.tr.finkiask.ui.result.CircleAngleAnimation;
 
@@ -30,7 +30,7 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
         ButterKnife.bind(this);
 
-        String type = getIntent().getStringExtra(TestListActivity.ARG_TYPE);
+        String type = getIntent().getStringExtra(TestAbstractActivity.ARG_TYPE);
         if (type.equals("SURVEY")) {
             pointsTv.setText(getResources().getString(R.string.survey_finish_text));
             gradeTv.setText("");
@@ -40,7 +40,7 @@ public class ResultActivity extends AppCompatActivity {
             return;
         }
 
-        int points = getIntent().getIntExtra(TestListActivity.ARG_RESULT, 0);
+        int points = getIntent().getIntExtra(TestAbstractActivity.ARG_RESULT, 0);
 
         CircleAngleAnimation animation = new CircleAngleAnimation(circle, points);
         animation.setDuration(2000);
