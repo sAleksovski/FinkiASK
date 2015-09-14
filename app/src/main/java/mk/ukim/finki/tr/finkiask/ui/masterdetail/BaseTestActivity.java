@@ -41,7 +41,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public abstract class TestAbstractActivity extends AppCompatActivity
+public abstract class BaseTestActivity extends AppCompatActivity
         implements CountdownInterface {
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.timer) TextView toolbarTimer;
@@ -106,7 +106,7 @@ public abstract class TestAbstractActivity extends AppCompatActivity
         sec = sec - (min * 60);
         toolbarTimer.setText(String.format("%d:%02d", min, sec));
 
-        //test run of time
+        //test run out of time
         if (sec == 1) {
             submitTest(false);
         }
@@ -149,8 +149,8 @@ public abstract class TestAbstractActivity extends AppCompatActivity
                                 Log.d("getResult", serverResponseWrapper.getData() + "");
                                 Log.d("getResultType", type);
                                 Intent resultIntent = new Intent(getApplication(), ResultActivity.class);
-                                resultIntent.putExtra(TestAbstractActivity.ARG_RESULT, serverResponseWrapper.getData());
-                                resultIntent.putExtra(TestAbstractActivity.ARG_TYPE, type);
+                                resultIntent.putExtra(BaseTestActivity.ARG_RESULT, serverResponseWrapper.getData());
+                                resultIntent.putExtra(BaseTestActivity.ARG_TYPE, type);
                                 startActivity(resultIntent);
                             }
 

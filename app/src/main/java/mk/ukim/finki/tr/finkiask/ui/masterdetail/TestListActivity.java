@@ -36,7 +36,7 @@ import mk.ukim.finki.tr.finkiask.util.timer.CountdownHelper;
  * {@link TestListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class TestListActivity extends TestAbstractActivity
+public class TestListActivity extends BaseTestActivity
         implements TestListFragment.Callbacks {
 
     /**

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -28,7 +27,7 @@ import mk.ukim.finki.tr.finkiask.util.timer.Countdown;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link BaseQuestionFragment}.
  */
-public class TestDetailActivity extends TestAbstractActivity {
+public class TestDetailActivity extends BaseTestActivity {
 
     @Bind(R.id.btn_next_question)
     FloatingActionButton btnNextQuestion;
