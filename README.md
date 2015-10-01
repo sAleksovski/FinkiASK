@@ -1,7 +1,7 @@
 # FinkiASK
 
 ### Description
-Android application for answering tests and surveys, can be used with or without login with CAS. 
+Android application for answering tests and surveys, can be used with or without login with CAS. To connect with the backend server, you have to change the IP address in [TestsRestAdapter.java] (https://github.com/sAleksovski/FinkiASK/blob/master/app/src/main/java/mk/ukim/finki/tr/finkiask/data/api/TestsRestAdapter.java) 
 
 ### Project
 This application is only part of a faculty project for creating a system for taking surveys and tests by students and showing real-time results for professors on separate website. The other components are:
@@ -18,15 +18,16 @@ This application is only part of a faculty project for creating a system for tak
   Backend for the whole system, using REST to communicate with other components
 
 ### Demo screenshots
+[Imgur Album] (http://imgur.com/a/6sZ2B)
 
 ### Licence
 [GNU General Public License] (https://github.com/sAleksovski/FinkiASK/blob/master/LICENCE.md)
 
 ### Authors
-######Stefan Aleksovski
+###### [Stefan Aleksovski] (https://github.com/sAleksovski)
 
-######Bojan Trajkovski
+###### [Bojan Trajkovski] (https://github.com/btrajkovski)
 
-######Beti Spasovska
+###### [Beti Spasovska] (https://github.com/BetiSpasovska)
 
 
